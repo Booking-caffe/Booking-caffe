@@ -6,52 +6,103 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('jobs', function (Blueprint $table) {
-            $table->id();
-            $table->string('queue')->index();
-            $table->longText('payload');
-            $table->unsignedTinyInteger('attempts');
-            $table->unsignedInteger('reserved_at')->nullable();
-            $table->unsignedInteger('available_at');
-            $table->unsignedInteger('created_at');
+
+        Schema::create('menu', function (Blueprint $table) {
+            $table->integer('id_menu', 12)->primary();
+            $table->string('nama_menu', 50);
+            $table->string('ketegori', 25);
+            $table->integer('harga', 12);
+            $table->timestamps();
         });
 
-        Schema::create('job_batches', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->string('name');
-            $table->integer('total_jobs');
-            $table->integer('pending_jobs');
-            $table->integer('failed_jobs');
-            $table->longText('failed_job_ids');
-            $table->mediumText('options')->nullable();
-            $table->integer('cancelled_at')->nullable();
-            $table->integer('created_at');
-            $table->integer('finished_at')->nullable();
+        Schema::create('reservasi', function (Blueprint $table) {
+            $table->integer('id_reservasi', 12)->primary();
+            $table->integer('id_menu', 12);
+            $table->date('tanggal');
+            $table->time('waktu');
+            $table->integer('jumlah_tamu', 12);
+            $table->string('ruangan', 10);
+            $table->string('nomor_meja', 10);
+            $table->timestamps();
+
+            $table->foreign('id_menu')
+                ->references('id_menu')
+                ->on('menu');
         });
 
-        Schema::create('failed_jobs', function (Blueprint $table) {
-            $table->id();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+        Schema::create('pengelola', function (Blueprint $table) {
+            $table->integer('id_pengelola', 12)->primary();
+            $table->string('nama_pengelola', 50);
+            $table->string('username', 25);
+            $table->string('password', 25);
+            $table->integer('id_menu', 12);
+            $table->integer('id_reservasi', 12);
+            $table->timestamps();
+
+            $table->foreign('id_menu')
+                ->references('id_menu')
+                ->on('menu');
+
+            $table->foreign('id_reservasi')
+                ->references('id_reservasi')
+                ->on('reservasi');
         });
+
+        Schema::create('transaksi', function (Blueprint $table) {
+            $table->integer('id_transaksi', 12)->primary();
+            $table->integer('total', 12);
+            $table->string('metode_pembayaran', 25);
+            $table->string('status', 25);
+            $table->timestamps();
+        });
+
+        Schema::create('detail_pesanan', function (Blueprint $table) {
+            $table->integer('id_detail_pesanan', 12)->primary();
+            $table->integer('id_transaksi', 12);
+            $table->integer('total_belanja', 12);
+            $table->integer('pajak', 12);
+            $table->integer('total', 12);
+            $table->timestamps();
+
+            $table->foreign('id_transaksi')
+                ->references('id_transaksi')
+                ->on('transaksi');
+        });
+        
+        Schema::create('pelanggan', function (Blueprint $table) {
+            $table->integer('id_pelanggan', 12)->primary();
+            $table->string('nama_pelanggan', 50);
+            $table->integer('no_telepon', 12);
+            $table->integer('id_transaksi', 12);
+            $table->integer('id_reservasi', 12);
+            $table->integer('id_detail_pesanan', 12);
+            $table->integer('id_menu', 12);
+            $table->timestamps();
+
+            $table->foreign('id_transaksi')
+                ->references('id_transaksi')
+                ->on('transaksi');
+
+            $table->foreign('id_reservasi')
+                ->references('id_reservasi')
+                ->on('reservasi');
+
+            $table->foreign('id_detail_pesanan')
+                ->references('id_detail_pesanan')
+                ->on('detail_pesanan');
+        });
+
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('jobs');
-        Schema::dropIfExists('job_batches');
-        Schema::dropIfExists('failed_jobs');
+        Schema::dropIfExists('menu');
+        Schema::dropIfExists('reservasi');
+        Schema::dropIfExists('pengelola');
+        Schema::dropIfExists('detail_pesanan');
+        Schema::dropIfExists('transaksi');
+        Schema::dropIfExists('pelanggan');
     }
 };
