@@ -4,7 +4,7 @@
     <title>Admin - @yield('title')</title>
 
     <link rel="stylesheet" href="{{ asset ('css/style.css') }}">
-    <script src="{{ asset('js/scripts.js') }}"></script>
+    <script src="{{ asset('js/user_home.js') }}"></script>
 </head>
 
 <body>
@@ -30,9 +30,6 @@
     <div class="content">
         @yield('content')
     </div>
-
-    {{-- Load Script --}}
-    @yield('scripts')
 </div>
 </body>
 </html>
