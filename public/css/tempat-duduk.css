@@ -1,0 +1,40 @@
+.material-icons {
+      font-size: 24px;
+      vertical-align: middle;
+    }
+    input[type="radio"]:checked+label {
+      outline: 2px solid #A16207;
+      background-color: #fef3c7;
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+    .dark input[type="radio"]:checked+label {
+      background-color: #452a05;
+    }
+    .table-plan {
+      position: relative;
+      background-color: #f3eade;
+    }
+    .dark .table-plan {
+      background-color: #3a2e1d;
+    }
+    input[type="radio"]:disabled+label {
+        background-color: #d1d5db;
+        cursor: not-allowed;
+        color: #6b7280;
+        border-color: #9ca3af;
+    }
+    .dark input[type="radio"]:disabled+label {
+        background-color: #4b5563;
+        color: #9ca3af;
+        border-color: #6b7280;
+    }
+    .available-table {
+        background-color: #fefce8;border-color: #ca8a04;
+        color: #a16207;
+    }
+    .dark .available-table {
+        background-color: #422006;
+        border-color: #f59e0b;
+        color: #fef3c7;
+    }
