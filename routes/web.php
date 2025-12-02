@@ -7,14 +7,16 @@ use App\Http\Controllers\MenuController;
 
 // ADMIN
 Route::get('/login', function () {
-    return view('login');
-});
+    return view('auth.login');
+})->name('login');
 
 
 
-// USER
-Route::get('/', fn() => view('User.dashboard'))->name('dashboard');
+// Home
+Route::get('/', fn() => view('home'))->name('home');
 Route::get('/reservasi', fn() => view('User.reservasi'))->name('reservasi');
+
+// User
 
 // POST dari form reservasi
 Route::post('/tempat-duduk', [MenuController::class, 'pilihTempatDuduk'])

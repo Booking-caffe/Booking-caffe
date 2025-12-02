@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User - @yield('title')</title>
+    <title>@yield('title')</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet"/>
@@ -48,7 +48,8 @@
                 <a class="font-display text-2xl font-bold text-primary" href="#">Kopi Senja</a>
                 
                 <div class="hidden md:flex items-center space-x-8">
-                    {{-- <a class="text-text-light dark:text-text-dark hover:text-primary dark:hover:text-white transition-colors duration-300 font-medium"href="{{ route('app') }}">Home</a> --}}
+                    <a class="text-text-light dark:text-text-dark hover:text-primary dark:hover:text-white transition-colors duration-300 font-medium"
+                    href="{{ route('home') }}">Home</a>
 
                     <!-- Dropdown Menu -->
                     <div class="relative group">
@@ -88,7 +89,7 @@
         @yield('content')
     </div>
 
-    <footer class="bg-card-light dark:bg-card-dark pt-12 pb-6">
+<footer class="bg-card-light dark:bg-card-dark pt-12 pb-6">
     <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div class="md:col-span-1">

@@ -136,6 +136,4 @@ class MenuController extends Controller
         return redirect()->route('show-tempat-duduk');
     }
 
-
-
 }

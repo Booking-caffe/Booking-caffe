@@ -1,9 +1,9 @@
-@extends('layouts.user')
+@extends('layouts.app')
 
-@section('title', 'Makanan')
+@section('title', 'Minuman')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset ('css/user-menu.css') }}">
+    <link rel="stylesheet" href="{{ asset ('css/menu.css') }}">
 @endpush
 
 @section('content')
