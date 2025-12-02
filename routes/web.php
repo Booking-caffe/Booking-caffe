@@ -1,19 +1,20 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\HomeController;
 
 
+// halaman login
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 
-// ADMIN
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-
+// POST login dan logout pelaggan
+Route::post('/login-pelanggan', [LoginController::class, 'loginPelanggan'])->name('login-pelanggan');
+Route::post('/logout-pelanggan', [LoginController::class, 'logutPelanggan'])->name('logout-pelanggan');
 
 // Home
-Route::get('/', fn() => view('home'))->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/reservasi', fn() => view('User.reservasi'))->name('reservasi');
 
 // User

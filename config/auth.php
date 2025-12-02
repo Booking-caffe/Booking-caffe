@@ -65,6 +65,11 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
+        // 'pelanggan' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\pelangganModel::class, // Model Anda
+        // ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
