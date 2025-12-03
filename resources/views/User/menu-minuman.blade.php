@@ -12,7 +12,7 @@
 
     <div class="menu-container">
         @foreach ($menus as $id => $menu)
-            <a href="{{ route('detail-menu', $id) }}" class="menu-card">
+            <a href="{{ route('detail-minuman', $id) }}" class="menu-card">
                 <img src="{{ asset($menu['gambar']) }}" alt="{{ $menu['nama'] }}">
                 <h3>{{ $menu['nama'] }}</h3>
                 <p>{{ $menu['harga'] }}</p>

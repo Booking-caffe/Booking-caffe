@@ -27,8 +27,29 @@ class MenuController extends Controller
         ],
     ];
 
+    private $makanan = [
+        1 => [
+            'nama' => 'Sate Wirog',
+            'harga' => 100,
+            'deskripsi' => 'Minuman segar dari jeruk asli.',
+            'gambar' => 'images/makanan/makanan-1.jpg'
+        ],
+        2 => [
+            'nama' => 'Sate Pupu',
+            'harga' => 100,
+            'deskripsi' => 'Minuman unik khas Thailand.',
+            'gambar' => 'images/makanan/makanan-2.jpg'
+        ],
+        3 => [
+            'nama' => 'Sate Rangda',
+            'harga' => 100,
+            'deskripsi' => 'Minuman khusus vampir.',
+            'gambar' => 'images/makanan/makanan-3.jpg'
+        ],
+    ];
+
     // ===============================
-    // HALAMAN MENU MINUMAN
+    // HALAMAN MENU
     // ===============================
     public function menuMinuman()
     {
@@ -36,10 +57,16 @@ class MenuController extends Controller
         return view('User.menu-minuman', compact('menus'));
     }
 
+    public function menuMakanan()
+    {
+        $makanan = $this->makanan;
+        return view('User.menu-makanan', compact('makanan'));
+    }
+
     // ===============================
     // DETAIL MENU
     // ===============================
-    public function detail($id)
+    public function detailMinuman($id)
     {
         if (!isset($this->menus[$id])) {
             abort(404);
@@ -47,6 +74,18 @@ class MenuController extends Controller
 
         return view('User.detail-menu', [
             'menu' => $this->menus[$id],
+            'id'   => $id
+        ]);
+    }
+
+    public function detailMakanan($id)
+    {
+        if (!isset($this->makanan[$id])) {
+            abort(404);
+        }
+
+        return view('User.detail-menu', [
+            'menu' => $this->makanan[$id],
             'id'   => $id
         ]);
     }

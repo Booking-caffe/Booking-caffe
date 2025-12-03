@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="{{ asset ('css/user_home.css') }}">
     @stack('styles')
+    
 
     <script>
         tailwind.config = {
@@ -39,6 +40,7 @@
         },
       };
     </script>
+    @stack('header-scripts')
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-sans text-text-light dark:text-text-dark transition-colors duration-300">

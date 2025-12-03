@@ -3,78 +3,20 @@
 @section('title', 'Makanan')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset ('css/user-menu.css') }}">
+    <link rel="stylesheet" href="{{ asset ('css/menu.css') }}">
 @endpush
 
 @section('content')
-
-<h1 style="text-align:center; margin-bottom:30px; font-size: 2rem;">Menu Makanan</h1>
+   <h1 style="text-align:center; margin-bottom:30px; font-size: 2rem;">Menu Minuman</h1>
 
     <div class="menu-container">
-            
-        <!-- 12 ITEM MAKANAN -->
-        <!-- Anda bisa mengganti gambar dan nama makanan sesuka hati -->
-
-        <a href="detail_minuman.html?menu=1" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Jus jeruk</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_minuman.html?menu=2" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Jus Frifayer</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_makanan.html?menu=3" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Jus darah</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_makanan.html?menu=4" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Nasi Goreng</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_makanan.html?menu=5" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Nasi Goreng</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_makanan.html?menu=6" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Nasi Goreng</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_makanan.html?menu=7" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Nasi Goreng</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_makanan.html?menu=8" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Nasi Goreng</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_makanan.html?menu=9" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Nasi Goreng</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
-        <a href="detail_makanan.html?menu=10" class="menu-card">
-            <img src="https://via.placeholder.com/180">
-            <h3>Nasi Goreng</h3>
-            <p>Rp. 100,-</p>
-        </a>
-
+        @foreach ($makanan as $id => $menu)
+            <a href="{{ route('detail-makanan', $id) }}" class="menu-card">
+                <img src="{{ asset($menu['gambar']) }}" alt="{{ $menu['nama'] }}">
+                <h3>{{ $menu['nama'] }}</h3>
+                <p>{{ $menu['harga'] }}</p>
+            </a>
+        @endforeach
     </div>
 @endsection
 

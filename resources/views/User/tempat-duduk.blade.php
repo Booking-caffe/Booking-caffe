@@ -1,138 +1,152 @@
-
-
 @extends('layouts.app')
 
 @section('title', 'Tempat-duduk')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/tempat-duduk.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tempat-duduk.css') }}">
 @endpush
 
+@push('tailwind')
+    <script src="https://cdn.tailwindcss.com"></script>
+@endpush
 
 @section('content')
-<main class="py-10">
-<h1 class="text-3xl md:text-4xl font-bold text-center mb-2 text-gray-900 dark:text-white">Detail Tempat Duduk</h1>
-<p class="text-center text-gray-600 dark:text-gray-400 mb-12">Pilih meja yang tersedia untuk melanjutkan reservasi Anda.</p>
-<section class="mb-16">
-<div class="bg-white dark:bg-gray-800/50 p-6 md:p-8 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
-<div class="flex flex-col md:flex-row gap-8">
-<div class="md:w-1/2">
-<h2 class="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">Indoor</h2>
-<p class="text-lg font-medium mb-4 text-gray-700 dark:text-gray-300">Pilih Meja dari Denah</p>
-<div class="table-plan aspect-square w-full rounded-lg border border-gray-300 dark:border-gray-600 p-4">
-<div class="relative w-full h-full">
-<div class="absolute top-0 left-0 w-24 h-10 bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center text-sm font-medium">Masuk</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_m1" name="table_indoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[10%] left-[20%] w-16 h-16 flex items-center justify-center border-2 font-semibold rounded-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_m1">M1</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_m2" name="table_indoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[10%] left-[50%] w-16 h-16 flex items-center justify-center border-2 font-semibold rounded-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_m2">M2</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" disabled="" id="table_m3" name="table_indoor" type="radio"/>
-<label class="cursor-not-allowed absolute top-[35%] left-[10%] w-12 h-24 flex items-center justify-center bg-white dark:bg-gray-700 border border-gray-400 dark:border-gray-500 rounded-lg transition-all duration-200" for="table_m3">M3</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_m4" name="table_indoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[35%] left-[80%] w-12 h-12 flex items-center justify-center border-2 font-semibold rounded-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_m4">M4</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" disabled="" id="table_m5" name="table_indoor" type="radio"/>
-<label class="cursor-not-allowed absolute top-[60%] left-[60%] w-24 h-12 flex items-center justify-center bg-white dark:bg-gray-700 border border-gray-400 dark:border-gray-500 rounded-lg transition-all duration-200" for="table_m5">M5</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_m6" name="table_indoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[80%] left-[15%] w-12 h-12 flex items-center justify-center border-2 font-semibold rounded-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_m6">M6</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_m7" name="table_indoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[80%] left-[40%] w-12 h-12 flex items-center justify-center border-2 font-semibold rounded-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_m7">M7</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_m8" name="table_indoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[80%] left-[65%] w-12 h-12 flex items-center justify-center border-2 font-semibold rounded-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_m8">M8</label>
-</div>
-<div class="absolute bottom-0 right-0 w-24 h-24 bg-gray-400/50 dark:bg-gray-600/50 rounded flex items-center justify-center text-sm font-medium">Bar</div>
-</div>
-</div>
-</div>
-<div class="flex-grow md:w-1/2 flex flex-col justify-between">
-<div>
-<h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Meja Terpilih:</h3>
-<p class="text-gray-600 dark:text-gray-400 mb-6">Pilih meja dari denah di sebelah kiri untuk melanjutkan.</p>
-<div class="p-4 bg-gray-100 dark:bg-gray-900/50 rounded-lg">
-<div class="font-semibold text-lg" id="selected-table-indoor">--</div>
-</div>
-</div>
-<div class="flex justify-end mt-6">
-<button class="bg-primary text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-yellow-700 transition-all duration-300 transform hover:-translate-y-0.5 w-full md:w-auto">Selanjutnya</button>
-</div>
-</div>
-</div>
-</div>
+<h1 class="text-center text-3xl font-semibold mt-9">Detail Tempat Duduk</h1>
+<section class="main">
+    <main class="flex-1 container mx-auto p-4" >
+        <div class="grid md:grid-cols-3 gap-6 items-start">
+
+
+            <!-- Image Section -->
+            <div class="flex flex-col items-center relative">
+
+                <p class="font-semibold mb-2">Indoor</p>
+
+                <div class="relative">
+                    <!-- Kotak gambar -->
+                    <div class="border-2 border-gray-400 w-64 h-64 flex items-center justify-center text-gray-500">
+                        Gambar
+                    </div>
+
+                    <!-- Tombol panah kiri -->
+                    <button class="absolute left-[-30px] top-1/2 -translate-y-1/2 text-2xl">
+                        «
+                    </button>
+
+                    <!-- Tombol panah kanan -->
+                    <button class="absolute right-[-30px] top-1/2 -translate-y-1/2 text-2xl">
+                        »
+                    </button>
+                </div>
+
+            </div>
+
+
+
+            <!-- Table Selection -->
+            <div class="md:col-span-2">
+                <h2 class="title text-center font-semibold mb-6">Pilih Tempat Meja</h2>
+                <div class="grid grid-cols-4 gap-4">
+                    <!-- Meja Buttons -->
+                    <button class=" meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M1</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M2</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M3</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M4</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M5</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M6</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M7</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M8</button>
+                </div>
+
+
+                <!-- Next Button -->
+                <div class="flex justify-end mt-9">
+                    <button class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"><a href="{{ route ('detail-pesanan')  }}">Selanjutnya</a></button>
+                </div>
+            </div>
+        </div>
+    </main>
 </section>
-<section class="mb-16">
-<div class="bg-white dark:bg-gray-800/50 p-6 md:p-8 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
-<div class="flex flex-col md:flex-row-reverse gap-8">
-<div class="md:w-1/2">
-<h2 class="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">Outdoor</h2>
-<p class="text-lg font-medium mb-4 text-gray-700 dark:text-gray-300">Pilih Meja dari Denah</p>
-<div class="table-plan aspect-square w-full rounded-lg border border-gray-300 dark:border-gray-600 p-4">
-<div class="relative w-full h-full">
-<div class="absolute top-0 right-0 w-24 h-10 bg-gray-300 dark:bg-gray-600 rounded flex items-center justify-center text-sm font-medium">Dari Dalam</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_o1" name="table_outdoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[15%] left-[10%] w-20 h-10 flex items-center justify-center border-2 font-semibold rounded-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_o1">M1</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" disabled="" id="table_o2" name="table_outdoor" type="radio"/>
-<label class="cursor-not-allowed absolute top-[15%] left-[40%] w-20 h-10 flex items-center justify-center bg-white dark:bg-gray-700 border border-gray-400 dark:border-gray-500 rounded-lg transition-all duration-200" for="table_o2">M2</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_o3" name="table_outdoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[15%] left-[70%] w-20 h-10 flex items-center justify-center border-2 font-semibold rounded-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_o3">M3</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_o4" name="table_outdoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[45%] left-[25%] w-14 h-14 flex items-center justify-center border-2 font-semibold rounded-full transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_o4">M4</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" disabled="" id="table_o5" name="table_outdoor" type="radio"/>
-<label class="cursor-not-allowed absolute top-[45%] left-[60%] w-14 h-14 flex items-center justify-center bg-white dark:bg-gray-700 border border-gray-400 dark:border-gray-500 rounded-full transition-all duration-200" for="table_o5">M5</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_o6" name="table_outdoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[75%] left-[10%] w-20 h-10 flex items-center justify-center border-2 font-semibold rounded-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_o6">M6</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" disabled="" id="table_o7" name="table_outdoor" type="radio"/>
-<label class="cursor-not-allowed absolute top-[75%] left-[40%] w-20 h-10 flex items-center justify-center bg-white dark:bg-gray-700 border border-gray-400 dark:border-gray-500 rounded-lg transition-all duration-200" for="table_o7">M7</label>
-</div>
-<div class="absolute">
-<input class="absolute opacity-0 w-0 h-0 peer" id="table_o8" name="table_outdoor" type="radio"/>
-<label class="available-table cursor-pointer absolute top-[75%] left-[70%] w-20 h-10 flex items-center justify-center border-2 font-semibold rounded-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-1" for="table_o8">M8</label>
-</div>
-</div>
-</div>
-</div>
-<div class="flex-grow md:w-1/2 flex flex-col justify-between">
-<div>
-<h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Meja Terpilih:</h3>
-<p class="text-gray-600 dark:text-gray-400 mb-6">Pilih meja dari denah di sebelah kanan untuk melanjutkan.</p>
-<div class="p-4 bg-gray-100 dark:bg-gray-900/50 rounded-lg">
-<div class="font-semibold text-lg" id="selected-table-outdoor">--</div>
-</div>
-</div>
-<div class="flex justify-end mt-6">
-<button class="bg-primary text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-yellow-700 transition-all duration-300 transform hover:-translate-y-0.5 w-full md:w-auto">Selanjutnya</button>
-</div>
-</div>
-</div>
-</div>
+
+<section class="main" style="margin: 20px;">
+    <main class="flex-1 container mx-auto p-4">
+
+        <div class="grid md:grid-cols-3 gap-6 items-start">
+
+            <!-- Table Selection (Kiri) -->
+            <div class="md:col-span-2">
+               
+                <h2 class="title text-center font-semibold mb-6">Pilih Tempat Meja</h2>
+
+                <div class="grid grid-cols-4 gap-4">
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M1</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M2</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M3</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M4</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M5</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M6</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M7</button>
+                    <button class="meja-btn border border-black p-4 rounded-lg hover:bg-blue-500 hover:text-white transition">M8</button>
+                </div>
+
+                <!-- Next Button -->
+                <div class="mt-9">
+                    <button class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"><a href="{{ route ('detail-pesanan') }}">Selanjutnya</a></button>
+                </div>
+            </div>
+
+            <!-- Image Section (Kanan) -->
+            <div class="flex flex-col items-center relative">
+
+                <p class="font-semibold mb-2">Outdoor</p>
+
+                <div class="relative">
+
+                    <!-- Kotak Gambar -->
+                    <div class="border-2 border-gray-400 w-64 h-64 flex items-center justify-center text-gray-500">
+                        Gambar
+                    </div>
+
+                    <!-- Panah kiri -->
+                    <button class="absolute left-[-35px] top-1/2 -translate-y-1/2 text-2xl">
+                        «
+                    </button>
+
+                    <!-- Panah kanan -->
+                    <button class="absolute right-[-35px] top-1/2 -translate-y-1/2 text-2xl">
+                        »
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
 </section>
-</main>
 @endsection
 
+@push('extra-scripts')
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const mejaButtons = document.querySelectorAll(".meja-btn");
 
+        mejaButtons.forEach(btn => {
+            btn.addEventListener("click", function () {
+
+                // Jika sudah aktif → matikan
+                if (btn.classList.contains("selected")) {
+                    btn.classList.remove("selected");
+                } else {
+                    // Matikan semua meja lain (jika ingin hanya memilih 1 meja)
+                    // mejaButtons.forEach(b => b.classList.remove("selected"));
+
+                    // Aktifkan tombol ini
+                    btn.classList.add("selected");
+                }
+            });
+        });
+    });
+</script>
+@endpush

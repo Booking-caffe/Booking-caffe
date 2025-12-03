@@ -14,6 +14,8 @@ Route::get('/login', function () {
 
 // Home
 Route::get('/', fn() => view('home'))->name('home');
+Route::get('/detail-pesanan', fn() => view('User.detail-pesanan'))->name('detail-pesanan');
+Route::get('/detail-transaksi', fn() => view('User.detail-transaksi'))->name('detail-transaksi');
 Route::get('/reservasi', fn() => view('User.reservasi'))->name('reservasi');
 
 // User
@@ -26,10 +28,14 @@ Route::post('/tempat-duduk', [MenuController::class, 'pilihTempatDuduk'])
 Route::get('/tempat-duduk', [MenuController::class, 'showTempatDuduk'])
     ->name('show-tempat-duduk');
 
-Route::get('/menu-makanan', fn() => view('User.menu-makanan'))->name('menu-makanan');
+// Route::get('/menu-makanan', fn() => view('User.menu-makanan'))->name('menu-makanan');
 Route::get('/menu-minuman', [MenuController::class, 'menuMinuman'])->name('menu-minuman');
+Route::get('/menu-makanan', [MenuController::class, 'menuMakanan'])->name('menu-makanan');
 // Route::get('/data_minuman', fn() => view('user.data-minuman'))->name('data_minuman');
-Route::get('/menu/detail/{id}', [MenuController::class, 'detail'])->name('detail-menu');
+// Route::get('/menu/detail/{id}', [MenuController::class, 'detail'])->name('detail-menu');
+Route::get('/makanan/{id}', [MenuController::class, 'detailMakanan'])->name('detail-makanan');
+Route::get('/minuman/{id}', [MenuController::class, 'detailMinuman'])->name('detail-minuman');
+
 Route::post('/menu/add-to-cart', [MenuController::class, 'addToCart'])->name('add-to-cart');
 Route::get('/keranjang', [MenuController::class, 'keranjang'])->name('keranjang');
 Route::delete('/keranjang/hapus/{index}', [MenuController::class, 'removeItem'])->name('remove-item');
