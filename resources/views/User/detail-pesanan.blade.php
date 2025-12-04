@@ -47,7 +47,7 @@
                 <div class="flex justify-between items-start mb-6 border-b border-border-light dark:border-border-dark pb-4">
                     <div>
                         
-                        <p class="text-muted-light dark:text-muted-dark mt-1">Meja: Indoor - M1</p>
+                        <p class="text-muted-light dark:text-muted-dark mt-1">Meja: {{ $meja }}</p>
                     </div>
                     <span class="text-lg font-semibold text-muted-light dark:text-muted-dark">#001</span>
                 </div>
