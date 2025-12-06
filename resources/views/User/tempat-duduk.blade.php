@@ -7,23 +7,27 @@
 @endpush
 
 @push('styles-cdn')
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
 @endpush
 
 @push('header-css')
     <style>
-      .material-icons {
-        font-size: inherit;
-        vertical-align: middle;
-      }
-      body {
-        --tw-bg-opacity: 1;
-        background-color: rgb(245 243 240 / var(--tw-bg-opacity));}
-      .dark body {
-        --tw-bg-opacity: 1;
-        background-color: rgb(44 37 34 / var(--tw-bg-opacity));}
+        .material-icons {
+            font-size: inherit;
+            vertical-align: middle;
+        }
+
+        body {
+            --tw-bg-opacity: 1;
+            background-color: rgb(245 243 240 / var(--tw-bg-opacity));
+        }
+
+        .dark body {
+            --tw-bg-opacity: 1;
+            background-color: rgb(44 37 34 / var(--tw-bg-opacity));
+        }
     </style>
 @endpush
 
@@ -33,54 +37,64 @@
             Detail Tempat Duduk
         </h1>
 
-        <section class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 mb-12 transform hover:-translate-y-1 transition-transform duration-300">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div class="flex items-center space-x-4">
-                    <button
-                        class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
-                        <span class="material-icons text-3xl">chevron_left</span>
-                    </button>
-                    <div class="aspect-square flex-grow bg-secondary/30 dark:bg-primary-dark rounded-lg overflow-hidden">
-                        <img alt="Stylish indoor seating area of the cafe" class="w-full h-full object-cover"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9QDT7m2z8J4jkC8UrlZMThXGON7esBsHMt8N0PdI-4AovNfzbo46pY9U966c-lj9RDYx9ucHQrzk5N8XmC9s2OFIpxiNXbb8mfFnW3aDvA4dyJoVthIItzrC3Aa7MNWy9PKovMtmFF77_C0WBT17v3gZoV5l5GnNE_enXW2_VGFYyMlgR3xLAUjz_Y1c-gGBKxQ9b537KOLZb6AgcPqzJ1yl5Gj732_byo-5Fq5vJRe3SbMj3BQCOWt7S92FnYK1dicnXvqBgAY_7" />
+        <form action="{{ route('pilihTempatDuduk') }}" method="POST">
+            @csrf
+            <section
+                class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 mb-12 transform hover:-translate-y-1 transition-transform duration-300">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="flex items-center space-x-4">
+                        <button type="button"
+                            class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
+                            <span class="material-icons text-3xl">chevron_left</span>
+                        </button>
+                        <div
+                            class="aspect-square flex-grow bg-secondary/30 dark:bg-primary-dark rounded-lg overflow-hidden">
+                            <img alt="Stylish indoor seating area of the cafe" class="w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9QDT7m2z8J4jkC8UrlZMThXGON7esBsHMt8N0PdI-4AovNfzbo46pY9U966c-lj9RDYx9ucHQrzk5N8XmC9s2OFIpxiNXbb8mfFnW3aDvA4dyJoVthIItzrC3Aa7MNWy9PKovMtmFF77_C0WBT17v3gZoV5l5GnNE_enXW2_VGFYyMlgR3xLAUjz_Y1c-gGBKxQ9b537KOLZb6AgcPqzJ1yl5Gj732_byo-5Fq5vJRe3SbMj3BQCOWt7S92FnYK1dicnXvqBgAY_7" />
+                        </div>
+                        <button type="button"
+                            class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
+                            <span class="material-icons text-3xl">chevron_right</span>
+                        </button>
                     </div>
-                    <button
-                        class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
-                        <span class="material-icons text-3xl">chevron_right</span>
-                    </button>
-                </div>
 
 
-                <div class="flex flex-col h-full">
-                    <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Indoor</h2>
-                    <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
-                    <div>
-                        <form action="{{ route('pilihTempatDuduk') }}" method="POST">
-                            @csrf
-                                <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
-                                <input type="hidden" name="meja" id="meja-terpilih">
+                    <div class="flex flex-col h-full">
+                        <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Indoor</h2>
+                        <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
+                        <div>
+                            <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
+                            <input type="hidden" name="meja" id="meja-terpilih">
 
-                                <div class="grid grid-cols-4 gap-4 mb-6">
-                                    <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" 
-                                        data-value="in-M1">M1</button>
+                            <div class="grid grid-cols-4 gap-4 mb-6">
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="in-M1">M1</button>
 
-                                    <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" 
-                                        data-value="in-M2">M2</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="in-M2">M2</button>
 
-                                    <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" 
-                                        data-value="in-M3">M3</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="in-M3">M3</button>
 
-                                    <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" 
-                                        data-value="in-M4">M4</button>
-                                    <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" 
-                                        data-value="in-M5">M5</button>
-                                    <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" 
-                                        data-value="in-M6">M6</button>
-                                    <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" 
-                                        data-value="in-M7">M7</button>
-                                    <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" 
-                                        data-value="in-M8">M8</button>
-                                </div>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="in-M4">M4</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="in-M5">M5</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="in-M6">M6</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="in-M7">M7</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="in-M8">M8</button>
+                            </div>
 
                             <div class="flex justify-end">
                                 <button type="submit"
@@ -88,64 +102,75 @@
                                     Selanjutnya
                                 </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
+            <section
+                class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 transform hover:-translate-y-1 transition-transform duration-300">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="flex flex-col h-full lg:order-first">
+                        <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Outdoor</h2>
+                        <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
+                        <div>
+                            <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
+                            <div class="grid grid-cols-4 gap-4 mb-6">
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="out-M1">M1</button>
 
-        <section class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 transform hover:-translate-y-1 transition-transform duration-300">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div class="flex flex-col h-full lg:order-first">
-                    <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Outdoor</h2>
-                    <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
-                    <div>
-                        <form action="{{ route('pilihTempatDuduk') }}" method="POST">
-                            @csrf
-                             <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
-                                <input type="hidden" name="meja" id="meja-terpilih">
-                                    <div class="grid grid-cols-4 gap-4 mb-6">
-                                        <button type="button"  
-                                            class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" data-value="out-M1">M1</button>
-                                        <button type="button"  data-value="out-M2"
-                                            class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark">M2</button>
-                                        <button type="button"  data-value="out-M3"
-                                            class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark">M3</button>
-                                        <button type="button"  data-value="out-M4"
-                                            class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark">M4</button>
-                                        <button type="button"  data-value="out-M5"
-                                            class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark">M5</button>
-                                        <button type="button"  data-value="out-M6"
-                                            class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark">M6</button>
-                                        <button type="button"  data-value="out-M7"
-                                            class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark">M7</button>
-                                        <button type="button"  data-value="out-M8"
-                                            class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark">M8</button>
-                                    </div>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="out-M2">M2</button>
+
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="out-M3">M3</button>
+
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="out-M4">M4</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="out-M5">M5</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="out-M6">M6</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="out-M7">M7</button>
+                                <button type="button"
+                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                    data-value="out-M8">M8</button>
+                            </div>
                             <div class="mt-auto flex justify-start">
                                 <button type="submit"
-                                class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">Selanjutnya</button>
+                                    class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
+                                    Selanjutnya
+                                </button>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 lg:order-last">
+                        <button
+                            class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
+                            <span class="material-icons text-3xl">chevron_left</span>
+                        </button>
+                        <div
+                            class="aspect-square flex-grow bg-secondary/30 dark:bg-primary-dark rounded-lg overflow-hidden">
+                            <img alt="Sunny outdoor patio seating area of the cafe" class="w-full h-full object-cover"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEBiEIwC2UdUX2yOdZsQ5Tk2_JU89F8k2tKi2prnGGkNOK73Y1diSTZI6tvJOCfKJXJ6Gs8PzaIYCCWVVGhIa5a1WlwBpjZuliC51VMTWHbpBEsdYA0sHB_wa5oXtUN2FPP6NLUrJYikv1xhwwiSi1oZ7oOm4d0JKuWzXWpFyICxiSaSUZVKyD7mfPnvPB-m35-F_dY1_7GmOQaGaNZb_oNDn1PWTSbObJae8Rx4ZnkXXGCFs-3PKr7pDDaAa4MTiiGlGr8V3ELAwA" />
+                        </div>
+                        <button
+                            class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
+                            <span class="material-icons text-3xl">chevron_right</span>
+                        </button>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4 lg:order-last">
-                    <button
-                        class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
-                        <span class="material-icons text-3xl">chevron_left</span>
-                    </button>
-                    <div class="aspect-square flex-grow bg-secondary/30 dark:bg-primary-dark rounded-lg overflow-hidden">
-                        <img alt="Sunny outdoor patio seating area of the cafe" class="w-full h-full object-cover"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEBiEIwC2UdUX2yOdZsQ5Tk2_JU89F8k2tKi2prnGGkNOK73Y1diSTZI6tvJOCfKJXJ6Gs8PzaIYCCWVVGhIa5a1WlwBpjZuliC51VMTWHbpBEsdYA0sHB_wa5oXtUN2FPP6NLUrJYikv1xhwwiSi1oZ7oOm4d0JKuWzXWpFyICxiSaSUZVKyD7mfPnvPB-m35-F_dY1_7GmOQaGaNZb_oNDn1PWTSbObJae8Rx4ZnkXXGCFs-3PKr7pDDaAa4MTiiGlGr8V3ELAwA" />
-                    </div>
-                    <button
-                        class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
-                        <span class="material-icons text-3xl">chevron_right</span>
-                    </button>
-                </div>
-            </div>
-        </section>
+            </section>
+        </form>
+
     </main>
 
 @endsection
@@ -166,7 +191,9 @@
                     // set selected ke tombol yang diklik
                     btn.classList.add("selected");
 
-                     // Isi hidden input
+                    console.log(inputMeja);
+
+                    // Isi hidden input
                     inputMeja.value = btn.getAttribute("data-value");
 
                     // Aktifkan tombol submit

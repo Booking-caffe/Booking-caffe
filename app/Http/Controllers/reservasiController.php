@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\pelangganModel;
+use App\Models\reservasi;
 use App\Models\detailPesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -69,6 +70,7 @@ class reservasiController extends Controller
             'meja' => 'required'
         ]);
 
+        // dd($request->meja);
         // Simpan meja terpilih
         Session::put('mejaDipilih', $request->meja);
 

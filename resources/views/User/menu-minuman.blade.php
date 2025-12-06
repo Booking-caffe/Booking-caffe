@@ -11,11 +11,11 @@
 <h1 style="text-align:center; margin-bottom:30px; font-size: 2rem;">Menu Minuman</h1>
 
     <div class="menu-container">
-        @foreach ($menus as $id => $menu)
-            <a href="{{ route('detail-minuman', $id) }}" class="menu-card">
-                <img src="{{ asset($menu['gambar']) }}" alt="{{ $menu['nama'] }}">
-                <h3>{{ $menu['nama'] }}</h3>
-                <p>{{ $menu['harga'] }}</p>
+        @foreach ($menuMinuman as $menu)
+            <a href="{{ route('detail-minuman', $menu->id_menu) }}" class="menu-card">
+                <img src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama_menu }}">
+                <h3>{{ $menu->nama_menu }}</h3>
+                <p>{{ $menu->harga }}</p>
             </a>
         @endforeach
     </div>

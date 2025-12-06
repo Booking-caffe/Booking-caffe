@@ -108,10 +108,10 @@
                         <a href="#" style="font-size: 0.8rem;">Sign-up</a>
                     @endif
 
-                    <button aria-label="shopping cart"
-                        class="text-text-light dark:text-text-dark hover:text-primary dark:hover:text-white transition-colors duration-300">
+
+                    <a aria-label="shopping cart" href="{{ route('keranjang') }}" style="font-size: 0.8rem;" class="text-text-light dark:text-text-dark hover:text-primary dark:hover:text-white transition-colors duration-300">
                         <span class="material-symbols-outlined">shopping_cart</span>
-                    </button>
+                    </a>
 
                     <button aria-label="mobile menu" class="md:hidden text-text-light dark:text-text-dark">
                         <span class="material-symbols-outlined">menu</span>

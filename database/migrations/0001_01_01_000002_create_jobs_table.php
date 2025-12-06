@@ -48,15 +48,12 @@ return new class extends Migration
         Schema::create('menu', function (Blueprint $table) {
             $table->integer('id_menu', 12)->primary();
             $table->integer('id_pengelola', 12);
-            $table->integer('id_reservasi', 12);
             $table->string('nama_menu', 50);
-            $table->string('ketegori', 25);
+            $table->string('kategori', 25);
             $table->integer('harga', 12);
+            $table->string('deskripsi');
+            $table->string('gambar');
             $table->timestamps();
-
-            $table->foreign('id_reservasi')
-                ->references('id_reservasi')
-                ->on('reservasi');
                 
             $table->foreign('id_pengelola')
                 ->references('id_pengelola')
@@ -79,7 +76,7 @@ return new class extends Migration
         Schema::create('detail_pesanan', function (Blueprint $table) {
             $table->integer('id_detail_pesanan', 12)->primary();
             $table->integer('id_transaksi', 12);
-            $table->integer('id_pelanggan', 12);
+            $table->integer('id_menu', 12);
             $table->integer('total_belanja', 12);
             $table->integer('pajak', 12);
             $table->integer('total', 12);
@@ -89,9 +86,9 @@ return new class extends Migration
                 ->references('id_transaksi')
                 ->on('transaksi');
 
-            $table->foreign('id_pelanggan')
-                ->references('id_pelanggan')
-                ->on('pelanggan');
+            $table->foreign('id_menu')
+                ->references('id_menu')
+                ->on('menu');
         });
         
     }
