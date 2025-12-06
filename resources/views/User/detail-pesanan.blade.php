@@ -51,33 +51,33 @@
                     </div>
                     <span class="text-lg font-semibold text-muted-light dark:text-muted-dark">#001</span>
                 </div>
+        
                 <div class="space-y-4 mb-6">
                     <div class="flex justify-between font-semibold text-muted-light dark:text-muted-dark">
                         <span>Pesanan</span>
                         <span>Harga</span>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span>2x Mie</span>
-                        <span>Rp. 30,000</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span>4x Es Teh</span>
-                        <span>Rp. 20,000</span>
-                    </div>
-                </div>
+                        @foreach ($pesanan as $p)
+                            <div class="flex justify-between items-center">
+                                <span>{{ $p['qty'] }}x <span>{{ $p['nama'] }}</span></span>
+                                <span>Rp. {{ $p['harga'] }}</span>
+                            </div>
+                        @endforeach
+                </div>  
+            
                 <div class="space-y-3 pt-4 border-t border-border-light dark:border-border-dark">
                     <div class="flex justify-between items-center text-muted-light dark:text-muted-dark">
                         <span>Total Belanja</span>
-                        <span>Rp. 50,000</span>
+                        <span>Rp.  {{ number_format($totalHarga, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between items-center text-muted-light dark:text-muted-dark">
                         <span>Pajak</span>
-                        <span>Rp. 5,000</span>
+                        <span>Rp. {{ number_format($pajak, 0, ',', '.') }}</span>
                     </div>
                     <div
                         class="flex justify-between items-center font-bold text-lg pt-2 text-text-light dark:text-text-dark">
                         <span>Total</span>
-                        <span>Rp. 55,000</span>
+                        <span>Rp. {{ number_format($totalBayar, 0, ',', '.') }}</span>
                     </div>
                 </div>
                 <div class="mt-8">

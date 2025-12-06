@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\pelangganModel;
+use App\Models\detailPesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -82,14 +83,60 @@ class reservasiController extends Controller
     {
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
+        $pesanan = Session::get('keranjang');
+        
+
+
+        $totalHarga = 0;
+
+        if ($pesanan) {
+            foreach ($pesanan as $item) {
+                $totalHarga += $item['harga'] * $item['qty'];
+            }
+        }
+
+        $pajak = $totalHarga*0.1;
+        $totalBayar = $totalHarga + $pajak;
+
+
 
         if (!$data || !$meja) {
             return redirect()->route('reservasi')
                 ->with('gagal', 'Data reservasi belum lengkap.');
         }
 
-        return view('User.detail-pesanan', compact('data', 'meja'));
+        return view('User.detail-pesanan', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar'));
     }
+
+     // ============================
+    // STEP 3 : DETAIL PESANAN
+    // ============================
+    public function detailTransaksi()
+    {
+        $data = Session::get('dataReservasi');
+        $meja = Session::get('mejaDipilih');
+        $pesanan = Session::get('keranjang');
+        $totalHarga = 0;
+
+        if ($pesanan) {
+            foreach ($pesanan as $item) {
+                $totalHarga += $item['harga'] * $item['qty'];
+            }
+        }
+
+        $pajak = $totalHarga*0.1;
+        $totalBayar = $totalHarga + $pajak;
+
+
+
+        if (!$data || !$meja) {
+            return redirect()->route('reservasi')
+                ->with('gagal', 'Data reservasi belum lengkap.');
+        }
+
+        return view('User.detail-transaksi', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar'));
+    }
+
 
     // ============================
     // STEP 4 : SIMPAN KE DATABASE

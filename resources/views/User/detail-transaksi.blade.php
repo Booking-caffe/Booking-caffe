@@ -42,21 +42,24 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">#001</p>
                 </div>
                 <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300 mb-6">
+                
+                    
                     <div class="flex justify-between">
                         <span>Nama</span>
-                        <span class="font-medium text-gray-800 dark:text-gray-200">Fris</span>
+                        <span class="font-medium text-gray-800 dark:text-gray-200">{{ $data['nama'] }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span>No Hp</span>
-                        <span class="font-medium text-gray-800 dark:text-gray-200">0855000000</span>
+                        <span class="font-medium text-gray-800 dark:text-gray-200">{{ $data['noHp'] }}</span>
                     </div>
+               
                     <div class="flex justify-between">
                         <span>Jumlah</span>
-                        <span class="font-medium text-gray-800 dark:text-gray-200">2</span>
+                        <span class="font-medium text-gray-800 dark:text-gray-200">{{ $data['jumlahTamu'] }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span>Meja</span>
-                        <span class="font-medium text-gray-800 dark:text-gray-200">Indoor - M1</span>
+                        <span class="font-medium text-gray-800 dark:text-gray-200">{{ $meja }}</span>
                     </div>
                 </div>
                 <div class="border-t border-b border-dashed border-gray-300 dark:border-gray-600 py-4 mb-4">
@@ -65,29 +68,27 @@
                         <h2 class="font-semibold text-gray-600 dark:text-gray-300">Harga</h2>
                     </div>
                     <div class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                        <div class="flex justify-between">
-                            <span>2x Mie</span>
-                            <span>Rp. 30,000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>4x Es Teh</span>
-                            <span>Rp. 20,000</span>
-                        </div>
+                        @foreach ($pesanan as $p)
+                            <div class="flex justify-between">
+                                <span>{{ $p['qty'] }}x {{ $p['nama'] }}</span>
+                                <span>Rp. {{ $p['harga'] }}</span>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="space-y-3 text-sm mb-6">
                     <div class="flex justify-between text-gray-700 dark:text-gray-300">
                         <span>Total Belanja</span>
-                        <span>Rp. 50,000</span>
+                        <span>Rp. {{ number_format($totalHarga, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between text-gray-700 dark:text-gray-300">
                         <span>Pajak</span>
-                        <span>Rp. 5,000</span>
+                        <span>Rp. {{ number_format($pajak, 0, ',', '.') }}</span>
                     </div>
                     <div
                         class="flex justify-between text-base font-bold text-gray-800 dark:text-gray-100 mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
                         <span>Total</span>
-                        <span>Rp. 55,000</span>
+                        <span>Rp. {{ number_format($totalBayar, 0, ',', '.') }}</span>
                     </div>
                 </div>
                 <button
