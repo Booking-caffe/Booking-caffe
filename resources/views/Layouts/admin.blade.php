@@ -23,7 +23,7 @@
                 <li><a href="#">Setting</a></li>
             </ul>
 
-            <a href="#" class="logout">Keluar</a>
+            <a href="{{ route('logout-admin') }}" class="logout">Keluar</a>
         </aside>
 
     {{-- Load Content --}}

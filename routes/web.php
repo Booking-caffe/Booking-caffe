@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\adminController\homeAdminController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
@@ -11,14 +12,12 @@ use App\Http\Controllers\reservasiController;
 // halaman login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 
-// POST login dan logout pelaggan
+// POST login pelanggan dan pengelola
 Route::post('/login-pelanggan', [LoginController::class, 'loginPelanggan'])->name('login-pelanggan');
+// logout pelanggan
 Route::post('/logout-pelanggan', [LoginController::class, 'logutPelanggan'])->name('logout-pelanggan');
 
 // Home
-// Route::get('/', fn() => view('home'))->name('home');
-
-
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
 // reservasi
@@ -58,5 +57,9 @@ Route::delete('/keranjang/hapus/{index}', [MenuController::class, 'removeItem'])
 Route::get('/keranjang', [MenuController::class, 'keranjang'])->name('keranjang');
 
 
-
+// ========================================== ADMIN ==================================================================
+// Home admin
+Route::get('dashboard/admin-home', [homeAdminController::class, 'home'])->name('home-admin');
+// logout admin
+Route::get('/logout-pengelola', [LoginController::class, 'logutPengelola'])->name('logout-admin');
 

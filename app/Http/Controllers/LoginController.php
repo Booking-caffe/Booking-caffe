@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\pelangganModel;
+use App\Models\PengelolaModel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
     // show halaman login 
-    public function showLogin(){
-        
+    public function showLogin()
+    {
+
         return view('auth.login');
     }
 
@@ -23,10 +26,19 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // cek apakah password ada atau tidak di db
+        // mengambil password dan usernma pelanggan ada atau tidak di db
         $pelanggan = pelangganModel::where('username', '=', $request->username)
             ->where('password', '=', $request->password)
             ->get();
+
+        // mengambil password dan usernma pengelola di db
+        $pengelola = PengelolaModel::where('username', '=', $request->username)
+            ->where('password', '=', $request->password)
+            ->get();
+
+        // intance var id pengelola dan nama pengelola
+        $id_pengelola = null;
+        $nama_pengelola = null;
 
         // instance var id_pelanggan dan nama pelanggan
         $id_pelanggan = null;
@@ -38,15 +50,24 @@ class LoginController extends Controller
             $nama_pelanggan = $ambilDataPelanggan->nama_pelanggan;
         }
 
+        // ambil id pengelola dan nama pengelola kemudian menyimpan di var instace id dan nama pengelola
+        foreach ($pengelola  as $ambilDataPengelola) {
+            $id_pengelola = $ambilDataPengelola->id_pengelola;
+            $nama_pengelola = $ambilDataPengelola->nama_pengelola;
+        }
+
         // menyimpan id dan nama pelanggan di session
         if (count($pelanggan) !== 0) {
             Session::put('id_pelanggan', $id_pelanggan);
             Session::put('nama_pelanggan', $nama_pelanggan);
             return redirect()->route('home');
-        }else {
+        } elseif (count($pengelola) !== 0) {
+            Session::put('id_pengelola', $id_pengelola);
+            Session::put('nama_pengelola', $nama_pengelola);
+            return redirect()->route('home-admin');
+        } else {
             return back()->with('gagal', 'username dan password tidak sesuai!');
         }
-        
     }
 
     // logout pelanggan
@@ -58,5 +79,16 @@ class LoginController extends Controller
 
         // back landing page
         return view('home');
+    }
+
+    // logout pengelola
+    public function logutPengelola(Request $request)
+    {
+        // hapus session id dan nama pelanggan
+        Session::forget('id_pengelola');
+        Session::forget('nama_pengelola');
+
+        // back landing page
+        return Redirect()->route('login');
     }
 }
