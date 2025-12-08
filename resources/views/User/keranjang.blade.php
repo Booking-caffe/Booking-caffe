@@ -30,26 +30,30 @@
                 <div class="item-info">
                     <strong>{{ $item['nama'] }}</strong><br>
                     Rp. {{ number_format($item['harga']) }},
-
-                    {{-- Delete --}}
+                    
                     <div class="delete-btn">
+                        <form action="{{ route('update-qty', $index) }}" method="POST" class="qty-form">
+                            @csrf
+                            @method('PUT')
+                        </form>
+
+                        
+                        {{-- Tombol Delete (pisah form) --}}
                         <form action="{{ route('remove-item', $index) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" style="background:none; border:none; cursor:pointer; color:red; font-size:25px;">
+                            <button type="submit" style="background:none; border:none; cursor:pointer; color:red; font-size:30px;">
                                 🗑
                             </button>
-                            {{-- Qty --}}
-                            <div class="qty-box">
-                                <span>{{ $item['qty'] }} +</span>
-                            </div>
                         </form>
-                    </div>
 
+                        <input type="number" class="qty-input" data-index="{{ $index }}" value="{{ $item['qty'] }}" min="1">
+
+                        {{-- Checkbox --}}
+                        <input type="checkbox" class="item-check">
+                    </div>
                 </div>
 
-                {{-- Checkbox --}}
-                <input type="checkbox" class="item-check">
             </div>
             @endforeach
 
@@ -68,3 +72,31 @@
 
 </div>
 @endsection
+
+@push('extra-scripts')
+<script>
+    document.querySelectorAll('.qty-input').forEach(input => {
+        input.addEventListener('change', function() {
+
+            const index = this.dataset.index;
+            const qty = this.value;
+
+            fetch(`/keranjang/update/${index}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ qty: qty })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Qty updated:", data);
+                // bisa tambah notifikasi kecil
+            })
+            .catch(err => console.error(err));
+
+        });
+    });
+</script>
+@endpush

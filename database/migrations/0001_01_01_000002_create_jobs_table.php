@@ -64,6 +64,7 @@ return new class extends Migration
             $table->integer('id_transaksi', 12)->primary();
             $table->integer('id_pelanggan', 12);
             $table->integer('total', 12);
+            $table->integer('pajak', 12);
             $table->string('metode_pembayaran', 25);
             $table->string('status', 25);
             $table->timestamps();
@@ -77,9 +78,6 @@ return new class extends Migration
             $table->integer('id_detail_pesanan', 12)->primary();
             $table->integer('id_transaksi', 12);
             $table->integer('id_menu', 12);
-            $table->integer('total_belanja', 12);
-            $table->integer('pajak', 12);
-            $table->integer('total', 12);
             $table->timestamps();
 
             $table->foreign('id_transaksi')

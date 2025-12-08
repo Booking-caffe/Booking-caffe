@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail-Minuman')
+@section('title', 'Detail-Menu')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/detail-menu.css') }}">
@@ -8,7 +8,7 @@
 
 @section('content')
 
-    <h1 class="title">Detail Minuman</h1>
+    <h1 class="title">Detail Menu</h1>
     @foreach ($chosedMenu as $menu)
         <div class="menu-detail" style="margin:40px auto; gap: 2rem; ">
             <div class="img-menu">
@@ -30,11 +30,12 @@
                         <input type="hidden" name="harga" value="{{ $menu->harga }}">
                         <input type="hidden" name="gambar" value="{{ asset($menu->gambar) }}">
 
-                        <label>Jumlah:</label>
-                        <input type="number" name="qty" value="1" min="1" required>
+                        {{-- <label>Jumlah:</label>
+                        <input type="number" name="qty" value="1" min="1" style="width: 50px; padding: 5px;" required> --}}
 
-                        <button type="submit">+ Keranjang</button>
+                        <button type="submit" class="btn">+ Keranjang</button>
                     </form>
+
                     <button class="btn">
                         <a href="#">Reservasi</a>
                     </button>

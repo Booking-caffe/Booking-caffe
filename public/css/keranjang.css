@@ -34,8 +34,11 @@
 }
 
 .delete-btn {
-    margin-top: 5px;
+    /* margin-top: 5px; */
+    display: flex;
     color: red;
+    /* justify-content: space-between; */
+    align-items: center;
     cursor: pointer;
 }
 
@@ -74,4 +77,13 @@
 form {
     display: flex;
     align-items: center;
+}
+
+.qty-input {
+    margin-left: 5px;
+    max-height: 20px;
+    padding: 10px 5px !important;
+    max-width: 35px;
+    /* border: none; */
+    /* display: flex; */
 }

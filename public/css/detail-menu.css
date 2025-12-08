@@ -63,6 +63,8 @@
 
 .qty-menu {
     /* border: 1px solid blue; */
+    display: flex;
+    align-items: center;
 }
 
 .back-btn {
@@ -84,8 +86,8 @@ form {
     color: #fff;
     margin: 10px 10px;
     border-radius: 5px;
-    padding: 0 20px;
-    height: auto;
+    padding: 10px 20px;
+    /* height: auto; */
     /* border: 1px solid red; */
 }
 

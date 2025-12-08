@@ -35,15 +35,15 @@
 @section('content')
     <main class="flex-grow py-12 sm:py-16 lg:py-20">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-                class="max-w-md mx-auto bg-white dark:bg-[#2a2824] shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+            <div class="max-w-md mx-auto bg-white dark:bg-[#2a2824] shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+
                 <div class="text-center border-b border-dashed border-gray-300 dark:border-gray-600 pb-4 mb-4">
                     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Detail Transaksi</h1>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">#001</p>
                 </div>
-                <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300 mb-6">
                 
-                    
+                <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300 ">
+    
                     <div class="flex justify-between">
                         <span>Nama</span>
                         <span class="font-medium text-gray-800 dark:text-gray-200">{{ $data['nama'] }}</span>
@@ -57,12 +57,25 @@
                         <span>Jumlah</span>
                         <span class="font-medium text-gray-800 dark:text-gray-200">{{ $data['jumlahTamu'] }}</span>
                     </div>
-                    <div class="flex justify-between">
-                        <span>Meja</span>
-                        <span class="font-medium text-gray-800 dark:text-gray-200">{{ $meja }}</span>
+
+                    <div class="border-t border-b border-dashed border-gray-300 dark:border-gray-600 py-4 mb-4">
+                        <div class="flex justify-between">
+                            <h2 class="font-semibold text-gray-600 dark:text-gray-300">Tipe Meja</h2>
+                            <h2 class="font-semibold text-gray-600 dark:text-gray-300">Jumlah Meja : {{ count($meja) }}</h2>
+                        </div>
+                        
+                        <div class="flex justify-between mt-1">
+                            <ol class="list-decimal pl-3">
+                                @foreach ($meja as $m)
+                                    <li class="text-muted-light dark:text-muted-dark mt-1"><span class="font-light text-muted-light dark:text-muted-dark pl-1">{{ $m }}</span></li>
+                                @endforeach
+                            </ol>
+                        </div>
                     </div>
+
                 </div>
-                <div class="border-t border-b border-dashed border-gray-300 dark:border-gray-600 py-4 mb-4">
+
+                <div class="border-b border-dashed border-gray-300 dark:border-gray-600 py-4 mb-4">
                     <div class="flex justify-between mb-2">
                         <h2 class="font-semibold text-gray-600 dark:text-gray-300">Pesanan</h2>
                         <h2 class="font-semibold text-gray-600 dark:text-gray-300">Harga</h2>
@@ -78,7 +91,7 @@
                 </div>
                 <div class="space-y-3 text-sm mb-6">
                     <div class="flex justify-between text-gray-700 dark:text-gray-300">
-                        <span>Total Belanja</span>
+                        <span>Total Harga</span>
                         <span>Rp. {{ number_format($totalHarga, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between text-gray-700 dark:text-gray-300">

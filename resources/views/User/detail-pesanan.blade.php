@@ -46,8 +46,14 @@
                 <h1 class="text-center mb-6 text-2xl font-bold text-primary">Detail Pesanan</h1>
                 <div class="flex justify-between items-start mb-6 border-b border-border-light dark:border-border-dark pb-4">
                     <div>
+                        <span class="font-semibold text-muted-light dark:text-muted-dark">Jumlah Meja : {{ count($meja) }}</span>
+                        <ol class="mt-4 list-decimal pl-5">
+                            @foreach ($meja as $m)
+                                <li class="text-muted-light dark:text-muted-dark mt-1 pl-1"> <span class="font-light text-muted-light dark:text-muted-dark">{{ $m }}</span></li>
+                            @endforeach
+                        </ol>
                         
-                        <p class="text-muted-light dark:text-muted-dark mt-1">Meja: {{ $meja }}</p>
+                        {{-- <p class="text-muted-light dark:text-muted-dark mt-1">Jumlah Meja: {{ implode(', ', $meja) }}</p> --}}
                     </div>
                     <span class="text-lg font-semibold text-muted-light dark:text-muted-dark">#001</span>
                 </div>
@@ -81,7 +87,7 @@
                     </div>
                 </div>
                 <div class="mt-8">
-                    <h3 class="font-semibold text-muted-light dark:text-muted-dark mb-2">Pembayaran</h3>
+                    <h3 class="font-semibold text-muted-light dark:text-muted-dark mb-2">Metode Pembayaran</h3>
                     <div
                         class="flex items-center space-x-2 border border-border-light dark:border-border-dark rounded-md px-3 py-2 w-fit">
                         <span class="icon text-primary">qr_code_2</span>
@@ -94,8 +100,38 @@
                         <img alt="QR code for payment" class="rounded-lg"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN9LNR4Xk74VGVHIPX3zzfhjDInU4t0XSMJ0BmQzxXsn0Tupmez6cXpG9F03vjHbkIOqDXycVGsDmsTrWIaLcfpw7ZwSep17IW29T7YVtGu6JQjerkDHjNjklE_K4Bbr8xT3ggoU_Ni6Cwquw5NfNZB0wIMeTgpuCNiM8co-CHR78hyyW9wf08hEzZGravqWBE9rWPy28OCh0W9l5u3hhT3vSpTgM1dns9mRnhlvrxkNWWq47SAIG1E6fZ8oXzC5-mDjZ1QbWdND-_" />
                     </div>
-                    <button class="w-full bg-primary text-white py-3 px-6 rounded-md font-semibold hover:bg-yellow-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-all duration-300 transform hover:scale-105"><a href="{{ route ('detail-transaksi') }}">Selesaikan Pesanan</a></button>
+                    {{-- <label class="block font-semibold mb-1 text-left">Upload Bukti Pembayaran</label>
+                        <input type="file" name="file" class="block w-full border border-gray-300 rounded p-2 bg-white"> --}}
+                        
+                    {{-- <button class="w-full bg-primary text-white py-3 px-6 rounded-md font-semibold hover:bg-yellow-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-all duration-300 transform hover:scale-105"><a href="{{ route ('detail-transaksi') }}">Selesaikan Pesanan</a></button> --}}
                 </div>
+
+                @if (session('success'))
+                    <div class="p-3 mb-4 bg-green-500 text-white rounded">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <form action="{{ route('upload-bukti') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
+
+                    <div>
+                        <label class="block font-semibold text-gray-700 mb-5">
+                            Upload Bukti Pembayaran
+                        </label>
+
+                        <input type="file" name="bukti-pembayaran"accept="image/*" class="w-full border border-gray-300 p-2 rounded bg-white">
+
+                        @error('bukti-pembayaran')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <button type="submit"class="w-full bg-primary text-white font-bold py-3 rounded hover:bg-primary/80">
+                        Selesaikan Pesanan
+                    </button>
+                </form>
+
             </div>
         </div>
     </main>

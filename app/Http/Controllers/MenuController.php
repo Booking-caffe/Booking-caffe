@@ -63,6 +63,7 @@ class MenuController extends Controller
             'nama'   => $request->nama,
             'harga'  => $request->harga,
             'gambar' => $request->gambar,
+            // 'qty'    => $keranjang,
             'qty'    => $request->qty ?? 1,
         ];
 
@@ -106,6 +107,30 @@ class MenuController extends Controller
 
         return back()->with('success', 'Item berhasil dihapus!');
     }
+
+
+
+
+   public function updateQty(Request $request, $index)
+    {
+        $keranjang = session()->get('keranjang', []);
+
+        if (isset($keranjang[$index])) {
+            $keranjang[$index]['qty'] = $request->qty;
+            session()->put('keranjang', $keranjang);
+
+            return response()->json(['success' => true]);
+        }
+
+
+        return response()->json([
+        'received_qty' => $request->qty,
+        'index' => $index
+        ]);
+
+        // return response()->json(['success' => false], 404);
+    }
+
 
     // ===============================
     // MENAMPILKAN TEMPAT DUDUK

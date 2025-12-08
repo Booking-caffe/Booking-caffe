@@ -28,18 +28,16 @@ Route::post('/form-reservasi', [reservasiController::class, 'formReservasi'])->n
 // User
 
 // POST dari form reservasi
-Route::post('/tempat-duduk', [MenuController::class, 'pilihTempatDuduk'])
-    ->name('tempat-duduk');
+// Route::post('/tempat-duduk', [reservasiController::class, 'pilihTempatDuduk'])
+    // ->name('tempat-duduk');
 
 // GET untuk menampilkan halaman pilih tempat duduk
-Route::get('/tempat-duduk', [MenuController::class, 'showTempatDuduk'])
+Route::get('/tempat-duduk', [reservasiController::class, 'showTempatDuduk'])
     ->name('show-tempat-duduk');
 Route::post('/pilih-tempat', [reservasiController::class, 'pilihTempatDuduk'])->name('pilihTempatDuduk');
 
-// DETAIL PESANAN
-Route::get('/detail-pesanan', [reservasiController::class, 'detailPesanan'])->name('detail-pesanan');
 
-Route::get('/detail-transaksi', [reservasiController::class, 'detailTransaksi'])->name('detail-transaksi');
+
 
 
 // Route::get('/menu-makanan', fn() => view('User.menu-makanan'))->name('menu-makanan');
@@ -51,12 +49,25 @@ Route::get('/menu-makanan', [MenuController::class, 'menuMakanan'])->name('menu-
 Route::get('/makanan/{id}', [MenuController::class, 'detailMakanan'])->name('detail-makanan');
 Route::get('/minuman/{id}', [MenuController::class, 'detailMinuman'])->name('detail-minuman');
 
-Route::post('/menu/add-to-cart', [MenuController::class, 'addToCart'])->name('add-to-cart');
 
-Route::delete('/keranjang/hapus/{index}', [MenuController::class, 'removeItem'])->name('remove-item');
+
 
 Route::get('/keranjang', [MenuController::class, 'keranjang'])->name('keranjang');
+Route::delete('/keranjang/hapus/{index}', [MenuController::class, 'removeItem'])->name('remove-item');
+Route::put('/keranjang/update/{index}', [MenuController::class, 'updateQty'])
+->name('update-qty');
+
+Route::post('/menu/add-to-cart', [MenuController::class, 'addToCart'])->name('add-to-cart');
 
 
+
+// DETAIL PESANAN
+Route::get('/detail-pesanan', [reservasiController::class, 'detailPesanan'])->name('detail-pesanan');
+
+Route::get('/detail-transaksi', [reservasiController::class, 'detailTransaksi'])->name('detail-transaksi');
+Route::post('/upload-bukti', [reservasiController::class, 'uploadBukti'])
+    ->name('upload-bukti');
+     
+     
 
 

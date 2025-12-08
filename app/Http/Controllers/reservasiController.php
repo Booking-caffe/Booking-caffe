@@ -35,6 +35,7 @@ class reservasiController extends Controller
             'no_hp' => 'required',
             'waktu' => 'required',
             'jumlah_tamu' => 'required|numeric',
+            'jumlah_meja' => 'required|numeric',
             'tanggal' => 'required',
             
         ]);
@@ -44,11 +45,16 @@ class reservasiController extends Controller
             'nama' => $request->nama,
             'noHp' => $request->no_hp,
             'jumlahTamu' => $request->jumlah_tamu,
+            'jumlahMeja' => $request->jumlah_meja,
             'waktu' => $request->waktu,
             'tanggal' => $request->tanggal,
         ];
 
-        Session::put('dataReservasi', $data);
+        session([
+            'dataReservasi' => $data,
+            'jumlahMejaDipilih' => 0,
+            'mejaDipilih' => []
+        ]);
         
         // dd(Session::get('dataReservasi'));
         return redirect()->route('tempat-duduk');
@@ -59,23 +65,45 @@ class reservasiController extends Controller
     // ============================
     public function showTempatDuduk()
     {
-        
-        return view('User.tempat-duduk');
+        $data = session('dataReservasi');
+
+        // dd(session()->all());
+        if (!$data) {
+            return redirect()->route('reservasi')
+                ->with('gagal', 'Silakan isi form reservasi terlebih dahulu.');
+        }
+
+        $jumlahMeja = $data['jumlahMeja'];
+        $mejaDipilih = session('mejaDipilih', []);
+
+        return view('User.tempat-duduk', compact('jumlahMeja', 'mejaDipilih'));
     }
 
     public function pilihTempatDuduk(Request $request)
     {
-        // Validasi: meja wajib dipilih
         $request->validate([
-            'meja' => 'required'
+        'meja' => 'required'
         ]);
 
-        // dd($request->meja);
-        // Simpan meja terpilih
-        Session::put('mejaDipilih', $request->meja);
+        $jumlahMeja = Session::get('dataReservasi')['jumlahMeja'];
+        $mejaDipilih = Session::get('mejaDipilih', []);
 
-        return redirect()->route('detail-pesanan')
-                        ->with('success', 'Meja berhasil dipilih!');
+        // Cegah meja duplicate
+        if (in_array($request->meja, $mejaDipilih)) {
+            return back()->with('gagal', 'Meja sudah dipilih!');
+        }
+
+        // Simpan meja yang baru dipilih
+        $mejaDipilih[] = $request->meja;
+        Session::put('mejaDipilih', $mejaDipilih);
+
+        // Jika belum cukup → tetap di halaman yang sama
+        if (count($mejaDipilih) < $jumlahMeja) {
+            return back()->with('success', 'Meja berhasil dipilih!');
+        }
+
+        // Jika sudah cukup → lanjut ke detail pesanan
+        return redirect()->route('detail-pesanan')->with('success', 'Semua meja berhasil dipilih!');
     }
  
     // ============================
@@ -137,6 +165,31 @@ class reservasiController extends Controller
         }
 
         return view('User.detail-transaksi', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar'));
+    }
+
+
+    
+    // ============================
+    // STEP 4 : BUKTI PEMBAYARAN 
+    // ============================
+    public function uploadBukti(Request $request)
+    {
+        
+        $request->validate([
+            'bukti-pembayaran' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+        
+        // Simpan file
+        $path = $request->file('bukti-pembayaran')->store('bukti-pembayaran');
+        
+        dd($request->file('bukti-pembayaran'));
+        // Simpan ke database jika perlu
+        // Pembayaran::create([
+        //     'user_id' => auth()->id(),
+        //     'bukti' => $path
+        // ]);
+
+        return Redirect()->route('detail-transaksi')->with('success', 'Bukti pembayaran berhasil diupload!');
     }
 
 
