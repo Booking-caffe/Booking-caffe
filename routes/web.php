@@ -74,3 +74,24 @@ Route::get('dashboard/admin-home', [homeAdminController::class, 'home'])->name('
 
 // logout admin
 Route::get('/logout-pengelola', [LoginController::class, 'logutPengelola'])->name('logout-admin');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard'); // atau folder lain misalnya: admin.dashboard
+})->name('admin.dashboard');
+
+Route::get('/admin/makanan', function () {
+    return view('admin.makanan');
+})->name('admin.makanan');
+
+Route::get('/admin/minuman', function () {
+    return view('admin.minuman');
+})->name('admin.minuman');
+
+Route::get('/admin/datauser', function () {
+    return view('admin.datauser');
+})->name('admin.datauser');
+
+Route::get('/admin/riwayat', function () {
+    return view('admin.riwayat');
+})->name('admin.riwayat');
+

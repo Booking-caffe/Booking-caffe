@@ -15,11 +15,12 @@
 
             <ul class="menu">
                 
-                <li><a href="dashboard.html">Home</a></li>
-                <li><a href="makanan.html" class="active">Makanan</a></li>
-                <li><a href="minuman.html">Minuman</a></li>
-                <li><a href="datauser.html">Data User</a></li>
-                <li><a href="riwayat.html">Riwayat</a></li>
+                <li><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                <li><a href="{{ route('admin.makanan') }}">Makanan</a></li>
+                <li><a href="{{ route('admin.minuman') }}">Minuman</a></li>
+                <li><a href="{{ route('admin.datauser') }}">Data User</a></li>
+                <li><a href="{{ route('admin.riwayat') }}">Riwayat</a></li>
+
                 <li><a href="#">Setting</a></li>
             </ul>
 
