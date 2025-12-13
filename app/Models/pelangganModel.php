@@ -9,14 +9,15 @@ class pelangganModel extends Model
 {
     protected $table = 'pelanggan';
     protected $primaryKey = 'id_pelanggan';
-    public $incrementing = false;
+    public $incrementing = true;
+    public $timestamps = true;
+    // public $keyTeype = 'string';
+
     protected $fillable = [
         'id_pelanggan',
         'nama_pelanggan',
         'username',
         'password',
         'no_telepon',
-        'created_at',
-        'updated_at',
     ];
 }

@@ -138,6 +138,7 @@ class reservasiController extends Controller
         return view('User.detail-pesanan', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar'));
     }
 
+
      // ============================
     // STEP 3 : DETAIL PESANAN
     // ============================
@@ -182,7 +183,8 @@ class reservasiController extends Controller
         // Simpan file
         $path = $request->file('bukti-pembayaran')->store('bukti-pembayaran');
         
-        dd($request->file('bukti-pembayaran'));
+        // dd($request->file('bukti-pembayaran'));
+        
         // Simpan ke database jika perlu
         // Pembayaran::create([
         //     'user_id' => auth()->id(),

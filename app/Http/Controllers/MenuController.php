@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\MenuModel;
+use App\Models\admin\menuModel;
 
 class MenuController extends Controller
 {
@@ -14,7 +14,7 @@ class MenuController extends Controller
     public function menuMinuman()
     {   
         // mengambil semua data menu dengan kategori munuman saja
-        $menuMinuman = MenuModel::where('kategori', 'Minuman')->latest()->get();
+        $menuMinuman = menuModel::where('kategori', 'minuman')->latest()->get();
 
         return view('User.menu-minuman', compact('menuMinuman'));
     }
@@ -22,7 +22,7 @@ class MenuController extends Controller
     public function menuMakanan()
     {   
         // mengambil semua data menu dengan kategori makanan saja
-        $menuMakanan = MenuModel::where('kategori', 'Makanan')->get();
+        $menuMakanan = menuModel::where('kategori', 'makanan')->get();
         return view('User.menu-makanan', compact('menuMakanan'));
     }
 
@@ -32,7 +32,7 @@ class MenuController extends Controller
     public function detailMinuman($id)
     {
         // mengambil data menu berdasarkan id menu yg dipilih d halaman sebelumnya
-        $chosedMenu = MenuModel::where('id_menu', $id)->get();
+        $chosedMenu = menuModel::where('id_menu', $id)->get();
 
         if (!$chosedMenu) {
             abort(404);
@@ -44,7 +44,7 @@ class MenuController extends Controller
     public function detailMakanan($id)
     {
         // mengambil data menu berdasarkan id menu yg dipilih d halaman sebelumnya
-        $chosedMenu = MenuModel::where('id_menu', $id)->get();
+        $chosedMenu = menuModel::where('id_menu', $id)->get();
 
         if (!$chosedMenu) {
             abort(404);

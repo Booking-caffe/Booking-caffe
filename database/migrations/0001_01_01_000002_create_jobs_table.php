@@ -12,16 +12,16 @@ return new class extends Migration
             $table->integer('id_pengelola', 12)->primary();
             $table->string('nama_pengelola', 50);
             $table->string('username', 25);
-            $table->string('password', 25);
+            $table->string('password');
             $table->timestamps();
         });
 
         Schema::create('pelanggan', function (Blueprint $table) {
-            $table->integer('id_pelanggan', 12)->primary();
+            $table->integer('id_pelanggan', 12)->primary(); 
             $table->string('nama_pelanggan', 50);   
             $table->string('username', 25);   
-            $table->string('password', 25);   
-            $table->integer('no_telepon', 12);
+            $table->string('password');   
+            $table->string('no_telepon');
             $table->timestamps();
         });
 
@@ -53,6 +53,7 @@ return new class extends Migration
             $table->integer('harga', 12);
             $table->string('deskripsi');
             $table->string('gambar');
+            $table->integer('stok');
             $table->timestamps();
                 
             $table->foreign('id_pengelola')

@@ -11,11 +11,12 @@
 
     <div class="menu-container">
         @foreach ($menuMakanan as $menu)
-            <a href="{{ route('detail-makanan', $menu->id_menu) }}" class="menu-card">
-                <img src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama_menu }}">
-                <h3>{{ $menu->nama_menu }}</h3>
-                <p>{{ $menu->harga }}</p>
-            </a>
+        <a href="{{ route('detail-makanan', $menu->id_menu) }}" class="menu-card">
+            <img src="{{ asset('storage/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}">
+            <h3>{{ $menu->nama_menu }}</h3>
+            <p>{{ $menu->harga }}</p>
+        </a>
+        {{-- {{ dd($menu) }} --}}
         @endforeach
     </div>
 @endsection

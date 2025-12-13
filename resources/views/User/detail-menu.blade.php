@@ -12,7 +12,7 @@
     @foreach ($chosedMenu as $menu)
         <div class="menu-detail" style="margin:40px auto; gap: 2rem; ">
             <div class="img-menu">
-                <img src="{{ asset($menu['gambar']) }}">
+                <img src="{{ asset('storage/' . $menu->gambar) }}">
             </div>
 
             <div class="desk-menu">
@@ -28,7 +28,9 @@
                         <input type="hidden" name="id" value="{{ $menu->id_menu }}">
                         <input type="hidden" name="nama" value="{{ $menu->nama_menu }}">
                         <input type="hidden" name="harga" value="{{ $menu->harga }}">
-                        <input type="hidden" name="gambar" value="{{ asset($menu->gambar) }}">
+                        {{-- <input type="hidden" name="gambar" value="{{ asset($menu->gambar) }}"> --}}
+
+                        <input type="hidden" name="gambar" value="{{ $menu->gambar }}">
 
                         {{-- <label>Jumlah:</label>
                         <input type="number" name="qty" value="1" min="1" style="width: 50px; padding: 5px;" required> --}}

@@ -25,7 +25,8 @@
             <div class="item-card">
 
                 {{-- Gambar --}}
-                <img src="{{ asset($item['gambar']) }}" class="menu-img" alt="Gambar Menu">
+                <img src="{{ asset('storage/' . $item['gambar']) }}" class="menu-img" alt="{{ $item['nama'] }}">
+                {{-- <img src="{{ asset($item->gambar) }}" class="menu-img" alt="Gambar Menu"> --}}
 
                 <div class="item-info">
                     <strong>{{ $item['nama'] }}</strong><br>

@@ -65,7 +65,7 @@
     <div class="flex flex-col min-h-screen" id="root">
         <header class="bg-card-light/80 dark:bg-card-dark/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
             <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <a class="font-display text-2xl font-bold text-primary" href="#">Kopi Senja</a>
+                <a class="font-display text-2xl font-bold text-primary" href="{{ route('home') }}">Kopi Senja</a>
 
                 <div class="hidden md:flex items-center space-x-8">
                     <a class="text-text-light dark:text-text-dark hover:text-primary dark:hover:text-white transition-colors duration-300 font-medium"
@@ -107,7 +107,7 @@
                         </form>
                     @else
                         <a href="{{ route('login') }}" style="font-size: 0.8rem;">Login</a>
-                        <a href="#" style="font-size: 0.8rem;">Sign-up</a>
+                        <a href="{{ route('register') }}" style="font-size: 0.8rem;">Sign-up</a>
                     @endif
 
 

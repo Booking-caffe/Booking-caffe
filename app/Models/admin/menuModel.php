@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\admin;
 
 use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class MenuModel extends Model
+class menuModel extends Model
 {
-    //
     protected $table = 'menu';
     protected $primaryKey = 'id_menu';
-    public $incrementing = true;
+    public $incrementing = false;
+     protected $keyType = 'string';
+    public $timestamps = true;
+
     protected $fillable = [
         'id_menu',
         'id_pengelola',

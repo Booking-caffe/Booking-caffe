@@ -7,6 +7,7 @@ use App\Models\PengelolaModel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -26,10 +27,29 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        // CARI pelanggan berdasarkan username
+        $pelanggan = pelangganModel::where('username', $request->username)->first();
+
+        // Jika username ditemukan dan password cocok
+        if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
+            Session::put('id_pelanggan', $pelanggan->id_pelanggan);
+            Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
+            return redirect()->route('home');
+        }
+
+        // CARI pengelola berdasarkan username
+        $pengelola = PengelolaModel::where('username', $request->username)->first();
+
         // mengambil password dan usernma pelanggan ada atau tidak di db
-        $pelanggan = pelangganModel::where('username', '=', $request->username)
-            ->where('password', '=', $request->password)
-            ->get();
+        if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
+            Session::put('id_pelanggan', $pelanggan->id_pelanggan);
+            Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
+            return redirect()->route('home');
+        }
+
+        // $pelanggan = pelangganModel::where('username', '=', $request->username)
+        //     ->where('password', '=', $request->password)
+        //     ->get();
 
         // mengambil password dan usernma pengelola di db
         $pengelola = PengelolaModel::where('username', '=', $request->username)
@@ -45,29 +65,47 @@ class LoginController extends Controller
         $nama_pelanggan = null;
 
         // ambil id_pelanggan dan nama pelanggan dan menyinpan di var id pelanggan dan nama pelanggan
-        foreach ($pelanggan  as $ambilDataPelanggan) {
-            $id_pelanggan = $ambilDataPelanggan->id_pelanggan;
-            $nama_pelanggan = $ambilDataPelanggan->nama_pelanggan;
-        }
+        // foreach ($pelanggan  as $ambilDataPelanggan) {
+        //     $id_pelanggan = $ambilDataPelanggan->id_pelanggan;
+        //     $nama_pelanggan = $ambilDataPelanggan->nama_pelanggan;
+        // }
 
         // ambil id pengelola dan nama pengelola kemudian menyimpan di var instace id dan nama pengelola
-        foreach ($pengelola  as $ambilDataPengelola) {
-            $id_pengelola = $ambilDataPengelola->id_pengelola;
-            $nama_pengelola = $ambilDataPengelola->nama_pengelola;
+        // foreach ($pengelola  as $ambilDataPengelola) {
+        //     $id_pengelola = $ambilDataPengelola->id_pengelola;
+        //     $nama_pengelola = $ambilDataPengelola->nama_pengelola;
+        // }
+
+        // Jika username ditemukan dan password cocok
+        if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
+            Session::put('id_pelanggan', $pelanggan->id_pelanggan);
+            Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
+            return redirect()->route('home');
         }
 
-        // menyimpan id dan nama pelanggan di session
-        if (count($pelanggan) !== 0) {
-            Session::put('id_pelanggan', $id_pelanggan);
-            Session::put('nama_pelanggan', $nama_pelanggan);
-            return redirect()->route('home');
-        } elseif (count($pengelola) !== 0) {
-            Session::put('id_pengelola', $id_pengelola);
-            Session::put('nama_pengelola', $nama_pengelola);
+
+         // CARI pengelola berdasarkan username
+        $pengelola = PengelolaModel::where('username', $request->username)->first();
+
+        if ($pengelola && Hash::check($request->password, $pengelola->password)) {
+            Session::put('id_pengelola', $pengelola->id_pengelola);
+            Session::put('nama_pengelola', $pengelola->nama_pengelola);
             return redirect()->route('home-admin');
-        } else {
-            return back()->with('gagal', 'username dan password tidak sesuai!');
         }
+
+
+        // menyimpan id dan nama pelanggan di session
+        // if (count($pelanggan) !== 0) {
+        //     Session::put('id_pelanggan', $id_pelanggan);
+        //     Session::put('nama_pelanggan', $nama_pelanggan);
+        //     return redirect()->route('home');
+        // } elseif (count($pengelola) !== 0) {
+        //     Session::put('id_pengelola', $id_pengelola);
+        //     Session::put('nama_pengelola', $nama_pengelola);
+        //     return redirect()->route('home-admin');
+        // } else {
+        //     return back()->with('gagal', 'username dan password tidak sesuai!');
+        // }
     }
 
     // logout pelanggan
@@ -91,4 +129,5 @@ class LoginController extends Controller
         // back landing page
         return Redirect()->route('login');
     }
+    
 }
