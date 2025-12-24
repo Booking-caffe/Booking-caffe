@@ -275,7 +275,7 @@ class reservasiController extends Controller
 
             // dd($transaksi);
 
-            $pesanan = Session::get('keranjang');
+            $pesanan = Session::get('keranjang', []);
             $totalHarga = 0;
 
             if ($pesanan) {
@@ -288,9 +288,11 @@ class reservasiController extends Controller
             $total = 0;
             // $noDetail = 1;
 
+            // dd(Session::get('keranjang'));
+
             foreach ($pesanan as $item) {
 
-                $menu = menuModel::findOrFail($item['id_menu']);
+                $menu = menuModel::findOrFail($item['id']);
 
                 DetailPesanan::create([
                     // 'id_detail_pesanan' => $transaksi->id_transaksi . $noDetail,

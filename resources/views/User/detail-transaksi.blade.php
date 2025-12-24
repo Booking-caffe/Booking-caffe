@@ -67,7 +67,7 @@
                         <div class="flex justify-between mt-1">
                             <ol class="list-decimal pl-3">
                                 @foreach ($meja as $m)
-                                    <li class="text-muted-light dark:text-muted-dark mt-1"><span class="font-light text-muted-light dark:text-muted-dark pl-1">{{ $m }}</span></li>
+                                    <li class="text-muted-light dark:text-muted-dark mt-1"><span class="font-light text-muted-light dark:text-muted-dark pl-1">{{ strtoupper($m['tipe_ruangan']) }} - {{ $m['nomor_meja'] }}</span></li>
                                 @endforeach
                             </ol>
                         </div>
