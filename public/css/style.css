@@ -206,6 +206,8 @@ table th {
     background: #e8d6c4;
     border-radius: 6px;
     margin: auto;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .aksi {
@@ -238,7 +240,6 @@ table th {
 }
 
 .show-entries select {
-    padding: 5px;
     border-radius: 6px;
     border: 1px solid #a1887f;
 }
@@ -288,25 +289,25 @@ table th {
 /*            MINUMAN             */
 /* ============================== */
 
-.minuman-container {
-    margin-left: 250px;
+.table-container {
+    /* margin-left: 250px; */
     padding: 20px;
 }
 
-.minuman-container h2 {
+.table-container h2 {
     font-size: 28px;
     margin-bottom: 20px;
     color: #6d4c41;
 }
 
-.minuman-grid {
+.table-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
 
 /* Item Minuman */
-.minuman-item {
+.table-item {
     background: #ffffff;
     padding: 15px;
     border-radius: 12px;
@@ -317,17 +318,19 @@ table th {
     text-align: center;
 }
 
-.minuman-item:hover {
+.table-item:hover {
     transform: translateY(-5px);
     background: #f4ebe6;
 }
 
-.minuman-item img {
+.table-container img {
+    /* display: block; */
     width: 100%;
-    height: 160px;
+    height: 100%;
     object-fit: cover;
     border-radius: 10px;
-    margin-bottom: 12px;
+    /* margin-bottom: 12px; */
+    /* margin: 0; */
 }
 
 .minuman-item h3 {

@@ -70,36 +70,41 @@
                         <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
                         <div>
                             <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
-                            <input type="hidden" name="meja" id="meja-terpilih">
+                            {{-- <input type="hidden" name="meja" id="meja-terpilih"> --}}
+                            <input type="hidden" name="tipe_ruangan" id="tipe-ruangan">
+                            <input type="hidden" name="nomor_meja" id="nomor-meja">
 
                             <div class="grid grid-cols-4 gap-4 mb-6">
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="indoor-M1">M1</button>
+                                    data-ruangan="Indoor" data-meja="I1">M1</button>
 
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="indoor-M2">M2</button>
+                                    data-ruangan="Indoor" data-meja="I2">M2</button>
 
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="indoor-M3">M3</button>
+                                    data-ruangan="Indoor" data-meja="I3">M3</button>
 
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="indoor-M4">M4</button>
+                                    data-ruangan="Indoor" data-meja="I4">M4</button>
+
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="indoor-M5">M5</button>
+                                    data-ruangan="Indoor" data-meja="I5">M5</button>
+
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="indoor-M6">M6</button>
+                                    data-ruangan="Indoor" data-meja="I6">M6</button>
+
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="indoor-M7">M7</button>
+                                    data-ruangan="Indoor" data-meja="I7">M7</button>
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="indoor-M8">M8</button>
+                                    data-ruangan="Indoor" data-meja="I8">M8</button>
                             </div>
 
                             <div class="flex justify-end">
@@ -124,31 +129,35 @@
                             <div class="grid grid-cols-4 gap-4 mb-6">
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="out-M1">M1</button>
+                                    data-ruangan="Outdoor" data-meja="O1">M1</button>
 
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="out-M2">M2</button>
+                                    data-ruangan="Outdoor" data-meja="O2">M2</button>
 
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="out-M3">M3</button>
+                                    data-ruangan="Outdoor" data-meja="O3">M3</button>
 
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="out-M4">M4</button>
+                                    data-ruangan="Outdoor" data-meja="O4">M4</button>
+
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="out-M5">M5</button>
+                                    data-ruangan="Outdoor" data-meja="O5">M5</button>
+
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="out-M6">M6</button>
+                                    data-ruangan="Outdoor" data-meja="O6">M6</button>
+
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="out-M7">M7</button>
+                                    data-ruangan="Outdoor" data-meja="O7">M7</button>
+
                                 <button type="button"
                                     class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-value="out-M8">M8</button>
+                                    data-ruangan="Outdoor" data-meja="O8">M8</button>
                             </div>
                             <div class="mt-auto flex justify-start">
                                 <button type="submit"
@@ -185,7 +194,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const mejaButtons = document.querySelectorAll(".meja-btn");
-            const inputMeja = document.getElementById("meja-terpilih");
+            const inputRuangan = document.getElementById("tipe-ruangan");
+            const inputMeja = document.getElementById("nomor-meja");
             const btnSubmit = document.getElementById("btn-submit");
 
             mejaButtons.forEach(btn => {
@@ -200,7 +210,11 @@
                     console.log(inputMeja);
 
                     // Isi hidden input
-                    inputMeja.value = btn.getAttribute("data-value");
+                    // inputMeja.value = btn.getAttribute("data-value");
+
+                    // ambil data terpisah
+                    inputRuangan.value = btn.dataset.ruangan;
+                    inputMeja.value = btn.dataset.meja;
 
                     // Aktifkan tombol submit
                     btnSubmit.disabled = false;

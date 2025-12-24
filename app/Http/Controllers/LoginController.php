@@ -31,7 +31,13 @@ class LoginController extends Controller
         $pelanggan = pelangganModel::where('username', $request->username)->first();
 
         // Jika username ditemukan dan password cocok
-        if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
+        // if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
+        //     Session::put('id_pelanggan', $pelanggan->id_pelanggan);
+        //     Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
+        //     return redirect()->route('home');
+        // }
+        
+        if ($pelanggan && $request->password === $pelanggan->password) {
             Session::put('id_pelanggan', $pelanggan->id_pelanggan);
             Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
             return redirect()->route('home');
@@ -41,11 +47,11 @@ class LoginController extends Controller
         $pengelola = PengelolaModel::where('username', $request->username)->first();
 
         // mengambil password dan usernma pelanggan ada atau tidak di db
-        if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
-            Session::put('id_pelanggan', $pelanggan->id_pelanggan);
-            Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
-            return redirect()->route('home');
-        }
+        // if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
+        //     Session::put('id_pelanggan', $pelanggan->id_pelanggan);
+        //     Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
+        //     return redirect()->route('home');
+        // }
 
         // $pelanggan = pelangganModel::where('username', '=', $request->username)
         //     ->where('password', '=', $request->password)
@@ -77,17 +83,22 @@ class LoginController extends Controller
         // }
 
         // Jika username ditemukan dan password cocok
-        if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
-            Session::put('id_pelanggan', $pelanggan->id_pelanggan);
-            Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
-            return redirect()->route('home');
-        }
-
-
+        // if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
+        //     Session::put('id_pelanggan', $pelanggan->id_pelanggan);
+        //     Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
+        //     return redirect()->route('home');
+        // }
+        
+        // if ($pelanggan && $request->password === $pelanggan->password) {
+        //     Session::put('id_pelanggan', $pelanggan->id_pelanggan);
+        //     Session::put('nama_pelanggan', $pelanggan->nama_pelanggan);
+        //     return redirect()->route('home');
+        // }
+        
          // CARI pengelola berdasarkan username
         $pengelola = PengelolaModel::where('username', $request->username)->first();
 
-        if ($pengelola && Hash::check($request->password, $pengelola->password)) {
+        if ($pengelola && $request->password === $pengelola->password) {
             Session::put('id_pengelola', $pengelola->id_pengelola);
             Session::put('nama_pengelola', $pengelola->nama_pengelola);
             return redirect()->route('home-admin');

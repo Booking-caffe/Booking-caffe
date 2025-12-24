@@ -59,7 +59,7 @@ Route::post('/menu/add-to-cart', [MenuController::class, 'addToCart'])->name('ad
 
 // DETAIL PESANAN (USER)
 Route::get('/detail-pesanan', [reservasiController::class, 'detailPesanan'])->name('detail-pesanan');
-Route::get('/detail-transaksi', [reservasiController::class, 'detailTransaksi'])->name('detail-transaksi');
+Route::get('/detail-transaksi/{id}', [reservasiController::class, 'detailTransaksi'])->name('detail-transaksi');
 Route::post('/upload-bukti', [reservasiController::class, 'uploadBukti'])
     ->name('upload-bukti');
 
@@ -98,9 +98,9 @@ Route::post('/tambah-menu', [dataMenuController::class, 'addMenu'])->name('addMe
 // AKSI MENU
 Route::get('/admin/menu/{id}/edit', [dataMenuController::class, 'edit'])
  ->name('edit');
- Route::post('/menu/{id}', [dataMenuController::class, 'update'])->name('update');
- Route::delete('/menu/{id}', [dataMenuController::class, 'destroy'])->name('destroy');
-   Route::get('/menu/{id}', [dataMenuController::class, 'show'])->name('menu.show');
+Route::post('/menu/{id}', [dataMenuController::class, 'update'])->name('update');
+Route::delete('/menu/{id}', [dataMenuController::class, 'destroy'])->name('destroy');
+Route::get('/menu/{id}', [dataMenuController::class, 'show'])->name('menu.show');
 
 
 
@@ -108,9 +108,11 @@ Route::get('/admin/menu/{id}/edit', [dataMenuController::class, 'edit'])
 //     return view('admin.minuman');
 // })->name('admin.minuman');
 
-Route::get('/admin/datauser', function () {
-    return view('admin.datauser');
-})->name('admin.datauser');
+Route::get('/admin/data-user', [homeAdminController::class, 'dataUser'])->name('dataUser');
+
+// Route::get('/admin/datauser', function () {
+//     return view('admin.datauser');
+// })->name('admin.datauser');
 
 Route::get('/admin/riwayat', function () {
     return view('admin.riwayat');

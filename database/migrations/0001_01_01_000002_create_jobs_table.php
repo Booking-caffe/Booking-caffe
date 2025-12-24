@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengelola', function (Blueprint $table) {
-            $table->integer('id_pengelola', 12)->primary();
+            $table->bigIncrements('id_pengelola');
             $table->string('nama_pengelola', 50);
             $table->string('username', 25);
             $table->string('password');
@@ -17,23 +17,23 @@ return new class extends Migration
         });
 
         Schema::create('pelanggan', function (Blueprint $table) {
-            $table->integer('id_pelanggan', 12)->primary(); 
+            $table->bigIncrements('id_pelanggan'); 
             $table->string('nama_pelanggan', 50);   
             $table->string('username', 25);   
             $table->string('password');   
-            $table->string('no_telepon');
+            $table->string('no_telepon', 15);
             $table->timestamps();
         });
 
         Schema::create('reservasi', function (Blueprint $table) {
-            $table->integer('id_reservasi', 12)->primary();
-            $table->integer('id_pelanggan', 12);
-            $table->integer('id_pengelola', 12);
+            $table->bigIncrements('id_reservasi');
+            $table->unsignedBigInteger('id_pelanggan');
+            $table->unsignedBigInteger('id_pengelola')->nullable();
             $table->date('tanggal');
             $table->time('waktu');
-            $table->integer('jumlah_tamu', 12);
-            $table->string('ruangan', 10);
-            $table->string('nomor_meja', 10);
+            $table->integer('jumlah_tamu');
+            $table->text('ruangan');
+            $table->text('nomor_meja');
             $table->timestamps();
 
             $table->foreign('id_pelanggan')
@@ -46,11 +46,11 @@ return new class extends Migration
         });
 
         Schema::create('menu', function (Blueprint $table) {
-            $table->integer('id_menu', 12)->primary();
-            $table->integer('id_pengelola', 12);
+            $table->bigIncrements('id_menu');
+            $table->unsignedBigInteger('id_pengelola');
             $table->string('nama_menu', 50);
             $table->string('kategori', 25);
-            $table->integer('harga', 12);
+            $table->integer('harga');
             $table->string('deskripsi');
             $table->string('gambar');
             $table->integer('stok');
@@ -62,10 +62,10 @@ return new class extends Migration
         });
 
         Schema::create('transaksi', function (Blueprint $table) {
-            $table->integer('id_transaksi', 12)->primary();
-            $table->integer('id_pelanggan', 12);
-            $table->integer('total', 12);
-            $table->integer('pajak', 12);
+            $table->bigIncrements('id_transaksi');
+            $table->unsignedBigInteger('id_pelanggan');
+            $table->integer('total');
+            // $table->integer('pajak', 12);
             $table->string('metode_pembayaran', 25);
             $table->string('status', 25);
             $table->timestamps();
@@ -76,9 +76,10 @@ return new class extends Migration
         });
 
         Schema::create('detail_pesanan', function (Blueprint $table) {
-            $table->integer('id_detail_pesanan', 12)->primary();
-            $table->integer('id_transaksi', 12);
-            $table->integer('id_menu', 12);
+            $table->bigIncrements('id_detail_pesanan');
+            $table->unsignedBigInteger('id_transaksi');
+            $table->unsignedBigInteger('id_menu');
+            $table->integer('qty');
             $table->timestamps();
 
             $table->foreign('id_transaksi')

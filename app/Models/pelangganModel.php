@@ -20,4 +20,9 @@ class pelangganModel extends Model
         'password',
         'no_telepon',
     ];
+
+     public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class, 'id_pelanggan', 'id_pelanggan');
+    }
 }

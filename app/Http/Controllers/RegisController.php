@@ -64,7 +64,7 @@ class RegisController extends Controller
             // 'id_pelanggan'   => Str::uuid(), // atau ubah se suai format ID kamu
             'nama_pengelola' => $request->nama_pengelola,
             'username'       => $request->username,
-            'password'       => Hash::make($request->password),
+            'password'       => $request->password,
         ]);
 
         return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
@@ -96,7 +96,8 @@ class RegisController extends Controller
             // 'id_pelanggan'   => Str::uuid(), // atau ubah se suai format ID kamu
             'nama_pelanggan' => $request->nama_pelanggan,
             'username'       => $request->username,
-            'password'       => Hash::make($request->password),
+            // 'password'       => Hash::make($request->password),
+            'password'       => $request->password,
             'no_telepon'     => $request->no_telepon,
         ]);
 

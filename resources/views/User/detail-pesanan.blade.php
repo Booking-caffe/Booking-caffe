@@ -49,7 +49,8 @@
                         <span class="font-semibold text-muted-light dark:text-muted-dark">Jumlah Meja : {{ count($meja) }}</span>
                         <ol class="mt-4 list-decimal pl-5">
                             @foreach ($meja as $m)
-                                <li class="text-muted-light dark:text-muted-dark mt-1 pl-1"> <span class="font-light text-muted-light dark:text-muted-dark">{{ $m }}</span></li>
+                            
+                                <li class="text-muted-light dark:text-muted-dark mt-1 pl-1"> <span class="font-light text-muted-light dark:text-muted-dark">{{ strtoupper($m['tipe_ruangan']) }} - {{ $m['nomor_meja'] }}</span></li>
                             @endforeach
                         </ol>
                         
@@ -100,10 +101,6 @@
                         <img alt="QR code for payment" class="rounded-lg"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN9LNR4Xk74VGVHIPX3zzfhjDInU4t0XSMJ0BmQzxXsn0Tupmez6cXpG9F03vjHbkIOqDXycVGsDmsTrWIaLcfpw7ZwSep17IW29T7YVtGu6JQjerkDHjNjklE_K4Bbr8xT3ggoU_Ni6Cwquw5NfNZB0wIMeTgpuCNiM8co-CHR78hyyW9wf08hEzZGravqWBE9rWPy28OCh0W9l5u3hhT3vSpTgM1dns9mRnhlvrxkNWWq47SAIG1E6fZ8oXzC5-mDjZ1QbWdND-_" />
                     </div>
-                    {{-- <label class="block font-semibold mb-1 text-left">Upload Bukti Pembayaran</label>
-                        <input type="file" name="file" class="block w-full border border-gray-300 rounded p-2 bg-white"> --}}
-                        
-                    {{-- <button class="w-full bg-primary text-white py-3 px-6 rounded-md font-semibold hover:bg-yellow-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-all duration-300 transform hover:scale-105"><a href="{{ route ('detail-transaksi') }}">Selesaikan Pesanan</a></button> --}}
                 </div>
 
                 @if (session('success'))

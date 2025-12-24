@@ -4,24 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DetailPesanan extends Model
+class Pesanan extends Model
 {
     protected $table = 'detail_pesanan';
     protected $primaryKey = 'id_detail_pesanan';
 
-    public $incrementing = false; // karena id di-generate manual
+    public $incrementing = false; // karena bukan auto increment
     protected $keyType = 'int';
 
     protected $fillable = [
         'id_detail_pesanan',
         'id_transaksi',
         'id_menu',
-        'qty',
     ];
 
     /**
-     * Relasi ke tabel transaksi
-     * detail_pesanan -> transaksi (many to one)
+     * Relasi ke Transaksi
      */
     public function transaksi()
     {
@@ -29,8 +27,7 @@ class DetailPesanan extends Model
     }
 
     /**
-     * Relasi ke tabel menu
-     * detail_pesanan -> menu (many to one)
+     * Relasi ke Menu
      */
     public function menu()
     {

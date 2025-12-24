@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Playfair+Display:wght@700 amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     @stack('styles')
     @stack('styles-cdn')
     <script src="{{ asset('js/user_home.js') }}"></script>
@@ -61,13 +62,11 @@
             <div class="logo"></div>
 
             <ul class="menu">
-                
                 <li><a href="{{ route('admin.dashboard') }}">Home</a></li>
                 <li><a href="{{ route('showMakanan') }}">Makanan</a></li>
                 <li><a href="{{ route('showMinuman') }}">Minuman</a></li>
-                <li><a href="{{ route('admin.datauser') }}">Data User</a></li>
+                <li><a href="{{ route('dataUser') }}">Data User</a></li>
                 <li><a href="{{ route('admin.riwayat') }}">Riwayat</a></li>
-
                 <li><a href="#">Setting</a></li>
             </ul>
 

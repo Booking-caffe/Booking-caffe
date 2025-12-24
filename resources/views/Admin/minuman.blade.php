@@ -2,8 +2,12 @@
 
 @section('title', 'Minuman')
 
-@section('content')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/menu-admin.css') }}">
+    
+@endpush
 
+@section('content')
 <h2 class="page-title">Data Minuman</h2>
 
 <div class="top-actions">
@@ -42,8 +46,22 @@
                     <td><span>{{ $menu->deskripsi }}</span></td>
                     <td><span>{{ $menu->stok }}</span></td>
                     <td>
-                        <button class="aksi-btn edit"><a href="{{ route('formMakanan') }}">✏️</a></button>
-                        <button class="aksi-btn delete">🗑️</button>
+                        <div class="aksi">
+                            {{-- EDIT --}}
+                            <button class="aksi-btn edit"><a href="{{ route('edit' , $menu->id_menu) }}"><i class="bi bi-pencil-square"></i></a></button>
+                            
+                            {{-- HAPUS --}}
+                            <form action="{{ route('destroy', $menu->id_menu) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class=" aksi-btn delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @endforeach

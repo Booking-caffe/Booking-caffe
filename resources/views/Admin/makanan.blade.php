@@ -3,7 +3,7 @@
 @section('title', 'Makanan')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/detail-menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/menu-admin.css') }}">
 @endpush
 
 
@@ -47,18 +47,22 @@
                     <td><span>{{ $menu->deskripsi }}</span></td>
                     <td><span>{{ $menu->stok }}</span></td>
                     <td>
-                        <button class="aksi-btn edit"><a href="{{ route('edit' , $menu->id_menu) }}">✏️</a></button>
-                        <!-- HAPUS -->
-                        <form action="{{ route('destroy', $menu->id_menu) }}"
-                              method="POST"
-                              onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="px-3 py-1 bg-red-600 text-white rounded">
-                                Hapus
-                            </button>
-                        </form>
+                        <div class="aksi">
+                            {{-- EDIT --}}
+                            <button class="aksi-btn edit"><a href="{{ route('edit' , $menu->id_menu) }}"><i class="bi bi-pencil-square"></i></a></button>
+
+                            <!-- HAPUS -->
+                            <form action="{{ route('destroy', $menu->id_menu) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class=" aksi-btn delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @endforeach
