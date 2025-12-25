@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
     <link rel="stylesheet" href="{{ asset('css/user_home.css') }}">
+   
     @stack('styles')
 
     <script>
@@ -178,6 +179,7 @@
     {{-- Tempat semua script dikumpulkan --}}
     @stack('extra-scripts')
     </div>
+    @include('sweetalert::alert')
 </body>
 
 </html>

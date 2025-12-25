@@ -33,158 +33,166 @@
 
 @section('content')
     <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 class="text-4xl font-bold text-center text-primary-dark dark:text-secondary mb-12">
-            Detail Tempat Duduk
-        </h1>
-
-        <h2>Pilih Meja ({{ count($mejaDipilih ?? []) }} / {{ $jumlahMeja }})</h2>
-        {{-- @php
+        <div class="content-main" style="padding: 30px; background: rgb(255, 252, 252); padding-bottom: 50px;">
+            <h1 class="text-4xl font-bold text-center text-primary-dark dark:text-secondary mb-12" style="padding-top: 20px;">
+                Detail Tempat Duduk
+            </h1>
+            <div class="meja rounded-lg mb-5" style="border: 1px solid rgb(204, 204, 204);">
+                <div class="head-title" style="background-color: rgb(245 243 240 / var(--tw-bg-opacity)); text-align: center; padding: 10px 0;">
+                    <h1 class="font-semibold text-primary-dark dark:text-secondary">Silahkan pilih meja yang ingin direservasi</h1>
+                </div>
+               <div class="title-meja" style="display: flex; justify-content: space-between; padding: 10px 25px;">
+                   <p class="font-medium  text-gray-600 font-semibold dark:text-gray-300">Meja yang dipesan : {{ $jumlahMeja }}</p>
+                   <p class="font-medium  font-semibold text-gray-600 dark:text-gray-300">Meja terpilih : {{ count($mejaDipilih ?? []) }} / {{ $jumlahMeja }}</p>
+               </div>
+            </div>
+            {{-- @php
             // dd($jumlahMeja, $mejaDipilih);
         @endphp --}}
-        <p>Pilih meja sesuai jumlah yang Anda pesan.</p>
+            {{-- <p>Pilih meja sesuai jumlah yang Anda pesan.</p> --}}
 
-        <form action="{{ route('pilihTempatDuduk') }}" method="POST">
-            @csrf
-            <section
-                class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 mb-12 transform hover:-translate-y-1 transition-transform duration-300">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div class="flex items-center space-x-4">
-                        <button type="button"
-                            class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
-                            <span class="material-icons text-3xl">chevron_left</span>
-                        </button>
-                        <div
-                            class="aspect-square flex-grow bg-secondary/30 dark:bg-primary-dark rounded-lg overflow-hidden">
-                            <img alt="Stylish indoor seating area of the cafe" class="w-full h-full object-cover"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9QDT7m2z8J4jkC8UrlZMThXGON7esBsHMt8N0PdI-4AovNfzbo46pY9U966c-lj9RDYx9ucHQrzk5N8XmC9s2OFIpxiNXbb8mfFnW3aDvA4dyJoVthIItzrC3Aa7MNWy9PKovMtmFF77_C0WBT17v3gZoV5l5GnNE_enXW2_VGFYyMlgR3xLAUjz_Y1c-gGBKxQ9b537KOLZb6AgcPqzJ1yl5Gj732_byo-5Fq5vJRe3SbMj3BQCOWt7S92FnYK1dicnXvqBgAY_7" />
+            <form action="{{ route('pilihTempatDuduk') }}" method="POST">
+                @csrf
+                <section class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 mb-12 transform hover:-translate-y-1 transition-transform duration-300" style="border: 1px solid rgb(204, 204, 204);">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="flex items-center space-x-4">
+                            <button type="button"
+                                class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
+                                <span class="material-icons text-3xl">chevron_left</span>
+                            </button>
+                            <div
+                                class="aspect-square flex-grow bg-secondary/30 dark:bg-primary-dark rounded-lg overflow-hidden">
+                                <img alt="Stylish indoor seating area of the cafe" class="w-full h-full object-cover"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9QDT7m2z8J4jkC8UrlZMThXGON7esBsHMt8N0PdI-4AovNfzbo46pY9U966c-lj9RDYx9ucHQrzk5N8XmC9s2OFIpxiNXbb8mfFnW3aDvA4dyJoVthIItzrC3Aa7MNWy9PKovMtmFF77_C0WBT17v3gZoV5l5GnNE_enXW2_VGFYyMlgR3xLAUjz_Y1c-gGBKxQ9b537KOLZb6AgcPqzJ1yl5Gj732_byo-5Fq5vJRe3SbMj3BQCOWt7S92FnYK1dicnXvqBgAY_7" />
+                            </div>
+                            <button type="button"
+                                class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
+                                <span class="material-icons text-3xl">chevron_right</span>
+                            </button>
                         </div>
-                        <button type="button"
-                            class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
-                            <span class="material-icons text-3xl">chevron_right</span>
-                        </button>
-                    </div>
 
 
-                    <div class="flex flex-col h-full">
-                        <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Indoor</h2>
-                        <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
-                        <div>
-                            <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
-                            {{-- <input type="hidden" name="meja" id="meja-terpilih"> --}}
-                            <input type="hidden" name="tipe_ruangan" id="tipe-ruangan">
-                            <input type="hidden" name="nomor_meja" id="nomor-meja">
+                        <div class="flex flex-col h-full">
+                            <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Indoor</h2>
+                            <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
+                            <div>
+                                <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
+                                {{-- <input type="hidden" name="meja" id="meja-terpilih"> --}}
+                                <input type="hidden" name="tipe_ruangan" id="tipe-ruangan">
+                                <input type="hidden" name="nomor_meja" id="nomor-meja">
 
-                            <div class="grid grid-cols-4 gap-4 mb-6">
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Indoor" data-meja="I1">M1</button>
+                                <div class="grid grid-cols-4 gap-4 mb-6">
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Indoor" data-meja="I1">M1</button>
 
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Indoor" data-meja="I2">M2</button>
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Indoor" data-meja="I2">M2</button>
 
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Indoor" data-meja="I3">M3</button>
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Indoor" data-meja="I3">M3</button>
 
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Indoor" data-meja="I4">M4</button>
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Indoor" data-meja="I4">M4</button>
 
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Indoor" data-meja="I5">M5</button>
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Indoor" data-meja="I5">M5</button>
 
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Indoor" data-meja="I6">M6</button>
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Indoor" data-meja="I6">M6</button>
 
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Indoor" data-meja="I7">M7</button>
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Indoor" data-meja="I8">M8</button>
-                            </div>
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Indoor" data-meja="I7">M7</button>
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Indoor" data-meja="I8">M8</button>
+                                </div>
 
-                            <div class="flex justify-end">
-                                <button type="submit"
-                                    class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
-                                    Selanjutnya
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section
-                class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 transform hover:-translate-y-1 transition-transform duration-300">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div class="flex flex-col h-full lg:order-first">
-                        <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Outdoor</h2>
-                        <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
-                        <div>
-                            <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
-                            <div class="grid grid-cols-4 gap-4 mb-6">
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Outdoor" data-meja="O1">M1</button>
-
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Outdoor" data-meja="O2">M2</button>
-
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Outdoor" data-meja="O3">M3</button>
-
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Outdoor" data-meja="O4">M4</button>
-
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Outdoor" data-meja="O5">M5</button>
-
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Outdoor" data-meja="O6">M6</button>
-
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Outdoor" data-meja="O7">M7</button>
-
-                                <button type="button"
-                                    class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                    data-ruangan="Outdoor" data-meja="O8">M8</button>
-                            </div>
-                            <div class="mt-auto flex justify-start">
-                                <button type="submit"
-                                    class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
-                                    Selanjutnya
-                                </button>
+                                <div class="flex justify-end">
+                                    <button type="submit"
+                                        class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
+                                        Selanjutnya
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-4 lg:order-last">
-                        <button
-                            class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
-                            <span class="material-icons text-3xl">chevron_left</span>
-                        </button>
-                        <div
-                            class="aspect-square flex-grow bg-secondary/30 dark:bg-primary-dark rounded-lg overflow-hidden">
-                            <img alt="Sunny outdoor patio seating area of the cafe" class="w-full h-full object-cover"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEBiEIwC2UdUX2yOdZsQ5Tk2_JU89F8k2tKi2prnGGkNOK73Y1diSTZI6tvJOCfKJXJ6Gs8PzaIYCCWVVGhIa5a1WlwBpjZuliC51VMTWHbpBEsdYA0sHB_wa5oXtUN2FPP6NLUrJYikv1xhwwiSi1oZ7oOm4d0JKuWzXWpFyICxiSaSUZVKyD7mfPnvPB-m35-F_dY1_7GmOQaGaNZb_oNDn1PWTSbObJae8Rx4ZnkXXGCFs-3PKr7pDDaAa4MTiiGlGr8V3ELAwA" />
+                </section>
+
+                <section class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 transform hover:-translate-y-1 transition-transform duration-300" style="border: 1px solid rgb(204, 204, 204);">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="flex flex-col h-full lg:order-first">
+                            <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Outdoor</h2>
+                            <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
+                            <div>
+                                <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
+                                <div class="grid grid-cols-4 gap-4 mb-6">
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Outdoor" data-meja="O1">M1</button>
+
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Outdoor" data-meja="O2">M2</button>
+
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Outdoor" data-meja="O3">M3</button>
+
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Outdoor" data-meja="O4">M4</button>
+
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Outdoor" data-meja="O5">M5</button>
+
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Outdoor" data-meja="O6">M6</button>
+
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Outdoor" data-meja="O7">M7</button>
+
+                                    <button type="button"
+                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
+                                        data-ruangan="Outdoor" data-meja="O8">M8</button>
+                                </div>
+                                <div class="mt-auto flex justify-start">
+                                    <button type="submit"
+                                        class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
+                                        Selanjutnya
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <button
-                            class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
-                            <span class="material-icons text-3xl">chevron_right</span>
-                        </button>
+                        <div class="flex items-center space-x-4 lg:order-last">
+                            <button
+                                class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
+                                <span class="material-icons text-3xl">chevron_left</span>
+                            </button>
+                            <div
+                                class="aspect-square flex-grow bg-secondary/30 dark:bg-primary-dark rounded-lg overflow-hidden">
+                                <img alt="Sunny outdoor patio seating area of the cafe" class="w-full h-full object-cover"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEBiEIwC2UdUX2yOdZsQ5Tk2_JU89F8k2tKi2prnGGkNOK73Y1diSTZI6tvJOCfKJXJ6Gs8PzaIYCCWVVGhIa5a1WlwBpjZuliC51VMTWHbpBEsdYA0sHB_wa5oXtUN2FPP6NLUrJYikv1xhwwiSi1oZ7oOm4d0JKuWzXWpFyICxiSaSUZVKyD7mfPnvPB-m35-F_dY1_7GmOQaGaNZb_oNDn1PWTSbObJae8Rx4ZnkXXGCFs-3PKr7pDDaAa4MTiiGlGr8V3ELAwA" />
+                            </div>
+                            <button
+                                class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
+                                <span class="material-icons text-3xl">chevron_right</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </section>
-        </form>
+                </section>
+            </form>
+        </div>
+
 
     </main>
 

@@ -44,6 +44,21 @@ class reservasiController extends Controller
             
         ]);
 
+        $jumlahTamu = $request->jumlah_tamu;
+        $jumlahMeja = $request->jumlah_meja;
+
+        // 1 meja max 4 orang
+        $minimalMeja = ceil($jumlahTamu / 4);
+
+        // ❌ VALIDASI LOGIKA
+        if ($jumlahMeja < $minimalMeja) {
+            return redirect()->back()
+                ->withErrors([
+                    'jumlah_meja' => "Jumlah tamu $jumlahTamu orang membutuhkan minimal $minimalMeja meja"
+                ])
+                ->withInput();
+        }
+
         // Mengambil Data Session
         $data = [
             'nama' => $request->nama,
@@ -65,7 +80,7 @@ class reservasiController extends Controller
     }
 
     // ============================
-    // STEP 2 : PEMILIHAN MEJA
+    // PEMILIHAN MEJA
     // ============================
     public function showTempatDuduk()
     {
@@ -119,17 +134,19 @@ class reservasiController extends Controller
         }
 
         // Jika sudah cukup → lanjut ke detail pesanan
-        return redirect()->route('detail-pesanan')->with('success', 'Semua meja berhasil dipilih!');
+        return redirect()->route('detail-pesanan');
+        // return redirect()->route('detail-pesanan')->with('success', 'Semua meja berhasil dipilih!');
     }
  
+
     // ============================
-    // STEP 3 : DETAIL PESANAN
+    // DETAIL PESANAN
     // ============================
     public function detailPesanan()
     {
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
-        $pesanan = Session::get('keranjang');
+        $pesanan = Session::get('keranjang', []);
         
 
 
@@ -155,41 +172,8 @@ class reservasiController extends Controller
     }
 
 
-     // ============================
-    // STEP 3 : DETAIL PESANAN
-    // ============================
-    public function detailTransaksi($id)
-    {
-        $reservasi = Reservasi::findOrFail($id);
-        $data = Session::get('dataReservasi');
-        $meja = Session::get('mejaDipilih');
-        $pesanan = Session::get('keranjang');
-        $totalHarga = 0;
 
-        if ($pesanan) {
-            foreach ($pesanan as $item) {
-                $totalHarga += $item['harga'] * $item['qty'];
-            }
-        }
-
-        $pajak = $totalHarga*0.1;
-        $totalBayar = $totalHarga + $pajak;
-
-
-
-        if (!$data || !$meja) {
-            return redirect()->route('reservasi')
-                ->with('gagal', 'Data reservasi belum lengkap.');
-        }
-
-        return view('User.detail-transaksi', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar', 'reservasi'));
-    }
-
-    
-    // ============================
-    // STEP 4 : BUKTI PEMBAYARAN & SIMPAN  DATA
-    // ============================
-    public function uploadBukti(Request $request)
+        public function uploadBukti(Request $request)
     {
         
         $request->validate([
@@ -210,7 +194,7 @@ class reservasiController extends Controller
         $data = Session::get('dataReservasi');
         // $meja = Session::get('mejaDipilih');
 
-        $pesanan = Session::get('keranjang');
+        $pesanan = Session::get('keranjang', []);
 
         if (!$data || !$meja) {
             return redirect()->route('reservasi')
@@ -313,62 +297,56 @@ class reservasiController extends Controller
             DB::commit();
 
             // Bersihkan session
-            Session::forget([
-                'dataReservasi',
-                'mejaDipilih',
-                'keranjang'
-            ]);
+            // Session::forget([
+            //     'dataReservasi',
+            //     'mejaDipilih',
+            //     'keranjang'
+            // ]);
 
             return Redirect()->route('detail-transaksi', $reservasi->id_reservasi)->with('success', 'Bukti pembayaran berhasil diupload!');
 
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th);
-            // return back()->with('error', $th->getMessage());
+            // dd($th);
+            return back()->with('error', $th->getMessage());
         }
     }
 
+    
 
-
-
-
-
-
-
-
+     // ============================
+    // DETAIL TRANSAKSI
     // ============================
-    // STEP 4 : SIMPAN KE DATABASE
-    // ============================
-    public function simpanReservasi()
-    {
-       
+    public function detailTransaksi($id)
+    {   $id_pelangganTran = session('id_pelanggan');
+        $reservasi = Reservasi::findOrFail($id);
+        $data = Session::get('dataReservasi');
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
+        $pesanan = Session::get('keranjang');
+        $totalHarga = 0;
+
+        
+        if (!$id_pelangganTran) {
+            return redirect()->route('login');
+        }
+
+        if ($pesanan) {
+            foreach ($pesanan as $item) {
+                $totalHarga += $item['harga'] * $item['qty'];
+            }
+        }
+
+        $pajak = $totalHarga*0.1;
+        $totalBayar = $totalHarga + $pajak;
+
+
 
         if (!$data || !$meja) {
             return redirect()->route('reservasi')
-                ->with('gagal', 'Data reservasi tidak lengkap.');
+                ->with('gagal', 'Data reservasi belum lengkap.');
         }
 
-        // Simpan ke database
-        Reservasi::create([
-            'nama'         => $data['nama'],
-            'no_hp'        => $data['noHp'],
-            'tanggal'      => $data['tanggal'],
-            'waktu'        => $data['waktu'],
-            'jumlah_tamu'  => $data['jumlahTamu'],
-            'meja'         => $meja,
-        ]);
-
-        // Hapus session setelah selesai
-        Session::forget(['dataReservasi', 'mejaDipilih']);
-
-        return redirect()->route('reservasi-berhasil')
-            ->with('success', 'Reservasi berhasil disimpan!');
-    
+        return view('User.detail-transaksi', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar', 'reservasi'));
     }
-    
-
-    
-
 }

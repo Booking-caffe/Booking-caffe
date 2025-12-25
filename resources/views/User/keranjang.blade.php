@@ -13,8 +13,9 @@
 <div class="keranjang-container">
 
     @if(count($keranjang) == 0)
-
-        <p style="text-align:center;">Keranjang kosong.</p>
+        <div class="alert alert-success">
+            <p style="text-align:center;">Keranjang kosong.</p>
+        </div>
 
     @else
 
