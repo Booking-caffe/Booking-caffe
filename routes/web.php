@@ -1,4 +1,7 @@
+
 <?php
+// Download Transaksi (PDF)
+Route::get('/download-transaksi/{id}', [App\Http\Controllers\reservasiController::class, 'downloadTransaksi'])->name('transaksi.download');
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\adminController\homeAdminController;
@@ -33,15 +36,15 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 
 // User
 // reservasi
-Route::get('/reservasi', [reservasiController::class, 'showResevasi'])->name('reservasi');
-Route::post('/form-reservasi', [reservasiController::class, 'formReservasi'])->name('form-reservasi');
+Route::get('/reservasi', [App\Http\Controllers\reservasiController::class, 'showResevasi'])->name('reservasi');
+Route::post('/form-reservasi', [App\Http\Controllers\reservasiController::class, 'formReservasi'])->name('form-reservasi');
 // POST dari form reservasi
-Route::post('/tempat-duduk', [reservasiController::class, 'pilihTempatDuduk'])
+Route::post('/tempat-duduk', [App\Http\Controllers\reservasiController::class, 'pilihTempatDuduk'])
     ->name('tempat-duduk');
 // GET untuk menampilkan halaman pilih tempat duduk
-Route::get('/tempat-duduk', [reservasiController::class, 'showTempatDuduk'])
+Route::get('/tempat-duduk', [App\Http\Controllers\reservasiController::class, 'showTempatDuduk'])
     ->name('show-tempat-duduk');
-Route::post('/pilih-tempat', [reservasiController::class, 'pilihTempatDuduk'])->name('pilihTempatDuduk');
+Route::post('/pilih-tempat', [App\Http\Controllers\reservasiController::class, 'pilihTempatDuduk'])->name('pilihTempatDuduk');
 // Route::get('/menu-makanan', fn() => view('User.menu-makanan'))->name('menu-makanan');
 Route::get('/menu-minuman', [MenuController::class, 'menuMinuman'])->name('menu-minuman');
 
@@ -58,9 +61,9 @@ Route::post('/menu/add-to-cart', [MenuController::class, 'addToCart'])->name('ad
 
 
 // DETAIL PESANAN (USER)
-Route::get('/detail-pesanan', [reservasiController::class, 'detailPesanan'])->name('detail-pesanan');
-Route::get('/detail-transaksi/{id}', [reservasiController::class, 'detailTransaksi'])->name('detail-transaksi');
-Route::post('/upload-bukti', [reservasiController::class, 'uploadBukti'])
+Route::get('/detail-pesanan', [App\Http\Controllers\reservasiController::class, 'detailPesanan'])->name('detail-pesanan');
+Route::get('/detail-transaksi/{id}', [App\Http\Controllers\reservasiController::class, 'detailTransaksi'])->name('detail-transaksi');
+Route::post('/upload-bukti', [App\Http\Controllers\reservasiController::class, 'uploadBukti'])
     ->name('upload-bukti');
 
 

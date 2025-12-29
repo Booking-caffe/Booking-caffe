@@ -38,9 +38,7 @@
                         <button type="submit" class="btn">+ Keranjang</button>
                     </form>
 
-                    <button class="btn">
-                        <a href="#">Reservasi</a>
-                    </button>
+                    <a href="{{ route('reservasi') }}" class="btn">Reservasi</a>
                 </div>
 
             </div>

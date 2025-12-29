@@ -14,6 +14,30 @@ use Illuminate\Support\Facades\DB;
 
 class reservasiController extends Controller
 {
+    // Download Transaksi (PDF)
+    public function downloadTransaksi($id)
+    {
+        // Cek apakah dompdf tersedia
+        if (!class_exists('Barryvdh\\DomPDF\\Facade\\Pdf')) {
+            return response('Fitur download PDF belum tersedia. Silakan install barryvdh/laravel-dompdf.', 501);
+        }
+
+        $reservasi = Reservasi::findOrFail($id);
+        $data = Session::get('dataReservasi');
+        $meja = Session::get('mejaDipilih');
+        $pesanan = Session::get('keranjang');
+        $totalHarga = 0;
+        if ($pesanan) {
+            foreach ($pesanan as $item) {
+                $totalHarga += $item['harga'] * $item['qty'];
+            }
+        }
+        $pajak = $totalHarga * 0.1;
+        $totalBayar = $totalHarga + $pajak;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('User.detail-transaksi-pdf', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar', 'reservasi'));
+        return $pdf->download('transaksi-'.$id.'.pdf');
+    }
     //
     public function showResevasi()
     {

@@ -104,10 +104,10 @@
                         <span>Rp. {{ number_format($totalBayar, 0, ',', '.') }}</span>
                     </div>
                 </div>
-                <button
-                    class="w-full bg-primary text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-all duration-300 transform hover:scale-105 active:scale-100">
+                <a href="{{ route('transaksi.download', ['id' => $reservasi->id_reservasi]) }}" target="_blank"
+                   class="w-full block text-center bg-primary text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-all duration-300 transform hover:scale-105 active:scale-100">
                     Download Transaksi
-                </button>
+                </a>
             </div>
         </div>
     </main>

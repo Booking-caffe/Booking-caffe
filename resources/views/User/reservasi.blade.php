@@ -51,7 +51,7 @@
                                 class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
                                 id="jumlah_meja" min="1" name="jumlah_meja" placeholder="1 Meja Maks 4 Orang" type="number" />
                         </div>
-                        <div class="md:col-span-2">
+                        <!-- <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
                                 for="tanggal">Tanggal</label>
                             <div class="relative">
@@ -59,6 +59,49 @@
                                     class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm pr-10"
                                     id="tanggal" name="tanggal" type="date" />
                             </div>
+                        </div> -->
+                        <div 
+                            class="md:col-span-2"
+                            x-data="{
+                                tanggal: '',
+                                error: false,
+                                today: new Date().toISOString().split('T')[0],
+                                checkDate() {
+                                    this.error = this.tanggal < this.today;
+                                }
+                            }"
+                        >
+                            <label 
+                                class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                                for="tanggal"
+                            >
+                                Tanggal
+                            </label>
+
+                            <div class="relative">
+                                <input
+                                    id="tanggal"
+                                    name="tanggal"
+                                    type="date"
+                                    x-model="tanggal"
+                                    @change="checkDate"
+                                    :min="today"
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 
+                                        bg-background-light dark:bg-background-dark 
+                                        focus:ring-primary focus:border-primary 
+                                        transition duration-150 ease-in-out shadow-sm pr-10"
+                                    :class="error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''"
+                                />
+                            </div>
+
+                            <!-- Pesan Error -->
+                            <p 
+                                x-show="error"
+                                x-transition
+                                class="mt-1 text-sm text-red-600"
+                            >
+                                Tanggal tidak boleh sebelum hari ini
+                            </p>
                         </div>
                     </div>
                     <div class="mt-8">

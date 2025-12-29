@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Playfair+Display:wght@700 amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/user_home.css') }}">
     @stack('styles')
     @stack('styles-cdn')
