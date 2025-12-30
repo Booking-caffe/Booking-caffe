@@ -26,6 +26,7 @@ class MenuController extends Controller
         return view('User.menu-makanan', compact('menuMakanan'));
     }
 
+
     // ===============================
     // DETAIL MENU
     // ===============================
@@ -41,6 +42,7 @@ class MenuController extends Controller
         return view('User.detail-menu', compact('chosedMenu'));
     }
 
+
     public function detailMakanan($id)
     {
         // mengambil data menu berdasarkan id menu yg dipilih d halaman sebelumnya
@@ -52,6 +54,7 @@ class MenuController extends Controller
 
         return view('User.detail-menu', compact('chosedMenu'));
     }
+
 
     // ===============================
     // TAMBAHKAN KE KERANJANG
@@ -72,6 +75,7 @@ class MenuController extends Controller
         return redirect()->route('keranjang')->with('success', 'Ditambahkan ke keranjang!');
     }
 
+
     // ===============================
     // HALAMAN KERANJANG
     // ===============================
@@ -82,6 +86,7 @@ class MenuController extends Controller
 
         return view('User.keranjang', compact('keranjang'));
     }
+    
 
     // ===============================
     // HPUS ITEM KERANJANG

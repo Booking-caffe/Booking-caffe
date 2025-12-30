@@ -31,12 +31,12 @@
             </thead>
 
             <tbody>
-                @if ($reservasi->isEmpty())
+                @if ($dataUser->isEmpty())
                     <tr>
                         <td colspan="11" class="text-center">Tidak Ada Data</td>
                     </tr>
                 @else
-                    @foreach ($reservasi as $r)
+                    @foreach ($dataUser as $r)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $r->nama_pelanggan }}</td>

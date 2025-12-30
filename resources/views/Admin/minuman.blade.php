@@ -35,15 +35,15 @@
         <tbody>
             @foreach ($minuman as $menu)
                 <tr>
-                    <td>1</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>
                         <div class="foto-box">
                             <img src="{{ asset('storage/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}">
                         </div>
                     </td>
-                    <td><span>{{ $menu->nama_menu }}</span></td>
-                    <td><span>{{ $menu->harga }}</span></td>
-                    <td><span>{{ $menu->deskripsi }}</span></td>
+                    <td style="text-align: left;"><span>{{ $menu->nama_menu }}</span></td>
+                    <td style="text-align: left;"><span>{{ $menu->harga }}</span></td>
+                    <td style="text-align: left;"><span>{{ $menu->deskripsi }}</span></td>
                     <td><span>{{ $menu->stok }}</span></td>
                     <td>
                         <div class="aksi">

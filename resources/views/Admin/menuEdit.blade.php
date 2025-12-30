@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Makanan')
+@section('title', 'Edit Menu')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/form-makanan.css') }}">
@@ -14,7 +14,7 @@
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">Tambah Menu Makanan</h1>
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">Edit Menu</h1>
             <form action="{{ route('update', $menu->id_menu) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 {{-- @method('PUT') --}}

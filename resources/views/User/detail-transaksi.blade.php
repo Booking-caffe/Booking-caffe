@@ -104,9 +104,24 @@
                         <span>Rp. {{ number_format($totalBayar, 0, ',', '.') }}</span>
                     </div>
                 </div>
-                <a href="{{ route('transaksi.download', ['id' => $reservasi->id_reservasi]) }}" target="_blank"
-                   class="w-full block text-center bg-primary text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-all duration-300 transform hover:scale-105 active:scale-100">
-                    Download Transaksi
+
+                {{-- <a href="{{ route('transaksi.download', ['id' => $reservasi->id_reservasi]) }}" target="_blank"
+                   class="w-full block text-center bg-primary text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-all duration-300 transform hover:scale-105 active:scale-100"> --}}
+
+                <div class="flex items-center gap-3 bg-amber-50 text-amber-700 border-amber-200 text-yellow-800 px-4 py-2 rounded">
+                    <svg class="w-20 h-20 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01M5.07 19h13.86L12 5 5.07 19z"/>
+                    </svg>
+                    <div class="text-[12px]">
+                        <span>Silahkan download bukti transaksi dan tunggu admin menghubungi melalui WA. atau hubungi admin langsung</span>
+                        <a class="text-blue-600 hover:underline"href="https://wa.me/087815349226">087815349226</a>
+                    </div>
+                </div>
+
+                <button class="w-full bg-primary text-white font-semibold mt-5 py-3 px-4 rounded-lg shadow-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-all duration-300 transform hover: active:scale-100">
+                    <a href="{{ route('transaksi.download', ['id' => $reservasi->id_reservasi]) }}">Download Transaksi</a>
+                    
                 </a>
             </div>
         </div>
