@@ -28,10 +28,6 @@ class DetailPesanan extends Model
         return $this->belongsTo(Transaksi::class, 'id_transaksi', 'id_transaksi');
     }
 
-    /**
-     * Relasi ke tabel menu
-     * detail_pesanan -> menu (many to one)
-     */
     public function menu()
     {
         return $this->belongsTo(MenuModel::class, 'id_menu', 'id_menu');

@@ -14,56 +14,57 @@
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">Edit Menu</h1>
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">Edit User</h1>
 
-            
-            <form action="{{ route('update', $menu->id_menu) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('updateUser', $userEdit->id_pelanggan) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                
                 {{-- @method('PUT') --}}
                 <div class="mb-5" style="display: flex; justify-content: center;">
-                    @if ($menu->gambar)
-                        <img src="{{ asset('storage/' . $menu->gambar) }}" style="width: 350px;" class="w-32 rounded mb-3">
-                    @endif
+                    {{-- @if ($userUpdate->gambar)
+                        <img src="{{ asset('storage/' . $userUpdate->gambar) }}" style="width: 350px;" class="w-32 rounded mb-3">
+                    @endif --}}
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                     <div>
                         <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="nama_menu">Nama Makanan</label>
+                            for="nama_pelanggan">Nama Pelanggan</label>
 
                         <input
                             class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
-                            id="nama_menu" name="nama_menu" placeholder="Nama Makanan"
-                            value="{{ old('nama_menu', $menu->nama_menu) }}" type="text" />
+                            id="nama_pelanggan" name="nama_pelanggan" placeholder="Nama Pelanggan"
+                            value="{{ old('nama_pelanggan', $userEdit->nama_pelanggan) }}" type="text" />
                     </div>
-
 
                     <div>
                         <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="harga">Harga</label>
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
-                            id="harga" name="harga" type="number" value="{{ old('harga', $menu->harga) }}" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="deskripsi">Deskripsi</label>
+                            for="no_telepon">No. Telepon</label>
                         <input
                             class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm text-sm font-medium text-text-muted-light dark:text-text-muted-dark "
-                            id="deskripsi" name="deskripsi" placeholder="Deskripsi Makanan" type="text"
-                            value="{{ old('deskripsi', $menu->deskripsi) }}" />
+                            id="no_telepon" name="no_telepon" placeholder="No Telepon" type="text"
+                            value="{{ old('no_telepon', $userEdit->no_telepon) }}" />
                     </div>
 
                     <div>
+                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                            for="username">Username</label>
+                        <input
+                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm text-sm font-medium text-text-muted-light dark:text-text-muted-dark "
+                            id="username" name="username" placeholder="Username" type="text"
+                            value="{{ old('username', $userEdit->username) }}" />
+                    </div>
+
+                    {{-- <div>
                         <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
                             for="stok">Stok</label>
                         <input
                             class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm text-sm font-medium text-text-muted-light dark:text-text-muted-dark "
                             id="stok" name="stok" min="0" placeholder="Stok Makanan" type="number"
                             value="{{ old('stok', $menu->stok) }}" />
-                    </div>
+                    </div> --}}
                 </div>
-                <div class="mb-3 mt-4">
+                {{-- <div class="mb-3 mt-4">
                     <label
                         class="form-label block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1">Upload
                         Gambar</label>
@@ -87,7 +88,7 @@
                             file:text-white
                             hover:file:bg-primary/80
                         ">
-                </div>
+                </div> --}}
 
                 <!-- Tempat Preview -->
                 <div class="mt-5" style="display: flex; align-items: center; justify-content: center;">

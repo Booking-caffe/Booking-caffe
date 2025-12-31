@@ -66,7 +66,7 @@
                 <li><a href="{{ route('showMakanan') }}">Makanan</a></li>
                 <li><a href="{{ route('showMinuman') }}">Minuman</a></li>
                 <li><a href="{{ route('dataUser') }}">Data User</a></li>
-                <li><a href="{{ route('admin.riwayat') }}">Riwayat</a></li>
+                <li><a href="{{ route('reservasiData') }}">Data Reservasi</a></li>
                 <li><a href="#">Setting</a></li>
             </ul>
 

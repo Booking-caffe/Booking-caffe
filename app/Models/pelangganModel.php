@@ -14,15 +14,13 @@ class pelangganModel extends Model
     // public $keyTeype = 'string';
 
     protected $fillable = [
-        'id_pelanggan',
+        // 'id_pelanggan',
         'nama_pelanggan',
         'username',
         'password',
         'no_telepon',
     ];
 
-     public function transaksi()
-    {
-        return $this->hasMany(Transaksi::class, 'id_pelanggan', 'id_pelanggan');
-    }
+     
+    
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DetailPesananController;
+use App\Http\Controllers\adminController\dataReservasi;
 use App\Http\Controllers\reservasiController;
 use App\Http\Controllers\adminController\dataUser;
 use App\Http\Controllers\regisController;
@@ -121,21 +122,41 @@ Route::get('/menu/{id}', [dataMenuController::class, 'show'])->name('menu.show')
 
 
 
+// DATA USER 
+Route::delete('/admin/hapus-user/{id}', [dataUser::class, 'hapusUser'])->name('hapusUser');
+Route::get('/admin/edit-user/{id}/edit', [dataUser::class, 'editUser'])->name('editUser');
+Route::post('/admin/data-user/{id}', [dataUser::class, 'updateUser'])->name('updateUser');
+Route::get('/admin/data-user', [dataUser::class, 'dataUserReservasi'])->name('dataUser');
+
 // Route::get('/admin/minuman', function () {
-//     return view('admin.minuman');
-// })->name('admin.minuman');
+    //     return view('admin.minuman');
+    // })->name('admin.minuman');
+
+
+
+// DATA RESERVASI
+Route::get('/admin/data-reservasi', [dataReservasi::class, 'reservasiData'])->name('reservasiData');
+
+Route::delete('/admin/hapus-reservasi/{id}', [dataReservasi::class, 'hapusReservasi'])->name('hapusReservasi');
+
+Route::get('/admin/data-reservasi/{id}/detail', [dataReservasi::class, 'detail'])->name('detailReservasi');
+
+Route::get('/admin/data-reservasi/{id}/detail-json', [dataReservasi::class, 'detailJson']);
+
+// Route::get('/reservasi/{id}/detail-json', [dataReservasi::class, 'detailJson']);
+
+Route::post('/admin/transaksi/{id}/validasi', [dataReservasi::class, 'validasiTransaksi'])->name('transaksi.validasi');
+
+Route::delete('/admin/transaksi/{id}/hapus', [dataReservasi::class, 'hapusTransaksi'])->name('transaksi.hapus');
+
 
 
 // DATA USER
 // Route::get('/admin/data-user', [homeAdminController::class, 'dataUser'])->name('dataUser');
-Route::get('/admin/data-user', [dataUser::class, 'dataUserReservasi'])->name('dataUser');
-
+//
 // Route::get('/admin/datauser', function () {
 //     return view('admin.datauser');
 // })->name('admin.datauser');
 
-Route::get('/admin/riwayat', function () {
-    return view('admin.riwayat');
-})->name('admin.riwayat');
 
 

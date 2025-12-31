@@ -19,4 +19,14 @@ class reservasi extends Model
         'ruangan',
         'nomor_meja',
     ];
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(pelangganModel::class, 'id_pelanggan', 'id_pelanggan');
+    }
+
+    public function pengelola()
+    {
+        return $this->belongsTo(pengelolaModel::class, 'id_pengelola', 'id_pengelola'); 
+    }
 }

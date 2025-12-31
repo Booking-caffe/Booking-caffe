@@ -18,14 +18,8 @@
                 <tr>
                     <th>No</th>
                     <th>Nama</th>
-                    <th>No HP</th>
-                    <th>Jumlah</th>
-                    <th>No Meja</th>
-                    <th>Pesanan</th>
-                    <th>Total</th>
-                    <th>Tanggal</th>
-                    <th>Waktu</th>
-                    <th>Status</th>
+                    <th>Nomor Telepon</th>
+                    <th>Tgl Terdaftar</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -36,22 +30,29 @@
                         <td colspan="11" class="text-center">Tidak Ada Data</td>
                     </tr>
                 @else
-                    @foreach ($dataUser as $r)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $r->nama_pelanggan }}</td>
-                            <td>{{ $r->no_telepon }}</td>
-                            <td>-</td>
-                            <td>Indoor-M1</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td class="aksi">
-                                <button class="aksi-btn detail">Detail</button>
-                            </td>
-                        </tr>
+                    @foreach ($dataUser as $u)
+                        
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td style="text-align: left">{{ $u->nama_pelanggan }}</td>
+                                <td>{{ $u->no_telepon }}</td>
+                                <td>{{ $u->created_at }}</td>
+                                <td class="aksi">
+                                    {{-- EDIT --}}
+                                    <button class="aksi-btn edit"><a href="{{ route('editUser', $u->id_pelanggan) }}"><i class="bi bi-pencil-square"></i></a></button>
+
+                                    <!-- HAPUS -->
+                                    {{-- <form action="{{ route('hapusUser', $u->id_pelanggan) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class=" aksi-btn delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form> --}}
+                                </td>
+                            </tr>
+                        
                     @endforeach
                 @endif
             </tbody>
