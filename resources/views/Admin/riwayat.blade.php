@@ -35,8 +35,8 @@
                     <td style="text-align: left;">{{ $r->nama_pelanggan }}</td>
                     <td>{{ $r->waktu }}</td>
                     <td>{{ $r->jumlah_tamu }}</td>
-                    <td>{{ $r->ruangan }}</td>
-                    <td>{{ $r->nomor_meja }}</td>
+                    <td> {{ implode(', ', $r->ruangan ?? []) }}</td>
+                    <td> {{ implode(', ', $r->nomor_meja ?? []) }}</td>
                     <td>
                         <div class="aksi">     
                             {{-- HAPUS RESERVASI --}}
@@ -171,12 +171,19 @@ function openModal(id) {
                     `;
 
                     // Pesanan terkait
-                    const pesananTerkait = data.pesanan.filter(p => p.id_transaksi === trx.id_transaksi);
-                    if (pesananTerkait.length > 0) {
+                    // Pesanan (sudah digabung per menu)
+                    if (data.pesanan && data.pesanan.length > 0) {
                         html += `<strong>Pesanan:</strong><ul class="list-disc ml-5">`;
-                        pesananTerkait.forEach(p => {
-                            html += `<li>(x${p.qty}) ${p.nama_menu} - Rp ${Number(p.harga).toLocaleString()}</li>`;
+
+                        data.pesanan.forEach(p => {
+                            html += `
+                                <li>
+                                    (x${p.total_qty}) ${p.nama_menu}
+                                    - Rp ${Number(p.subtotal).toLocaleString()}
+                                </li>
+                            `;
                         });
+
                         html += `</ul>`;
                     } else {
                         html += `<p class="text-gray-400">Tidak ada pesanan</p>`;

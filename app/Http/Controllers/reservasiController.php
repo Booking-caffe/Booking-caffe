@@ -168,9 +168,15 @@ class reservasiController extends Controller
     // ============================
     public function detailPesanan()
     {
+
+        $userId = session('id_pelanggan');
+        $cartKey = 'keranjang_' . $userId;
+
+
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
-        $pesanan = Session::get('keranjang', []);
+        $pesanan = Session::get($cartKey, []); // 🔥 FIX DI SINI
+
         
 
 
@@ -182,6 +188,8 @@ class reservasiController extends Controller
             }
         }
 
+        // dd($pesanan);
+
         $pajak = $totalHarga*0.1;
         $totalBayar = $totalHarga + $pajak;
 
@@ -192,7 +200,14 @@ class reservasiController extends Controller
                 ->with('gagal', 'Data reservasi belum lengkap.');
         }
 
-        return view('User.detail-pesanan', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar'));
+        return view('User.detail-pesanan', compact(
+            'data', 
+            'meja', 
+            'pesanan', 
+            'totalHarga', 
+            'pajak', 
+            'totalBayar'
+        ));
     }
 
 
@@ -206,6 +221,8 @@ class reservasiController extends Controller
 
         
         $id_pelanggan = session('id_pelanggan');
+        $id_pengelola = session('id_pengelola');
+        // $id_reservasi = session('id_pelanggan');
         $jumlahMeja  = Session::get('dataReservasi.jumlahMeja');
         $mejaDipilih = Session::get('mejaDipilih', []);
 
@@ -218,7 +235,11 @@ class reservasiController extends Controller
         $data = Session::get('dataReservasi');
         // $meja = Session::get('mejaDipilih');
 
-        $pesanan = Session::get('keranjang', []);
+        $cartKey = 'keranjang_' . $id_pelanggan;
+
+
+ 
+        $pesanan = Session::get($cartKey, []);
 
         if (!$data || !$meja) {
             return redirect()->route('reservasi')
@@ -255,7 +276,7 @@ class reservasiController extends Controller
                 
                 'id_pelanggan' => $id_pelanggan, // ✅ WAJIB// 'nama'             => $data['nama'],
                 //  'id_pengelola' => Session::get('id_pengelola'),
-                 'id_pengelola' => null,
+                //  'id_pengelola' => null,
                 
                 // (ID_PENGELOLA MASIH BERMASALAH (Defaultnya dibuatkan menjadi null dulu, setelah di konfirmasi baru nanti terupdate menjadi id_pengelola yang mengupdatenya))
                 // 'id_pengelola'     => 1, 
@@ -265,25 +286,11 @@ class reservasiController extends Controller
                 'jumlah_tamu'      => $data['jumlahTamu'],
                 'ruangan'          => json_encode($ruanganChosed),
                 'nomor_meja'       => json_encode($mejaChosed),
-                // 'bukti_pembayaran' => $path,
+                'bukti_pembayaran' => $path,
                 
             ]);
-
-            // dd($reservasi);
-
-
-            //  SIMPAN TRANSAKSI
-            $transaksi = Transaksi::create([
-                // 'id_transaksi' => time(), // contoh generate id
-                'id_pelanggan'      => $id_pelanggan,
-                'total'             => 0,
-                'status'            => 'menunggu',
-                'metode_pembayaran' => 'QRIS'
-            ]);
-
-            // dd($transaksi);
-
-            $pesanan = Session::get('keranjang', []);
+            
+           $idReservasi = $reservasi->id_reservasi;
             $totalHarga = 0;
 
             if ($pesanan) {
@@ -291,6 +298,26 @@ class reservasiController extends Controller
                     $totalHarga += $item['harga'] * $item['qty'];
                 }
             }
+
+            // dd($idReservasi);
+            
+            // dd($reservasi->id_reservasi);
+            //  SIMPAN TRANSAKSI
+            $transaksi = Transaksi::create([
+                // 'id_transaksi' => time(), // contoh generate id
+                'id_pelanggan'      => $id_pelanggan,
+                'id_reservasi'      => $idReservasi,
+                'id_pengelola'      => $id_pengelola,
+                'total'             => $totalHarga,
+                'status'            => 'menunggu',
+                'metode_pembayaran' => 'QRIS'
+            ]);
+
+            // dd($transaksi->id_pengelola);
+
+            // dd($transaksi);
+
+            
 
             // SIMPAN DETAIL PESANAN
             $total = 0;
@@ -342,12 +369,18 @@ class reservasiController extends Controller
     // DETAIL TRANSAKSI
     // ============================
     public function detailTransaksi($id)
-    {   $id_pelangganTran = session('id_pelanggan');
+    {   
+
+        $userId = session('id_pelanggan');
+        $cartKey = 'keranjang_' . $userId;
+
+
+        $id_pelangganTran = session('id_pelanggan');
         $reservasi = Reservasi::findOrFail($id);
         $data = Session::get('dataReservasi');
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
-        $pesanan = Session::get('keranjang');
+        $pesanan = Session::get($cartKey, []); // 🔥 FIX DI SINI
         $totalHarga = 0;
 
         

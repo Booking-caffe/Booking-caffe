@@ -34,7 +34,7 @@ class dataUser extends Controller
 
     public function editUser($id)
     {
-        $userEdit = pelangganModel::where('id_pelanggan', $id)->findOrFail($id);
+        $userEdit = pelangganModel::findOrFail($id);
         return view('Admin.userEdit', compact('userEdit'));
 
     }
@@ -44,29 +44,18 @@ class dataUser extends Controller
         // dd($request->all());
         $request->validate([
             'nama_pelanggan' => 'required|string|max:255',
-            'username'     => 'required|numeric',
-            'password'      => 'required|integer|min:0',
+            'username'     => 'required|string|max:50',
+            // 'password'      => 'required|integer|min:0',
             'no_telepon' => 'nullable|string',
         ]);
 
 
         $userEdit = pelangganModel::findOrFail($id);
-
-        // Jika upload gambar baru
-        // if ($request->hasFile('gambar')) {
-        //     if ($menu->gambar && Storage::disk('public')->exists($menu->gambar)) {
-        //         Storage::disk('public')->delete($menu->gambar);
-        //     }
-
-        //     $namaFile = Str::random(10) . '.' . $request->gambar->extension();
-        //     $menu->gambar = $request->gambar->storeAs('menu', $namaFile, 'public');
-        // }
-
         
         $update = $userEdit->update([
             'nama_pelanggan' => $request->nama_pelanggan,
             'username'     => $request->username,
-            'password'      => $request->password,
+            // 'password'      => $request->password,
             'no_telepon' => $request->no_telepon,
         ]);
 

@@ -61,6 +61,11 @@ class MenuController extends Controller
     // ===============================
    public function addToCart(Request $request)
     {
+
+        $userId = session('id_pelanggan'); // pastikan ini ada saat login
+
+        $cartKey = 'keranjang_' . $userId;
+
         $cartItem = [
             'id'     => $request->id,
             'nama'   => $request->nama,
@@ -70,7 +75,7 @@ class MenuController extends Controller
             'qty'    => $request->qty ?? 1,
         ];
 
-        session()->push('keranjang', $cartItem);
+        session()->push($cartKey, $cartItem);
 
         return redirect()->route('keranjang')->with('success', 'Ditambahkan ke keranjang!');
     }
@@ -82,7 +87,11 @@ class MenuController extends Controller
    public function keranjang()
     {
         // Hanya ambil dari SESSION keranjang
-        $keranjang = session('keranjang', []);
+        $userId = session('id_pelanggan');
+        $cartKey = 'keranjang_' . $userId;
+
+        $keranjang = session($cartKey, []);
+
 
         return view('User.keranjang', compact('keranjang'));
     }
@@ -94,21 +103,19 @@ class MenuController extends Controller
 
    public function removeItem($index)
     {
-        $keranjang = session('keranjang', []);
+        $userId = session('id_pelanggan');
+        $cartKey = 'keranjang_' . $userId;
 
-        // Jika index tidak valid
+        $keranjang = session($cartKey, []);
+
         if (!isset($keranjang[$index])) {
             return back()->with('error', 'Item tidak ditemukan.');
         }
 
-        // Hapus item berdasarkan index
         unset($keranjang[$index]);
-
-        // Reindex array agar tidak bolong
         $keranjang = array_values($keranjang);
 
-        // Simpan kembali ke session
-        session(['keranjang' => $keranjang]);
+        session([$cartKey => $keranjang]);
 
         return back()->with('success', 'Item berhasil dihapus!');
     }
@@ -118,14 +125,18 @@ class MenuController extends Controller
 
    public function updateQty(Request $request, $index)
     {
-        $keranjang = session()->get('keranjang', []);
+        $userId = session('id_pelanggan');
+        $cartKey = 'keranjang_' . $userId;
+
+        $keranjang = session($cartKey, []);
 
         if (isset($keranjang[$index])) {
             $keranjang[$index]['qty'] = $request->qty;
-            session()->put('keranjang', $keranjang);
+            session()->put($cartKey, $keranjang);
 
             return response()->json(['success' => true]);
         }
+
 
 
         return response()->json([

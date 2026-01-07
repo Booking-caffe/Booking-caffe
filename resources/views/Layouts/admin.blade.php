@@ -59,7 +59,18 @@
 <div class="container">
     <!-- SIDEBAR -->
         <aside class="sidebar">
-            <div class="logo"></div>
+            <div class="flex items-center justify-center h-20">
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center">
+                    <img 
+                        src="{{ asset('images/logo.png') }}" 
+                        alt="Logo"
+                        class="h-20 w-auto object-contain"
+                    >
+
+                    Ini Logo
+                </a>
+            </div>
+
 
             <ul class="menu">
                 <li><a href="{{ route('admin.dashboard') }}">Home</a></li>

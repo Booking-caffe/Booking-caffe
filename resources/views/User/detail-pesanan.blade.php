@@ -40,6 +40,7 @@
 @endpush
 
 @section('content')
+{{-- {{ dd($reservasi->id_reservasi) }} --}}
     <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mx-auto">
             <div class="bg-card-light dark:bg-card-dark rounded-lg shadow-lg p-6 sm:p-8 transform transition-transform duration-300 ">

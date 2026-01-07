@@ -28,7 +28,8 @@ return new class extends Migration
         Schema::create('reservasi', function (Blueprint $table) {
             $table->bigIncrements('id_reservasi');
             $table->unsignedBigInteger('id_pelanggan');
-            $table->unsignedBigInteger('id_pengelola')->nullable();
+            // $table->unsignedBigInteger('id_pengelola')->nullable();
+
             $table->date('tanggal');
             $table->time('waktu');
             $table->integer('jumlah_tamu');
@@ -39,10 +40,12 @@ return new class extends Migration
             $table->foreign('id_pelanggan')
                 ->references('id_pelanggan')
                 ->on('pelanggan');
-                
-            $table->foreign('id_pengelola')
-                ->references('id_pengelola')
-                ->on('pengelola');
+                // ->onDelete('cascade');
+
+            // $table->foreign('id_pengelola')
+            //     ->references('id_pengelola')
+            //     ->on('pengelola');
+                // ->nullOnDelete();
         });
 
         Schema::create('menu', function (Blueprint $table) {
@@ -61,19 +64,33 @@ return new class extends Migration
                 ->on('pengelola');
         });
 
-        Schema::create('transaksi', function (Blueprint $table) {
+       Schema::create('transaksi', function (Blueprint $table) {
             $table->bigIncrements('id_transaksi');
             $table->unsignedBigInteger('id_pelanggan');
+            $table->unsignedBigInteger('id_pengelola')->nullable();
+            $table->unsignedBigInteger('id_reservasi')->nullable();
+
             $table->integer('total');
-            // $table->integer('pajak', 12);
             $table->string('metode_pembayaran', 25);
             $table->string('status', 25);
             $table->timestamps();
 
             $table->foreign('id_pelanggan')
                 ->references('id_pelanggan')
-                ->on('pelanggan');
+                ->on('pelanggan')
+                ->cascadeOnDelete();
+
+            $table->foreign('id_pengelola')
+                ->references('id_pengelola')
+                ->on('pengelola')
+                ->nullOnDelete();
+
+            $table->foreign('id_reservasi')
+                ->references('id_reservasi')
+                ->on('reservasi')
+                ->cascadeOnDelete();
         });
+
 
         Schema::create('detail_pesanan', function (Blueprint $table) {
             $table->bigIncrements('id_detail_pesanan');
@@ -97,8 +114,8 @@ return new class extends Migration
     {
         Schema::dropIfExists('detail_pesanan');
         Schema::dropIfExists('transaksi');
-        Schema::dropIfExists('menu');
         Schema::dropIfExists('reservasi');
+        Schema::dropIfExists('menu');
         Schema::dropIfExists('pelanggan');
         Schema::dropIfExists('pengelola');
     }

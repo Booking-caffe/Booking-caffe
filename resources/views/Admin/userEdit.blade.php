@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Menu')
+@section('title', 'Edit User')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/form-makanan.css') }}">
@@ -8,11 +8,21 @@
 
 @section('content')
     <div class="main-content" style="max-width: 600px">
-        <div class="max-w-2xl  bg-white  dark:bg-surface-dark rounded-lg shadow-lg p-6 sm:p-8 md:p-12">
-
             @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+                <div class="mb-6 flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 px-5 py-4 text-green-700 shadow-sm">
+                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+
+                    <span class="font-medium">
+                        {{ session('success') }}
+                    </span>
+                </div>
             @endif
+
+        <div class="max-w-2xl  bg-white  dark:bg-surface-dark rounded-lg shadow-lg p-6 sm:p-8 md:p-12">
 
             <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">Edit User</h1>
 

@@ -125,6 +125,11 @@ class LoginController extends Controller
         // hapus session id dan nama pelanggan
         Session::forget('id_pelanggan');
         Session::forget('nama_pelanggan');
+        session()->forget('keranjang');
+        session()->forget('reservasi');
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         // back landing page
         return view('home');
