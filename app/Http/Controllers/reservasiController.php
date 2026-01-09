@@ -22,22 +22,30 @@ class reservasiController extends Controller
             return response('Fitur download PDF belum tersedia. Silakan install barryvdh/laravel-dompdf.', 501);
         }
 
+        $userId = session('id_pelanggan');
+        $cartKey = 'keranjang_' . $userId;
+
         $reservasi = Reservasi::findOrFail($id);
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
-        $pesanan = Session::get('keranjang');
+        $pesanan = Session::get($cartKey, []);
+
         $totalHarga = 0;
         if ($pesanan) {
             foreach ($pesanan as $item) {
                 $totalHarga += $item['harga'] * $item['qty'];
             }
         }
+
+        // dd($pesanan);
+
         $pajak = $totalHarga * 0.1;
         $totalBayar = $totalHarga + $pajak;
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('User.detail-transaksi-pdf', compact('data', 'meja', 'pesanan', 'totalHarga', 'pajak', 'totalBayar', 'reservasi'));
         return $pdf->download('transaksi-'.$id.'.pdf');
     }
+
     //
     public function showResevasi()
     {
@@ -151,6 +159,7 @@ class reservasiController extends Controller
         // Simpan meja baru
         $mejaDipilih[] = $mejaBaru;
         Session::put('mejaDipilih', $mejaDipilih);
+
 
         // Jika belum cukup → tetap di halaman
         if (count($mejaDipilih) < $jumlahMeja) {

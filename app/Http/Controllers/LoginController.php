@@ -101,7 +101,7 @@ class LoginController extends Controller
         if ($pengelola && $request->password === $pengelola->password) {
             Session::put('id_pengelola', $pengelola->id_pengelola);
             Session::put('nama_pengelola', $pengelola->nama_pengelola);
-            return redirect()->route('home-admin');
+            return redirect()->route('admin.dashboard');
         }
 
 

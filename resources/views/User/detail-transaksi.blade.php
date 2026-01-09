@@ -84,7 +84,7 @@
                         @foreach ($pesanan as $p)
                             <div class="flex justify-between">
                                 <span>{{ $p['qty'] }}x {{ $p['nama'] }}</span>
-                                <span>Rp. {{ $p['harga'] }}</span>
+                                <span>Rp. {{ number_format($p['harga'], 0, ',', '.') }}</span>
                             </div>
                         @endforeach
                     </div>

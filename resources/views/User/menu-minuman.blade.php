@@ -1,45 +1,42 @@
 @extends('layouts.app')
 
-@section('title', 'Minuman')
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset ('css/menu.css') }}">
-@endpush
+@section('title', 'Makanan')
 
 @section('content')
+<div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
 
-<h1 style="text-align:center; margin-bottom:30px; font-size: 2rem;">Menu Minuman</h1>
+    <!-- Judul -->
+    <h1 class="text-center text-xl sm:text-2xl md:text-3xl font-bold mb-5 sm:mb-8">
+        Menu Minuman
+    </h1>
 
-    <div class="menu-container">
+    <!-- Grid Menu -->
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
         @foreach ($menuMinuman as $menu)
-            <a href="{{ route('detail-minuman', $menu->id_menu) }}" class="menu-card">
-                <img src="{{ asset('storage/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}">
-                <h3>{{ $menu->nama_menu }}</h3>
-                <p>{{ $menu->harga }}</p>
+            <a href="{{ route('detail-minuman', $menu->id_menu) }}"
+               class="bg-white rounded-lg shadow-sm hover:shadow-md transition overflow-hidden group">
+
+                <!-- Gambar -->
+                <div class="aspect-square overflow-hidden">
+                    <img
+                        src="{{ asset('storage/' . $menu->gambar) }}"
+                        alt="{{ $menu->nama_menu }}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition"
+                    >
+                </div>
+
+                <!-- Konten -->
+                <div class="p-2 sm:p-4 text-center">
+                    <h3 class="font-medium text-sm sm:text-base line-clamp-2">
+                        {{ $menu->nama_menu }}
+                    </h3>
+                    <p class="text-green-600 font-semibold text-sm sm:text-base mt-1">
+                        Rp {{ number_format($menu->harga, 0, ',', '.') }}
+                    </p>
+                </div>
             </a>
         @endforeach
     </div>
 
+</div>
 @endsection
-
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const ctx = document.getElementById("myChart").getContext("2d");
-
-        new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "Mei"],
-                datasets: [{
-                    label: "Pelanggan",
-                    data: [5, 9, 7, 12, 10],
-                    borderWidth: 2,
-                    borderColor: "blue"
-                }]
-            }
-        });
-    });
-</script>
-@endpush

@@ -11,21 +11,28 @@ use Illuminate\Support\Facades\DB;
 
 class dataReservasi extends Controller
 {
-     public function reservasiData(){
+     public function reservasiData(Request $request){
        
         // $reservasi = reservasi::all();
-    
-        $reservasi = DB::table('reservasi')
-            ->join('pelanggan', 'reservasi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
-            ->select('reservasi.*', 'pelanggan.nama_pelanggan')
-            ->get()
-            ->map(function ($r) {
-                $r->ruangan = json_decode($r->ruangan, true);
-                $r->nomor_meja = json_decode($r->nomor_meja, true);
-                return $r;
-            });
+        $perPage = $request->get('per_page', 5);
+        $search  = $request->get('search');
 
-        return view('admin.riwayat', compact('reservasi'));
+        $reservasi = Reservasi::join('pelanggan', 'reservasi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
+            ->select('reservasi.*', 'pelanggan.nama_pelanggan')
+            ->when($search, function ($query, $search) {
+                $query->where('pelanggan.nama_pelanggan', 'like', "%{$search}%");
+            })
+            ->paginate($perPage)
+            ->withQueryString();
+
+        // Decode JSON
+        $reservasi->getCollection()->transform(function ($r) {
+            $r->ruangan = json_decode($r->ruangan, true);
+            $r->nomor_meja = json_decode($r->nomor_meja, true);
+            return $r;
+        });
+
+        return view('admin.riwayat', compact('reservasi', 'search'));
     }
 
 

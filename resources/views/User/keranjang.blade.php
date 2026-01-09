@@ -2,103 +2,90 @@
 
 @section('title', 'Keranjang')
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/keranjang.css') }}">
-@endpush
-
-
 @section('content')
-<h1 style="text-align:center; margin: 50px 30px; font-size: 2rem;">Keranjang</h1>
+<div class="container mx-auto px-4 py-10">
 
-<div class="keranjang-container">
+    <!-- TITLE -->
+    <h1 class="text-center text-2xl md:text-3xl font-bold mb-10">
+        Keranjang
+    </h1>
 
     @if(count($keranjang) == 0)
-        <div class="alert alert-success">
-            <p style="text-align:center;">Keranjang kosong.</p>
+        <div class="text-center text-gray-500">
+            Keranjang kosong.
         </div>
-
     @else
 
-        {{-- GRID 2 KOLOM --}}
-        <div class="grid-keranjang">
+        <!-- GRID ITEM -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             @foreach($keranjang as $index => $item)
-            <div class="item-card">
+            <div class="bg-white dark:bg-card-dark rounded-xl shadow-md p-4 flex gap-4">
 
-                {{-- Gambar --}}
-                <img src="{{ asset('storage/' . $item['gambar']) }}" class="menu-img" alt="{{ $item['nama'] }}">
-                {{-- <img src="{{ asset($item->gambar) }}" class="menu-img" alt="Gambar Menu"> --}}
+                <!-- IMAGE -->
+                <img src="{{ asset('storage/' . $item['gambar']) }}"
+                     alt="{{ $item['nama'] }}"
+                     class="w-24 h-24 rounded-lg object-cover flex-shrink-0">
 
-                <div class="item-info">
-                    <strong>{{ $item['nama'] }}</strong><br>
-                    Rp. {{ number_format($item['harga']) }},
-                    
-                    <div class="delete-btn">
-                        <form action="{{ route('update-qty', $index) }}" method="POST" class="qty-form">
-                            @csrf
-                            @method('PUT')
-                        </form>
+                <!-- INFO -->
+                <div class="flex-1 flex flex-col justify-between">
 
-                        
-                        {{-- Tombol Delete (pisah form) --}}
+                    <div>
+                        <h3 class="font-semibold text-lg">
+                            {{ $item['nama'] }}
+                        </h3>
+                        <p class="text-sm text-gray-500">
+                            Rp {{ number_format($item['harga']) }}
+                        </p>
+                    </div>
+
+                    <!-- ACTION -->
+                    <div class="flex items-center justify-between mt-4">
+
+                        <!-- QTY -->
+                        <input type="number"
+                               min="1"
+                               value="{{ $item['qty'] }}"
+                               data-index="{{ $index }}"
+                               class="qty-input w-16 rounded-md border-gray-300 text-center text-sm">
+
+                        <!-- DELETE -->
                         <form action="{{ route('remove-item', $index) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" style="background:none; border:none; cursor:pointer; color:red; font-size:30px;">
+                            <button type="submit"
+                                    class="text-red-500 hover:text-red-700 text-xl">
                                 🗑
                             </button>
                         </form>
 
-                        <input type="number" class="qty-input" data-index="{{ $index }}" value="{{ $item['qty'] }}" min="1">
-
-                        {{-- Checkbox --}}
-                        <input type="checkbox" class="item-check">
+                        <!-- CHECKBOX -->
+                        <input type="checkbox"
+                               class="item-check w-4 h-4 accent-primary">
                     </div>
                 </div>
-
             </div>
             @endforeach
 
         </div>
 
-        {{-- BAGIAN BAWAH: Checklist Semua + Tombol Reservasi --}}
-        <div class="bottom-section">
-            <label>
-                <input type="checkbox"> Semua
+        <!-- BOTTOM BAR -->
+        <div class="mt-10 flex flex-col md:flex-row items-center justify-between gap-4
+                    bg-white dark:bg-card-dark rounded-xl shadow-md p-5">
+
+            <label class="flex items-center gap-2 text-sm font-medium">
+                <input type="checkbox" class="accent-primary">
+                Pilih Semua
             </label>
 
-            <button class="reservasi-btn"><a href="{{ route('reservasi') }}"> Reservasi</a></button>
+            <a href="{{ route('reservasi') }}"
+               class="inline-block bg-primary text-white px-6 py-3 rounded-lg
+                      hover:bg-primary/90 transition">
+                Reservasi
+            </a>
         </div>
 
     @endif
 
 </div>
 @endsection
-
-@push('extra-scripts')
-<script>
-    document.querySelectorAll('.qty-input').forEach(input => {
-        input.addEventListener('change', function() {
-
-            const index = this.dataset.index;
-            const qty = this.value;
-
-            fetch(`/keranjang/update/${index}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({ qty: qty })
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log("Qty updated:", data);
-                // bisa tambah notifikasi kecil
-            })
-            .catch(err => console.error(err));
-
-        });
-    });
-</script>
-@endpush

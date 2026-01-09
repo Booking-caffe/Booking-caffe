@@ -115,7 +115,7 @@
                                 </div>
 
                                 <div class="flex justify-end">
-                                    <button type="submit"
+                                    <button id="btn-submit" type="submit"
                                         class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
                                         Selanjutnya
                                     </button>
@@ -166,7 +166,7 @@
                                         data-ruangan="Outdoor" data-meja="O8">M8</button>
                                 </div>
                                 <div class="mt-auto flex justify-start">
-                                    <button type="submit"
+                                    <button id="btn-submit" type="submit"
                                         class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
                                         Selanjutnya
                                     </button>

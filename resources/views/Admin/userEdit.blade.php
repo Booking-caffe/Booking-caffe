@@ -7,128 +7,92 @@
 @endpush
 
 @section('content')
-    <div class="main-content" style="max-width: 600px">
+    <div class="w-full px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl">
+
+            {{-- ALERT SUCCESS --}}
             @if (session('success'))
-                <div class="mb-6 flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 px-5 py-4 text-green-700 shadow-sm">
+                <div
+                    class="mb-6 flex items-center gap-3 rounded-lg border border-green-200 bg-green-50 px-5 py-4 text-green-700 shadow-sm">
                     <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-
-                    <span class="font-medium">
-                        {{ session('success') }}
-                    </span>
+                    <span class="font-medium">{{ session('success') }}</span>
                 </div>
             @endif
 
-        <div class="max-w-2xl  bg-white  dark:bg-surface-dark rounded-lg shadow-lg p-6 sm:p-8 md:p-12">
+            {{-- CARD --}}
+            <div class="rounded-xl bg-white dark:bg-surface-dark shadow-lg p-6 sm:p-8">
 
-            <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">Edit User</h1>
+                <h1 class="mb-8 text-center text-2xl sm:text-3xl font-bold text-primary">
+                    Edit User
+                </h1>
 
-            <form action="{{ route('updateUser', $userEdit->id_pelanggan) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                
-                {{-- @method('PUT') --}}
-                <div class="mb-5" style="display: flex; justify-content: center;">
-                    {{-- @if ($userUpdate->gambar)
-                        <img src="{{ asset('storage/' . $userUpdate->gambar) }}" style="width: 350px;" class="w-32 rounded mb-3">
-                    @endif --}}
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form action="{{ route('updateUser', $userEdit->id_pelanggan) }}" method="POST">
+                    @csrf
 
-                    <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="nama_pelanggan">Nama Pelanggan</label>
+                    {{-- FORM GRID --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
-                            id="nama_pelanggan" name="nama_pelanggan" placeholder="Nama Pelanggan"
-                            value="{{ old('nama_pelanggan', $userEdit->nama_pelanggan) }}" type="text" />
+                        {{-- NAMA --}}
+                        <div>
+                            <label for="nama_pelanggan"
+                                class="mb-1 block text-sm font-medium text-text-muted-light dark:text-text-muted-dark text-gray-700">
+                                Nama Pelanggan
+                            </label>
+                            <input type="text" id="nama_pelanggan" name="nama_pelanggan"
+                                value="{{ old('nama_pelanggan', $userEdit->nama_pelanggan) }}"
+                                placeholder="Nama Pelanggan"
+                                class="w-full rounded-md border-gray-300 
+                                px-3 py-2
+                                focus:ring-primary focus:border-primary transition text-gray-700">
+                        </div>
+
+                        {{-- TELEPON --}}
+                        <div>
+                            <label for="no_telepon"
+                                class="mb-1 block text-sm font-medium text-text-muted-light dark:text-text-muted-dark text-gray-700">
+                                No. Telepon
+                            </label>
+                            <input type="text" id="no_telepon" name="no_telepon"
+                                value="{{ old('no_telepon', $userEdit->no_telepon) }}"
+                                placeholder="No Telepon"
+                                class="w-full rounded-md border-gray-300 
+                                px-3 py-2
+                                focus:ring-primary focus:border-primary transition text-gray-700">
+                        </div>
+
+                        {{-- USERNAME --}}
+                        <div class="md:col-span-2">
+                            <label for="username"
+                                class="mb-1 block text-sm font-medium text-text-muted-light dark:text-text-muted-dark text-gray-700">
+                                Username
+                            </label>
+                            <input type="text" id="username" name="username"
+                                value="{{ old('username', $userEdit->username) }}"
+                                placeholder="Username"
+                                class="w-full rounded-md border-gray-300 
+                                px-3 py-2
+                                focus:ring-primary focus:border-primary transition text-gray-700">
+                        </div>
+
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="no_telepon">No. Telepon</label>
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm text-sm font-medium text-text-muted-light dark:text-text-muted-dark "
-                            id="no_telepon" name="no_telepon" placeholder="No Telepon" type="text"
-                            value="{{ old('no_telepon', $userEdit->no_telepon) }}" />
+                    {{-- BUTTON --}}
+                    <div class="mt-8">
+                        <button type="submit"
+                            class="w-full rounded-md bg-primary py-3 text-white font-semibold
+                                   hover:opacity-90 focus:outline-none focus:ring-2
+                                   focus:ring-primary focus:ring-offset-2
+                                   transition-all shadow-md hover:shadow-lg">
+                            Simpan Perubahan
+                        </button>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="username">Username</label>
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm text-sm font-medium text-text-muted-light dark:text-text-muted-dark "
-                            id="username" name="username" placeholder="Username" type="text"
-                            value="{{ old('username', $userEdit->username) }}" />
-                    </div>
-
-                    {{-- <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="stok">Stok</label>
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm text-sm font-medium text-text-muted-light dark:text-text-muted-dark "
-                            id="stok" name="stok" min="0" placeholder="Stok Makanan" type="number"
-                            value="{{ old('stok', $menu->stok) }}" />
-                    </div> --}}
-                </div>
-                {{-- <div class="mb-3 mt-4">
-                    <label
-                        class="form-label block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1">Upload
-                        Gambar</label>
-                    <input type="file" name="gambar" id="previewGambar" accept="image/*"
-                        class="
-                            block w-full 
-                            rounded-md 
-                            border-gray-300 dark:border-gray-600 
-                            bg-background-light dark:bg-background-dark 
-                            focus:ring-primary focus:border-primary 
-                            transition duration-150 ease-in-out shadow-sm 
-                            text-sm font-medium text-text-muted-light dark:text-text-muted-dark
-
-                            file:py-2     /* tinggi tombol */
-                            file:px-4
-                            file:rounded-md
-                            file:border-0
-                            file:text-sm
-                            file:font-medium
-                            file:bg-primary
-                            file:text-white
-                            hover:file:bg-primary/80
-                        ">
-                </div> --}}
-
-                <!-- Tempat Preview -->
-                <div class="mt-5" style="display: flex; align-items: center; justify-content: center;">
-                    <img id="gambarPreview" src="#" alt="Preview Gambar"
-                        style="display:none; width:200px; border-radius:10px;">
-                </div>
-
-                <div class="mt-8">
-                    <button
-                        class="w-full bg-primary text-white font-bold py-3 px-4 rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                        type="submit">
-                        Selanjutnya
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 @endsection
-
-@push('extra-script')
-    <script>
-        // Menampilkan preview setelah pilih gambar
-        document.getElementById('previewGambar').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-
-            if (file) {
-                const gambarPreview = document.getElementById('gambarPreview');
-                gambarPreview.src = URL.createObjectURL(file);
-                gambarPreview.style.display = 'block';
-            }
-        });
-    </script>
-@endpush

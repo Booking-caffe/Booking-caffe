@@ -23,29 +23,47 @@ class dataMenuController extends Controller
     }
     
     //DATA MENU 
-    public function showMakanan()
+    public function showMakanan(Request $request)
     {
-        $makanan = menuModel::where('kategori', 'makanan')->get();
-        return view('Admin.makanan', compact('makanan'));
-    
+        $perPage = $request->get('per_page', 5);
+        $search  = $request->get('search');
+
+        $makanan = menuModel::where('kategori', 'makanan')
+            ->when($search, function ($query, $search) {
+                $query->where('nama_menu', 'like', "%{$search}%")
+                    ->orWhere('deskripsi', 'like', "%{$search}%");
+            })
+            ->paginate($perPage)
+            ->withQueryString(); // supaya search & per_page tidak hilang
+
+        return view('Admin.makanan', compact('makanan', 'search'));
     }
 
-    public function showMinuman()
+    public function showMinuman(Request $request)
     {
 
-        $minuman = menuModel::where('kategori', 'minuman')->get();
-        return view('Admin.minuman', compact('minuman'));
+        $perPage = $request->get('per_page', 5);
+        $search  = $request->get('search');
+
+        $minuman = menuModel::where('kategori', 'minuman')
+            ->when($search, function ($query, $search) {
+                $query->where('nama_menu', 'like', "%{$search}%")
+                    ->orWhere('deskripsi', 'like', "%{$search}%");
+            })
+            ->paginate($perPage)
+            ->withQueryString(); // supaya search & per_page tidak hilang
+        return view('Admin.minuman', compact('minuman', 'search'));
     }
 
-    public function formMakanan()
+    public function formMenu()
     {
-        return view('Admin.tambahMakanan');
+        return view('Admin.tambahMenu');
     }
 
-    public function formMinuman()
-    {
-        return view('Admin.tambahMinuman');
-    }
+    // public function formMinuman()
+    // {
+    //     return view('Admin.tambahMinuman');
+    // }
 
 
     public function destroy($id)

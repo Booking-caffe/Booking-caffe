@@ -1,80 +1,141 @@
 @extends('layouts.admin')
 
-@section('title', 'Data User')
+@section('title', 'Makanan')
 
 @section('content')
 
-    <h2 class="page-title">Data User</h2>
 
-    <div class="top-actions">
-        <div class="search-box">
-            <input type="text" placeholder="Search">
+<!-- TITLE -->
+<h2 class="text-2xl font-bold text-gray-800">
+    Data User
+</h2>
+
+    <div>
+        <!-- TOP ACTIONS -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between  bg-white gap-4 py-4 px-5 mb-3 rounded-lg shadow ">
+    
+            <!-- SEARCH -->
+            <form method="GET" class="w-full sm:w-64">
+                <input type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Search menu..."
+                    class="w-full rounded-lg border border-gray-300
+                        px-4 py-2 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-primary text-black">
+            </form>
         </div>
-    </div>
-
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Nomor Telepon</th>
-                    <th>Tgl Terdaftar</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @if ($dataUser->isEmpty())
+    
+        <!-- TABLE -->
+        <div class="overflow-x-auto bg-white rounded-xl shadow border">
+            
+            <table class="min-w-full text-sm text-gray-700">
+                
+                <!-- HEAD -->
+                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
                     <tr>
-                        <td colspan="11" class="text-center">Tidak Ada Data</td>
+                        <th class="px-4 py-3 text-center">No</th>
+                        <th class="px-4 py-3 text-left">Nama</th>
+                        <th class="px-4 py-3 text-left">Nomor Telepon</th>
+                        <th class="px-4 py-3 text-left">Tgl Reservasi</th>
+                        <th class="px-4 py-3 text-center">Aksi</th>
                     </tr>
-                @else
-                    @foreach ($dataUser as $u)
-                        
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td style="text-align: left">{{ $u->nama_pelanggan }}</td>
-                                <td>{{ $u->no_telepon }}</td>
-                                <td>{{ $u->created_at }}</td>
-                                <td class="aksi">
-                                    {{-- EDIT --}}
-                                    <button class="aksi-btn edit"><a href="{{ route('editUser', $u->id_pelanggan) }}"><i class="bi bi-pencil-square"></i></a></button>
-
-                                    <!-- HAPUS -->
-                                    {{-- <form action="{{ route('hapusUser', $u->id_pelanggan) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class=" aksi-btn delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form> --}}
+                </thead>
+    
+                <!-- BODY -->
+                <tbody class="divide-y">
+                     @if ($dataUser->isEmpty())
+                        <tr>
+                            <td colspan="11" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @else
+                        @foreach ($dataUser as $u)
+                            <tr class="hover:bg-gray-50">
+        
+                                <td class="px-4 py-3 text-center">
+                                    {{ ($dataUser->currentPage() - 1) * $dataUser->perPage() + $loop->iteration }}
                                 </td>
+        
+                                <td class="px-4 py-3">
+                                {{ $u->nama_pelanggan }}
+                                </td>
+        
+                                <td class="px-4 py-3 font-medium">
+                                    {{ $u->no_telepon }}
+                                </td>
+        
+                                <td class="px-4 py-3">
+                                    {{ $u->created_at }}
+                                </td>
+        
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center justify-center gap-2">
+        
+                                        <!-- EDIT -->
+                                        <a href="{{ route('editUser', $u->id_pelanggan) }}"
+                                            class="px-2 py-2 rounded-md
+                                        bg-blue-500 hover:bg-blue-600
+                                        text-white transition">
+                                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                                        </a>
+                                    </div>
+                                </td>
+        
                             </tr>
-                        
-                    @endforeach
-                @endif
-            </tbody>
-        </table>
+                        @endforeach
+                    @endif
+                    
+                </tbody>
+    
+            </table>
+        </div>
+        <!-- PAGINATION -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm mt-8">
+    
+            <!-- SHOW ENTRIES -->
+            <form method="GET" class="flex items-center gap-2 bg-primary px-3 py-1 rounded-lg">
+                Show
+                <select name="per_page"
+                    onchange="this.form.submit()"
+                    class="border rounded mx-2 py-0 focus:ring-primary focus:outline-none text-primary">
+                    <option value="5" {{ request('per_page') == 5 ? 'selected' : '' }}>5</option>
+                    <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                </select>
+                entries
+            </form>
+
+    
+            <!-- PAGE CONTROL -->
+            <div class="flex items-center gap-2">
+
+                <!-- PREVIOUS -->
+                <a href="{{ $dataUser->previousPageUrl() ?? '#' }}"
+                class="px-3 py-1 rounded
+                {{ $dataUser->onFirstPage()
+                        ? 'bg-gray-300 cursor-not-allowed'
+                        : 'bg-primary hover:bg-primary/90 text-white' }}">
+                    Previous
+                </a>
+
+                <!-- CURRENT PAGE -->
+                <span class="px-3 py-1 bg-primary text-white rounded">
+                    {{ $dataUser->currentPage() }}
+                </span>
+
+                <!-- NEXT -->
+                <a href="{{ $dataUser->nextPageUrl() ?? '#' }}"
+                class="px-3 py-1 rounded
+                {{ $dataUser->hasMorePages()
+                        ? 'bg-primary hover:bg-primary/90 text-white'
+                        : 'bg-gray-300 cursor-not-allowed' }}">
+                    Next
+                </a>
+
+            </div>
+    
+        </div>
     </div>
 
-    <div class="pagination">
-        <div class="show-entries">
-            Show
-            <select>
-                <option>5</option>
-                <option>10</option>
-                <option>20</option>
-            </select>
-            entries
-        </div>
-
-        <div class="page-controls">
-            <button>Previous</button>
-            <span>1</span>
-            <button>Next</button>
-        </div>
-    </div>
 
 @endsection

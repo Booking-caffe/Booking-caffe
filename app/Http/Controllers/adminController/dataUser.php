@@ -15,12 +15,20 @@ use Illuminate\Support\Facades\DB;
 
 class dataUser extends Controller
 {
-    public function dataUserReservasi(){
+    public function dataUserReservasi(Request $request){
        
-        $dataUser = pelangganModel::all();
+        $perPage = $request->get('per_page', 5);
+        $search  = $request->get('search');
+
+        $dataUser = pelangganModel::when($search, function ($query, $search) {
+                $query->where('nama_pelanggan', 'like', "%{$search}%");
+            })
+            ->paginate($perPage)
+            ->withQueryString(); // supaya search & per_page tidak hilang
+        return view('Admin.datauser', compact('dataUser', 'search'));
               
-        return view('admin.datauser', compact('dataUser'));
     }
+
     
     public function hapusUser($id)
     {

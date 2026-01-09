@@ -2,122 +2,147 @@
 
 @section('title', 'Edit Menu')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/form-makanan.css') }}">
-@endpush
-
 @section('content')
-    <div class="main-content" style="max-width: 600px">
-        <div class="max-w-2xl  bg-white  dark:bg-surface-dark rounded-lg shadow-lg p-6 sm:p-8 md:p-12">
 
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-0">
+
+    <div class="bg-white dark:bg-surface-dark rounded-xl shadow-lg p-6 sm:p-8">
+
+        {{-- ALERT --}}
+        @if (session('success'))
+            <div class="mb-6 rounded-lg bg-green-100 text-green-700 px-4 py-3">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- TITLE --}}
+        <h1 class="text-2xl sm:text-3xl font-bold text-center text-primary mb-8">
+            Edit Menu
+        </h1>
+
+        <form action="{{ route('update', $menu->id_menu) }}"
+              method="POST"
+              enctype="multipart/form-data">
+            @csrf
+
+            {{-- GAMBAR SAAT INI --}}
+            @if ($menu->gambar)
+                <div class="flex justify-center mb-6">
+                    <img src="{{ asset('storage/' . $menu->gambar) }}"
+                         class="w-48 h-48 object-cover rounded-xl border shadow">
+                </div>
             @endif
 
-            <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">Edit Menu</h1>
+            {{-- FORM GRID --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-            
-            <form action="{{ route('update', $menu->id_menu) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                {{-- @method('PUT') --}}
-                <div class="mb-5" style="display: flex; justify-content: center;">
-                    @if ($menu->gambar)
-                        <img src="{{ asset('storage/' . $menu->gambar) }}" style="width: 350px;" class="w-32 rounded mb-3">
-                    @endif
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="nama_menu">Nama Makanan</label>
-
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
-                            id="nama_menu" name="nama_menu" placeholder="Nama Makanan"
-                            value="{{ old('nama_menu', $menu->nama_menu) }}" type="text" />
-                    </div>
-
-
-                    <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="harga">Harga</label>
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
-                            id="harga" name="harga" type="number" value="{{ old('harga', $menu->harga) }}" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="deskripsi">Deskripsi</label>
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm text-sm font-medium text-text-muted-light dark:text-text-muted-dark "
-                            id="deskripsi" name="deskripsi" placeholder="Deskripsi Makanan" type="text"
-                            value="{{ old('deskripsi', $menu->deskripsi) }}" />
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                            for="stok">Stok</label>
-                        <input
-                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm text-sm font-medium text-text-muted-light dark:text-text-muted-dark "
-                            id="stok" name="stok" min="0" placeholder="Stok Makanan" type="number"
-                            value="{{ old('stok', $menu->stok) }}" />
-                    </div>
-                </div>
-                <div class="mb-3 mt-4">
-                    <label
-                        class="form-label block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1">Upload
-                        Gambar</label>
-                    <input type="file" name="gambar" id="previewGambar" accept="image/*"
-                        class="
-                            block w-full 
-                            rounded-md 
-                            border-gray-300 dark:border-gray-600 
-                            bg-background-light dark:bg-background-dark 
-                            focus:ring-primary focus:border-primary 
-                            transition duration-150 ease-in-out shadow-sm 
-                            text-sm font-medium text-text-muted-light dark:text-text-muted-dark
-
-                            file:py-2     /* tinggi tombol */
-                            file:px-4
-                            file:rounded-md
-                            file:border-0
-                            file:text-sm
-                            file:font-medium
-                            file:bg-primary
-                            file:text-white
-                            hover:file:bg-primary/80
-                        ">
+                {{-- NAMA --}}
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-primary">
+                        Nama Makanan
+                    </label>
+                    <input type="text"
+                           name="nama_menu"
+                           value="{{ old('nama_menu', $menu->nama_menu) }}"
+                           placeholder="Nama Makanan"
+                           class="w-full rounded-lg border border-gray-300
+                                  px-4 py-2
+                                  focus:ring-2 focus:ring-primary focus:outline-none text-primary">
                 </div>
 
-                <!-- Tempat Preview -->
-                <div class="mt-5" style="display: flex; align-items: center; justify-content: center;">
-                    <img id="gambarPreview" src="#" alt="Preview Gambar"
-                        style="display:none; width:200px; border-radius:10px;">
+                {{-- HARGA --}}
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-primary">
+                        Harga
+                    </label>
+                    <input type="number"
+                           name="harga"
+                           value="{{ old('harga', $menu->harga) }}"
+                           class="w-full rounded-lg border border-gray-300
+                                  px-4 py-2
+                                  focus:ring-2 focus:ring-primary focus:outline-none text-primary">
                 </div>
 
-                <div class="mt-8">
-                    <button
-                        class="w-full bg-primary text-white font-bold py-3 px-4 rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                        type="submit">
-                        Selanjutnya
-                    </button>
+                {{-- DESKRIPSI --}}
+                <div class="sm:col-span-2">
+                    <label class="block text-sm font-medium mb-1 text-primary">
+                        Deskripsi
+                    </label>
+                    <textarea name="deskripsi"
+                              rows="3"
+                              placeholder="Deskripsi Makanan"
+                              class="w-full rounded-lg border border-gray-300 text-primary
+                                     px-4 py-2
+                                     focus:ring-2 focus:ring-primary focus:outline-none">{{ old('deskripsi', $menu->deskripsi) }}</textarea>
                 </div>
-            </form>
-        </div>
+
+                {{-- STOK --}}
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-primary">
+                        Stok
+                    </label>
+                    <input type="number"
+                           min="0"
+                           name="stok"
+                           value="{{ old('stok', $menu->stok) }}"
+                           class="w-full rounded-lg border border-gray-300 text-primary
+                                  px-4 py-2
+                                  focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+
+                {{-- UPLOAD GAMBAR --}}
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-primary">
+                        Upload Gambar
+                    </label>
+                    <input type="file"
+                           name="gambar"
+                           id="previewGambar"
+                           accept="image/*"
+                           class="block w-full text-sm
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-lg file:border-0
+                                  file:bg-primary file:text-white
+                                  hover:file:bg-primary/80
+                                  border rounded-lg cursor-pointer text-primary">
+                </div>
+
+            </div>
+
+            {{-- PREVIEW --}}
+            <div class="mt-6 flex justify-center">
+                <img id="gambarPreview"
+                     class="hidden w-40 h-40 object-cover rounded-xl border shadow">
+            </div>
+
+            {{-- SUBMIT --}}
+            <div class="mt-8">
+                <button type="submit"
+                        class="w-full bg-primary hover:bg-primary/90
+                               text-white font-semibold
+                               py-3 rounded-lg
+                               transition shadow-lg">
+                    Simpan Perubahan
+                </button>
+            </div>
+
+        </form>
+
     </div>
+</div>
+
 @endsection
 
 @push('extra-script')
-    <script>
-        // Menampilkan preview setelah pilih gambar
-        document.getElementById('previewGambar').addEventListener('change', function(event) {
-            const file = event.target.files[0];
+<script>
+    document.getElementById('previewGambar').addEventListener('change', function (e) {
+        const img = document.getElementById('gambarPreview');
+        const file = e.target.files[0];
 
-            if (file) {
-                const gambarPreview = document.getElementById('gambarPreview');
-                gambarPreview.src = URL.createObjectURL(file);
-                gambarPreview.style.display = 'block';
-            }
-        });
-    </script>
+        if (file) {
+            img.src = URL.createObjectURL(file);
+            img.classList.remove('hidden');
+        }
+    });
+</script>
 @endpush

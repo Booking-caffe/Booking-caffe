@@ -6,17 +6,54 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\pelangganModel;
 use App\Models\reservasi;
+use App\Models\Transaksi;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 class homeAdminController extends Controller
 {
     // home admin
     public function home(){
 
-        if(Session::get('id_pengelola') === null)
-        {
-            abort(403, 'Unauthorize');
+        // ===== DATA CHART RESERVASI (punyamu yang sekarang) =====
+        $reservasi = Reservasi::selectRaw('tanggal, COUNT(*) as total')
+            ->groupBy('tanggal')
+            ->orderBy('tanggal')
+            ->get();
+
+
+        $period = CarbonPeriod::create(
+            now()->subDays(6),
+            now()
+        );
+
+        $map = $reservasi->pluck('total', 'tanggal');
+
+        $labels = [];
+        $data = [];
+
+        foreach ($period as $date) {
+            $tgl = $date->format('Y-m-d');
+            $labels[] = $date->format('d M');
+            $data[] = $map[$tgl] ?? 0;
         }
-        return view('Admin.dashboard');
+
+        // ===== TOTAL TRANSAKSI VALID =====
+        $totalRevenue = Transaksi::where('status', 'tervalidasi')
+            ->sum('total');
+
+        return view('admin.dashboard', compact(
+            'labels',
+            'data',
+            'totalRevenue'
+        ));
+
+        return view('admin.dashboard', compact(
+            'labels',
+            'data',
+            'totalRevenue'
+        ));
     }
 
     public function dataUser(){
