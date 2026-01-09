@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Resto Admin Dashboard</title>
+    <title>Admin-Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
     <link
@@ -201,7 +201,7 @@
                 </button>
 
                 <div>
-                    <h2 class="text-2xl font-bold tracking-tight">Overview</h2>
+                    <h2 class="text-2xl font-bold tracking-tight">Admin Panel</h2>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Here is what's happening today.</p>
                 </div>
                 <div class="flex items-center gap-4">

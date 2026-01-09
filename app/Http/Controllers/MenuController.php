@@ -88,12 +88,20 @@ class MenuController extends Controller
     {
         // Hanya ambil dari SESSION keranjang
         $userId = session('id_pelanggan');
-        $cartKey = 'keranjang_' . $userId;
+        
+        if ($userId === null) {
+            return redirect()->route('login')->with('success', 'untuk melihat keranjang harap login terlebih dahulu!');
+            
+        }else {
+            // Mengambil Data Session
+            $userId = session('id_pelanggan');
 
-        $keranjang = session($cartKey, []);
+            $cartKey = 'keranjang_' . $userId;
 
+            $keranjang = session($cartKey, []);
 
-        return view('User.keranjang', compact('keranjang'));
+            return view('User.keranjang', compact('keranjang'));
+        }   
     }
     
 

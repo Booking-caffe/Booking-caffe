@@ -46,7 +46,7 @@ class reservasiController extends Controller
         return $pdf->download('transaksi-'.$id.'.pdf');
     }
 
-    //
+    
     public function showResevasi()
     {
         if (session('id_pelanggan') === null) {
@@ -58,9 +58,7 @@ class reservasiController extends Controller
             $pelanggan = pelangganModel::where('id_pelanggan', '=', $id_pelanggan)
             ->get();
             return view('User.reservasi', compact('pelanggan'));
-        }
-
-        
+        }   
     }
 
 
@@ -283,12 +281,7 @@ class reservasiController extends Controller
             // Simpan ke database
             $reservasi = Reservasi::create([
                 
-                'id_pelanggan' => $id_pelanggan, // ✅ WAJIB// 'nama'             => $data['nama'],
-                //  'id_pengelola' => Session::get('id_pengelola'),
-                //  'id_pengelola' => null,
-                
-                // (ID_PENGELOLA MASIH BERMASALAH (Defaultnya dibuatkan menjadi null dulu, setelah di konfirmasi baru nanti terupdate menjadi id_pengelola yang mengupdatenya))
-                // 'id_pengelola'     => 1, 
+                'id_pelanggan' => $id_pelanggan, // ✅ WAJIB//
                 'no_hp'            => $data['noHp'],
                 'tanggal'          => $data['tanggal'],
                 'waktu'            => $data['waktu'],
@@ -308,9 +301,6 @@ class reservasiController extends Controller
                 }
             }
 
-            // dd($idReservasi);
-            
-            // dd($reservasi->id_reservasi);
             //  SIMPAN TRANSAKSI
             $transaksi = Transaksi::create([
                 // 'id_transaksi' => time(), // contoh generate id
@@ -322,17 +312,9 @@ class reservasiController extends Controller
                 'metode_pembayaran' => 'QRIS'
             ]);
 
-            // dd($transaksi->id_pengelola);
-
-            // dd($transaksi);
-
-            
 
             // SIMPAN DETAIL PESANAN
             $total = 0;
-            // $noDetail = 1;
-
-            // dd(Session::get('keranjang'));
 
             foreach ($pesanan as $item) {
 
@@ -346,22 +328,13 @@ class reservasiController extends Controller
                 ]);
 
                 $total += $item['harga'] * $item['qty'];
-                // $noDetail++;
             }
 
-            // dd($menu); 
 
             // UPDATE TRANSAKSI
             $transaksi->update(['total' => $total]);
 
             DB::commit();
-
-            // Bersihkan session
-            // Session::forget([
-            //     'dataReservasi',
-            //     'mejaDipilih',
-            //     'keranjang'
-            // ]);
 
             return Redirect()->route('detail-transaksi', $reservasi->id_reservasi)->with('success', 'Bukti pembayaran berhasil diupload!');
 
