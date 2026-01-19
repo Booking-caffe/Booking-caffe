@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\MenuModel;
 use App\Models\pelangganModel;
 use App\Models\PengelolaModel;
+use App\Models\Meja;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Container\Attributes\DB;
@@ -25,7 +26,7 @@ class DatabaseSeeder extends Seeder
         // data pengelola dummy
         $pengelolaData = [
             [
-                'id_pengelola' => 1,
+                // 'id_pengelola' => 1,
                 'nama_pengelola' => 'admin',
                 'username' => 'admin',
                 'password' => 'admin',
@@ -37,11 +38,21 @@ class DatabaseSeeder extends Seeder
         // data pelanggan dummy
         $pelangganData = [
             [
-                'id_pelanggan' => 1,
+                // 'id_pelanggan' => 1,
                 'nama_pelanggan' => 'budi',
                 'username' => 'budi',
                 'password' => 'budi',
                 'no_telepon' => '6289',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
+
+        // data pelanggan dummy
+        $Meja = [
+            [
+                'kode_meja' => 'IM1',
+                'ruangan' => 'Indoor',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -258,5 +269,6 @@ class DatabaseSeeder extends Seeder
         PengelolaModel::insert($pengelolaData);
         pelangganModel::insert($pelangganData);
         MenuModel::insert($menuData);
+        Meja::insert($Meja);
     }
 }

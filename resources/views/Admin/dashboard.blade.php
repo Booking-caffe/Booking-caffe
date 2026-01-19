@@ -12,7 +12,7 @@
             <div class="flex items-start justify-between relative z-10">
                 <div class="flex flex-col gap-2">
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-800">Total Meja</p>
-                    <h3 class="text-4xl font-bold text-gray-900 dark:text-gray-500 tracking-tight">12</h3>
+                    <h3 class="text-4xl font-bold text-gray-900 dark:text-gray-500 tracking-tight"> {{ $totalMeja }}</h3>
                 </div>
                 <div class="p-3 rounded-lg bg-gray-100 dark:bg-primary/5 text-gray-900 dark:text-dark group-hover:bg-background-dark group-hover:text-background-light transition-colors duration-300">
                     <span class="material-symbols-outlined">table_restaurant</span>
@@ -29,7 +29,7 @@
             <div class="flex items-start justify-between relative z-10">
                 <div class="flex flex-col gap-2">
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-800">Total Pelanggan</p>
-                    <h3 class="text-4xl font-bold text-gray-900 dark:text-gray-500 tracking-tight">45</h3>
+                    <h3 class="text-4xl font-bold text-gray-900 dark:text-gray-500 tracking-tight">{{ $jumlahPelanggan }}</h3>
                 </div>
                 
                 <div class="p-3 rounded-lg bg-gray-100 dark:bg-primary/5 text-gray-900 dark:text-dark group-hover:bg-background-dark group-hover:text-background-light transition-colors duration-300">
@@ -50,7 +50,7 @@
             <div class="flex items-start justify-between relative z-10">
                 <div class="flex flex-col gap-2">
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-800">Pesanan Masuk</p>
-                    <h3 class="text-4xl font-bold text-gray-900 dark:text-gray-500 tracking-tight">8</h3>
+                    <h3 class="text-4xl font-bold text-gray-900 dark:text-gray-500 tracking-tight">{{ $pesananMasuk }}</h3>
                 </div>
 
                <div class="p-3 rounded-lg bg-gray-100 dark:bg-primary/5 text-gray-900 dark:text-dark group-hover:bg-background-dark group-hover:text-background-light transition-colors duration-300">
@@ -93,7 +93,7 @@
 @endsection
 
 
-@section('extra-script')
+@push('extra-scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
@@ -142,4 +142,4 @@
             });
         });
     </script>
-@endsection
+@endpush

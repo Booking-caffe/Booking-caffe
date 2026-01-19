@@ -7,30 +7,26 @@ use Illuminate\Http\Request;
 use App\Models\reservasi;
 use App\Models\Transaksi;
 use App\Models\MenuModel;
+use App\Models\Meja;
 use Illuminate\Support\Facades\DB;
 
 class dataReservasi extends Controller
 {
-     public function reservasiData(Request $request){
+     public function reservasiData(Request $request)
+     {
        
-        // $reservasi = reservasi::all();
         $perPage = $request->get('per_page', 5);
         $search  = $request->get('search');
 
-        $reservasi = Reservasi::join('pelanggan', 'reservasi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
-            ->select('reservasi.*', 'pelanggan.nama_pelanggan')
+        $reservasi = Reservasi::with(['pelanggan', 'meja'])
             ->when($search, function ($query, $search) {
-                $query->where('pelanggan.nama_pelanggan', 'like', "%{$search}%");
+                $query->whereHas('pelanggan', function ($q) use ($search) {
+                    $q->where('nama_pelanggan', 'like', "%{$search}%");
+                });
             })
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage)
             ->withQueryString();
-
-        // Decode JSON
-        $reservasi->getCollection()->transform(function ($r) {
-            $r->ruangan = json_decode($r->ruangan, true);
-            $r->nomor_meja = json_decode($r->nomor_meja, true);
-            return $r;
-        });
 
         return view('admin.riwayat', compact('reservasi', 'search'));
     }
@@ -79,11 +75,33 @@ class dataReservasi extends Controller
 
     public function detail($id)
     {
-        $reservasi = Reservasi::with(['pelanggan', 'dataPesanan.transaksi'])
-            ->where('id_reservasi', $id)
-            ->firstOrFail();
+        try {
+        $transaksi = Transaksi::findOrFail($id);
 
-        return view('reservasi.detail', compact('reservasi'));
+        $reservasi = Reservasi::with('meja')
+            ->where('id_reservasi', $transaksi->id_reservasi)
+            ->first();
+
+            if (!$reservasi) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Reservasi tidak ditemukan'
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'transaksi' => $transaksi,
+                'reservasi' => $reservasi
+            ]);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data',
+                'error' => $e->getMessage() // penting untuk debugging
+            ], 500);
+        }
     }
 
 
@@ -168,8 +186,11 @@ class dataReservasi extends Controller
 
     public function validasiTransaksi($id)
     {
+        \Log::info('VALIDASI ID:', ['id' => $id]);
+
         $idPengelola = session('id_pengelola');
 
+        \Log::info('ID PENGELOLA SESSION:', ['id_pengelola' => $idPengelola]);
         if (!$idPengelola) {
             return response()->json([
                 'message' => 'Pengelola belum login'
@@ -218,5 +239,7 @@ class dataReservasi extends Controller
             ], 500);
         }
     }
-
 }
+
+
+

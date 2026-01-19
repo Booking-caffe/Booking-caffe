@@ -34,12 +34,16 @@ return new class extends Migration
             $table->time('waktu');
             $table->integer('jumlah_tamu');
             $table->text('ruangan');
-            $table->text('nomor_meja');
+            // $table->text('nomor_meja');
             $table->timestamps();
 
             $table->foreign('id_pelanggan')
                 ->references('id_pelanggan')
                 ->on('pelanggan');
+
+            // $table->foreign('id_meja')
+            //     ->references('id_meja')
+            //     ->on('meja');
                 // ->onDelete('cascade');
 
             // $table->foreign('id_pengelola')
@@ -107,6 +111,32 @@ return new class extends Migration
                 ->references('id_menu')
                 ->on('menu');
         });
+
+
+       Schema::create('meja', function (Blueprint $table) {
+            $table->bigIncrements('id_meja');
+            $table->text('kode_meja'); // A1, A2
+            $table->text('ruangan');
+            $table->timestamps();
+        });
+
+
+        // PIVOT TABEL RESERVASI_MEJA
+        Schema::create('reservasi_meja', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('id_reservasi');
+            $table->unsignedBigInteger('id_meja');
+
+            $table->foreign('id_reservasi')
+                ->references('id_reservasi')
+                ->on('reservasi')
+                ->cascadeOnDelete();
+
+            $table->foreign('id_meja')
+                ->references('id_meja')
+                ->on('meja')
+                ->cascadeOnDelete();
+        });
         
     }
 
@@ -118,5 +148,6 @@ return new class extends Migration
         Schema::dropIfExists('menu');
         Schema::dropIfExists('pelanggan');
         Schema::dropIfExists('pengelola');
+        Schema::dropIfExists('meja');
     }
 };

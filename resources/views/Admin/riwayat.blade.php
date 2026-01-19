@@ -69,7 +69,7 @@
                                 </td>
         
                                 <td class="px-4 py-3 text-center">
-                                {{ $r->nama_pelanggan }}
+                                {{ $r->pelanggan->nama_pelanggan ?? '-' }}
                                 </td>
         
                                 <td class="px-4 py-3 font-medium text-center">
@@ -80,12 +80,12 @@
                                     {{ $r->jumlah_tamu }}
                                 </td>
                                 
-                                <td class="px-4 py-3">
-                                    {{ implode(', ', $r->ruangan ?? []) }}
+                                <td class="px-4 py-3 text-center">
+                                    {{ implode(', ', json_decode($r->ruangan, true)) }}
                                 </td>
 
-                                <td class="px-4 py-3">
-                                    {{ implode(', ', $r->nomor_meja ?? []) }}
+                                <td class="px-4 py-3 text-center">
+                                    {{ $r->meja->pluck('kode_meja')->implode(', ') }}
                                 </td>
         
                                 <td class="px-4 py-3">
@@ -192,7 +192,7 @@
 
 @endsection
 
-@push('extra-script')
+@push('extra-scripts')
 <script>
     function openModal(id) {
         const modal = document.getElementById('modalDetail');
@@ -280,10 +280,6 @@
                                 <button onclick="validasiTransaksi(${trx.id_transaksi})"
                                     class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
                                     Validasi
-                                </button>
-                                <button onclick="hapusTransaksi(${trx.id_transaksi})"
-                                    class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">
-                                    Hapus
                                 </button>
                             </div>
                         `;

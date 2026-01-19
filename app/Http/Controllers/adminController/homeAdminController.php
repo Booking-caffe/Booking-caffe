@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\pelangganModel;
 use App\Models\reservasi;
 use App\Models\Transaksi;
+use App\Models\Meja;
+use App\Models\Pelanggan;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -22,11 +24,11 @@ class homeAdminController extends Controller
             ->orderBy('tanggal')
             ->get();
 
+        // ambil range tanggal dari data reservasi
+        $start = Carbon::parse($reservasi->min('tanggal'));
+        $end   = Carbon::parse($reservasi->max('tanggal'));
 
-        $period = CarbonPeriod::create(
-            now()->subDays(6),
-            now()
-        );
+        $period = CarbonPeriod::create($start, $end);
 
         $map = $reservasi->pluck('total', 'tanggal');
 
@@ -39,20 +41,34 @@ class homeAdminController extends Controller
             $data[] = $map[$tgl] ?? 0;
         }
 
+
         // ===== TOTAL TRANSAKSI VALID =====
         $totalRevenue = Transaksi::where('status', 'tervalidasi')
             ->sum('total');
 
-        return view('admin.dashboard', compact(
-            'labels',
-            'data',
-            'totalRevenue'
-        ));
+
+        
+        // Jumlah Meja    
+        $jumlahMejaIndoor = Meja::where('ruangan', 'Indoor')->count();
+        $jumlahMejaOutdoor = Meja::where('ruangan', 'Outdoor')->count();
+
+        $totalMeja = $jumlahMejaIndoor + $jumlahMejaOutdoor;
+
+        // Jumlah Pelanggan
+        $jumlahPelanggan = pelangganModel::count();
+
+        // Pesanan Masuk
+        $pesananMasuk = Transaksi::where('status', 'menunggu')->count();
 
         return view('admin.dashboard', compact(
             'labels',
             'data',
-            'totalRevenue'
+            'totalRevenue',
+            'jumlahMejaIndoor',
+            'jumlahMejaOutdoor',
+            'totalMeja',
+            'jumlahPelanggan',
+            'pesananMasuk',
         ));
     }
 
@@ -62,6 +78,20 @@ class homeAdminController extends Controller
         // atau pakai where jika perlu
         
         return view('admin.datauser', compact('reservasi'));
+    }
+
+    public function mejaCount()
+    {
+        $jumlahMejaIndoor = Meja::where('ruangan', 'Indoor')->count();
+        $jumlahMejaOutdoor = Meja::where('ruangan', 'Outdoor')->count();
+
+        $totalMeja = $jumlahMejaIndoor + $jumlahMejaOutdoor;
+
+        return view('admin.dashboard', compact(
+            'jumlahMejaIndoor',
+            'jumlahMejaOutdoor',
+            'totalMeja'
+        ));
     }
 
     

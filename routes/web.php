@@ -8,6 +8,7 @@ use App\Http\Controllers\DetailPesananController;
 use App\Http\Controllers\adminController\dataReservasi;
 use App\Http\Controllers\reservasiController;
 use App\Http\Controllers\adminController\dataUser;
+use App\Http\Controllers\adminController\mejaController;
 use App\Http\Controllers\regisController;
 use App\Http\Controllers\adminController\dataMenuController;
 
@@ -17,13 +18,17 @@ use App\Http\Controllers\adminController\dataMenuController;
 // MENU
 Route::get('/menu-minuman', [MenuController::class, 'menuMinuman'])->name('menu-minuman');
 Route::get('/menu-makanan', [MenuController::class, 'menuMakanan'])->name('menu-makanan');
-Route::get('/makanan/{id}', [MenuController::class, 'detailMakanan'])->name('detail-makanan');
-Route::get('/minuman/{id}', [MenuController::class, 'detailMinuman'])->name('detail-minuman');
+Route::get('/makanan/{id}/detail', [MenuController::class, 'detailMakanan'])->name('detail-makanan');
+Route::get('/minuman/{id}/detail', [MenuController::class, 'detailMinuman'])->name('detail-minuman');
 Route::get('/keranjang', [MenuController::class, 'keranjang'])->name('keranjang');
+Route::post('/keranjang/pilih', [MenuController::class, 'pilihItem'])->name('keranjang.pilih');
 Route::delete('/keranjang/hapus/{index}', [MenuController::class, 'removeItem'])->name('remove-item');
 Route::put('/keranjang/update/{index}', [MenuController::class, 'updateQty'])->name('update-qty');
 Route::post('/menu/add-to-cart', [MenuController::class, 'addToCart'])->name('add-to-cart');
 
+Route::post('/reservasi/from-menu/{id}', [MenuController::class, 'fromMenu'])->name('reservasi.fromMenu');
+
+// Route::get('/reservasi', [MenuController::class, 'formReservasi'])->name('reservasi');
 
 // ========================================== PELANGGAN ==================================================================
 
@@ -139,10 +144,24 @@ Route::post('/admin/transaksi/{id}/validasi', [dataReservasi::class, 'validasiTr
 Route::delete('/admin/transaksi/{id}/hapus', [dataReservasi::class, 'hapusTransaksi'])->name('transaksi.hapus');
 
 
+//DATA MEJA
+// Halaman Data Meja
+Route::get('/admin/data-meja', [MejaController::class, 'showMeja'])->name('dataMeja.showMeja');
+Route::get('/admin/form-meja', [MejaController::class, 'showFormMeja'])->name('dataMeja.showFormMeja');
+
+
+
+Route::post('/admin/data-meja', [mejaController::class, 'store'])->name('dataMeja.store');
+Route::delete('/admin/data-meja/{id}/hapus', [mejaController::class, 'destroy'])->name('dataMeja.destroy');
+// Route::post('/admin/data-meja/add/', [dataReservasi::class, 'dataMeja'])->name('dataMeja.add');
+
+
 // SETTING ADMIN
 Route::get('/admin/setting', function () {
     return view('Admin.setting');
 })->name('setting');
+
+
 
 
 // Route untuk update foto cafe
@@ -246,6 +265,12 @@ Route::post('/admin/setting/update-foto-tentang', function (\Illuminate\Http\Req
     }
     return back()->with('success', 'Foto Tentang Kami berhasil diupdate!');
 })->name('update-foto-tentang');
+
+
+
+// HAPUS SESSION
+Route::post('/reset-session', [reservasiController::class, 'resetSession'])->name('reset.session');
+
 
 
 

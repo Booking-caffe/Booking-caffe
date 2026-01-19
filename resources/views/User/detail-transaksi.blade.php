@@ -67,7 +67,7 @@
                         <div class="flex justify-between mt-1">
                             <ol class="list-decimal pl-3">
                                 @foreach ($meja as $m)
-                                    <li class="text-muted-light dark:text-muted-dark mt-1"><span class="font-light text-muted-light dark:text-muted-dark pl-1">{{ strtoupper($m['tipe_ruangan']) }} - {{ $m['nomor_meja'] }}</span></li>
+                                    <li class="text-muted-light dark:text-muted-dark mt-1"><span class="font-light text-muted-light dark:text-muted-dark pl-1">{{ strtoupper($m['ruangan']) }} - {{ $m['kode_meja'] }}</span></li>
                                 @endforeach
                             </ol>
                         </div>
@@ -121,6 +121,15 @@
 
                 <button class="w-full bg-primary text-white font-semibold mt-5 py-3 px-4 rounded-lg shadow-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-all duration-300 transform hover: active:scale-100">
                     <a href="{{ route('transaksi.download', ['id' => $reservasi->id_reservasi]) }}">Download Transaksi</a>
+                </button>
+
+                <form action="{{ route('reset.session') }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="w-full bg-primary text-white font-semibold mt-5 py-3 px-4 rounded-lg shadow-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background-light dark:focus:ring-offset-background-dark transition-all duration-300 transform hover: active:scale-100">
+                        Kembali
+                    </button>
+                </form>
                     
                 </a>
             </div>

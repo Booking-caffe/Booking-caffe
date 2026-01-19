@@ -46,6 +46,7 @@
 
                 <!-- Action Button -->
                 <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                    {{-- <form action="{{ route('add-to-cart') }}" method="POST" class="w-full sm:w-auto"> --}}
                     <form action="{{ route('add-to-cart') }}" method="POST" class="w-full sm:w-auto">
                         @csrf
 
@@ -53,6 +54,7 @@
                         <input type="hidden" name="nama" value="{{ $menu->nama_menu }}">
                         <input type="hidden" name="harga" value="{{ $menu->harga }}">
                         <input type="hidden" name="gambar" value="{{ $menu->gambar }}">
+                        {{-- <input type="hidden" name="qty" value="{{ $menu->qty }}"> --}}
 
                         <button 
                             type="submit"
@@ -62,13 +64,19 @@
                         </button>
                     </form>
 
-                    <div class="reservasi w-full sm:w-auto" style="display: flex; align-items: center;">
+                    <form action="{{ route('reservasi.fromMenu', $menu->id_menu) }}" method="POST" class="w-full sm:w-auto">
+                        @csrf
+
+                        <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition duration-200">Reservasi</button>
+                    </form>
+
+                    {{-- <div class="reservasi w-full sm:w-auto" style="display: flex; align-items: center;">
                         <button class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white  px-6 py-2 rounded-lg transition duration-200">
                             <a href="{{ route('reservasi') }}">
                                 Reservasi
                             </a>
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 

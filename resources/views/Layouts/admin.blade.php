@@ -8,12 +8,8 @@
     <title>Admin-Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -106,6 +102,11 @@
                         Data Reservasi
                     </a>
                     <a class="group flex items-center gap-3 px-3 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all font-medium"
+                        href="{{ route('dataMeja.showMeja') }}">
+                        <span class="material-symbols-outlined">table_restaurant</span>
+                        Data Meja
+                    </a>
+                    <a class="group flex items-center gap-3 px-3 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all font-medium"
                         href="{{ route('setting') }}">
                         <span class="material-symbols-outlined">settings</span>
                         Setting
@@ -114,12 +115,11 @@
             </div>
 
             <!-- LOGOUT -->
-            <button
-                class="mt-6 flex items-center justify-center gap-2 rounded-lg
-                    bg-primary hover:bg-primary/90 text-white px-4 py-3 font-bold">
+            
+            <a href="{{ route('logout-admin') }}" class="mt-6 flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-3 font-bold">
                 <span class="material-symbols-outlined">logout</span>
                 Keluar
-            </button>
+            </a>
         </aside>
 
 
@@ -173,6 +173,11 @@
                         Data Reservasi
                     </a>
                     <a class="group flex items-center gap-3 px-3 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all font-medium"
+                        href="{{ route('dataMeja.showMeja') }}">
+                        <span class="material-symbols-outlined">table_restaurant</span>
+                        Data Meja
+                    </a>
+                    <a class="group flex items-center gap-3 px-3 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all font-medium"
                         href="{{ route('setting') }}">
                         <span class="material-symbols-outlined">settings</span>
                         Setting
@@ -181,11 +186,10 @@
             </div>
 
             <!-- Logout Button -->
-            <button
-                class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-background-light px-4 py-3 text-sm font-bold transition-all shadow-lg shadow-primary/20">
-                <span class="material-symbols-outlined text-[20px]">logout</span>
+            <a href="{{ route('logout-admin') }}" class="mt-6 flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary/90 text-white px-4 py-3 font-bold">
+                <span class="material-symbols-outlined">logout</span>
                 Keluar
-            </button>
+            </a>
         </aside>
 
         <!-- Main Content Area -->
@@ -225,6 +229,8 @@
             </div>
         </main>
     </div>
+    
+    @stack('extra-scripts')
     <script>
         const btnSidebar = document.getElementById('btnSidebar');
         const sidebar = document.getElementById('mobileSidebar');
@@ -240,7 +246,7 @@
             overlay.classList.add('hidden');
         }
     </script>
-    @yield('extra-script')
+    
 </body>
 
 </html>

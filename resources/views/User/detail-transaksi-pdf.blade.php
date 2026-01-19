@@ -115,7 +115,7 @@
 
         @foreach ($meja as $m)
             <div class="sub">
-                {{ strtoupper($m['tipe_ruangan']) }} - {{ $m['nomor_meja'] }}
+                {{ strtoupper($m['ruangan']) }} - {{ $m['kode_meja'] }}
             </div>
         @endforeach
     </div>

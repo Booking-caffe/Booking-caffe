@@ -2,10 +2,6 @@
 
 @section('title', 'Tempat-duduk')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/tempat-duduk.css') }}">
-@endpush
-
 @push('styles-cdn')
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -46,10 +42,6 @@
                    <p class="font-medium  font-semibold text-gray-600 dark:text-gray-300">Meja terpilih : {{ count($mejaDipilih ?? []) }} / {{ $jumlahMeja }}</p>
                </div>
             </div>
-            {{-- @php
-            // dd($jumlahMeja, $mejaDipilih);
-        @endphp --}}
-            {{-- <p>Pilih meja sesuai jumlah yang Anda pesan.</p> --}}
 
             <form action="{{ route('pilihTempatDuduk') }}" method="POST">
                 @csrf
@@ -78,40 +70,21 @@
                             <div>
                                 <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
                                 {{-- <input type="hidden" name="meja" id="meja-terpilih"> --}}
-                                <input type="hidden" name="tipe_ruangan" id="tipe-ruangan">
-                                <input type="hidden" name="nomor_meja" id="nomor-meja">
+                                <input type="hidden" name="ruangan" id="ruangan">
+                                <input type="hidden" name="kode_meja" id="kode_meja">
 
                                 <div class="grid grid-cols-4 gap-4 mb-6">
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Indoor" data-meja="I1">M1</button>
+                                    @foreach ($mejaIndoor as $meja)
+                                        @if ($meja->status === 'KOSONG')
+                                            <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" data-ruangan="Indoor" data-meja="{{ $meja->kode_meja }}">{{ $meja->kode_meja }}</button>
+                                        
+                                        @else
 
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Indoor" data-meja="I2">M2</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Indoor" data-meja="I3">M3</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Indoor" data-meja="I4">M4</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Indoor" data-meja="I5">M5</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Indoor" data-meja="I6">M6</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Indoor" data-meja="I7">M7</button>
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Indoor" data-meja="I8">M8</button>
+                                            <button type="button" disabled class="aspect-square flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 rounded-lg text-sm font-semibold text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 cursor-not-allowed" title="Meja sudah terbooking">{{ $meja->kode_meja }}</button>
+                                            
+                                            
+                                        @endif
+                                    @endforeach
                                 </div>
 
                                 <div class="flex justify-end">
@@ -133,37 +106,15 @@
                             <div>
                                 <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
                                 <div class="grid grid-cols-4 gap-4 mb-6">
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Outdoor" data-meja="O1">M1</button>
+                                    @foreach ($mejaOutdoor as $meja)
+                                        @if ($meja->status === 'KOSONG')
+                                                <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" data-ruangan="Outdoor" data-meja="{{ $meja->kode_meja }}">{{ $meja->kode_meja }}</button>
+                                            
+                                            @else
 
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Outdoor" data-meja="O2">M2</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Outdoor" data-meja="O3">M3</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Outdoor" data-meja="O4">M4</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Outdoor" data-meja="O5">M5</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Outdoor" data-meja="O6">M6</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Outdoor" data-meja="O7">M7</button>
-
-                                    <button type="button"
-                                        class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark"
-                                        data-ruangan="Outdoor" data-meja="O8">M8</button>
+                                                <button type="button" disabled class="aspect-square flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 rounded-lg text-sm font-semibold text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 cursor-not-allowed" title="Meja sudah terbooking">{{ $meja->kode_meja }}</button>
+                                        @endif
+                                    @endforeach
                                 </div>
                                 <div class="mt-auto flex justify-start">
                                     <button id="btn-submit" type="submit"
@@ -202,8 +153,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const mejaButtons = document.querySelectorAll(".meja-btn");
-            const inputRuangan = document.getElementById("tipe-ruangan");
-            const inputMeja = document.getElementById("nomor-meja");
+            const inputRuangan = document.getElementById("ruangan");
+            const inputMeja = document.getElementById("kode_meja");
             const btnSubmit = document.getElementById("btn-submit");
 
             mejaButtons.forEach(btn => {

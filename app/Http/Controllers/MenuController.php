@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\admin\menuModel;
+use Illuminate\Support\Facades\Session;
+
 
 class MenuController extends Controller
 {
@@ -23,6 +25,7 @@ class MenuController extends Controller
     {   
         // mengambil semua data menu dengan kategori makanan saja
         $menuMakanan = menuModel::where('kategori', 'makanan')->get();
+
         return view('User.menu-makanan', compact('menuMakanan'));
     }
 
@@ -34,6 +37,7 @@ class MenuController extends Controller
     {
         // mengambil data menu berdasarkan id menu yg dipilih d halaman sebelumnya
         $chosedMenu = menuModel::where('id_menu', $id)->get();
+        //  $chosedMenu = menuModel::findOrFail($id);
 
         if (!$chosedMenu) {
             abort(404);
@@ -56,52 +60,122 @@ class MenuController extends Controller
     }
 
 
+    public function fromMenu($id)
+    {
+        $menu = menuModel::findOrFail($id);
+
+        // Simpan menu ke session
+        Session::put('menuReservasi', [
+            'id_menu' => $menu->id_menu,
+            'nama'    => $menu->nama_menu,
+            'harga'   => $menu->harga,
+            'gambar'  => $menu->gambar,
+            'qty'     => 1,
+        ]);
+
+        return redirect()->route('reservasi');
+    }
+
+
     // ===============================
     // TAMBAHKAN KE KERANJANG
     // ===============================
-   public function addToCart(Request $request)
+    public function addToCart(Request $request)
     {
+        $userId = session('id_pelanggan');
 
-        $userId = session('id_pelanggan'); // pastikan ini ada saat login
+        if (!$userId) {
+            return redirect()->route('login');
+        }
 
         $cartKey = 'keranjang_' . $userId;
 
-        $cartItem = [
-            'id'     => $request->id,
-            'nama'   => $request->nama,
-            'harga'  => $request->harga,
-            'gambar' => $request->gambar,
-            // 'qty'    => $keranjang,
-            'qty'    => $request->qty ?? 1,
-        ];
+        $keranjang = session($cartKey, []);
 
-        session()->push($cartKey, $cartItem);
+        $found = false;
 
-        return redirect()->route('keranjang')->with('success', 'Ditambahkan ke keranjang!');
+        foreach ($keranjang as $index => $item) {
+            if ($item['id'] == $request->id) {
+                // 🔥 ITEM SUDAH ADA → TAMBAH QTY
+                $keranjang[$index]['qty'] += ($request->qty ?? 1);
+                $found = true;
+                break;
+            }
+        }
+
+        // 🔥 ITEM BELUM ADA → TAMBAH BARU
+        if (!$found) {
+            $keranjang[] = [
+                'id'     => $request->id,
+                'nama'   => $request->nama,
+                'harga'  => $request->harga,
+                'gambar' => $request->gambar,
+                'qty'    => $request->qty ?? 1,
+            ];
+        }
+
+        session()->put($cartKey, $keranjang);
+
+        return redirect()
+            ->route('keranjang')
+            ->with('success', 'Ditambahkan ke keranjang!');
     }
 
 
     // ===============================
     // HALAMAN KERANJANG
     // ===============================
-   public function keranjang()
+    public function keranjang()
     {
-        // Hanya ambil dari SESSION keranjang
         $userId = session('id_pelanggan');
-        
-        if ($userId === null) {
-            return redirect()->route('login')->with('success', 'untuk melihat keranjang harap login terlebih dahulu!');
-            
-        }else {
-            // Mengambil Data Session
-            $userId = session('id_pelanggan');
 
-            $cartKey = 'keranjang_' . $userId;
+        if (!$userId) {
+            return redirect()
+                ->route('login')
+                ->with('success', 'Untuk melihat keranjang harap login terlebih dahulu!');
+        }
 
-            $keranjang = session($cartKey, []);
+        $cartKey     = 'keranjang_' . $userId;
+        $selectedKey = 'keranjang_terpilih_' . $userId;
 
-            return view('User.keranjang', compact('keranjang'));
-        }   
+        $keranjang = session($cartKey, []);
+        $selected  = session($selectedKey, []);
+
+        return view('User.keranjang', compact('keranjang', 'selected'));
+    }
+
+    // ===============================
+    // CHECKBOX PILIH ITEM
+    // ===============================
+    public function pilihItem(Request $request)
+    {
+        $request->validate([
+            'index'   => 'required',
+            'checked' => 'required|boolean'
+        ]);
+
+        $userId = session('id_pelanggan');
+        $cartKey = 'keranjang_' . $userId;
+        $selectedKey = 'keranjang_terpilih_' . $userId;
+
+        $keranjang = session($cartKey, []);
+        $selected  = session($selectedKey, []);
+
+        // Validasi index
+        if (!isset($keranjang[$request->index])) {
+            return response()->json(['success' => false]);
+        }
+
+        // Tambah / hapus pilihan
+        if ($request->checked) {
+            $selected[$request->index] = $keranjang[$request->index];
+        } else {
+            unset($selected[$request->index]);
+        }
+
+        session([$selectedKey => $selected]);
+
+        return response()->json(['success' => true]);
     }
     
 
@@ -113,6 +187,7 @@ class MenuController extends Controller
     {
         $userId = session('id_pelanggan');
         $cartKey = 'keranjang_' . $userId;
+        
 
         $keranjang = session($cartKey, []);
 
@@ -125,31 +200,34 @@ class MenuController extends Controller
 
         session([$cartKey => $keranjang]);
 
+       
         return back()->with('success', 'Item berhasil dihapus!');
     }
 
 
 
-
-   public function updateQty(Request $request, $index)
+    // ===============================
+    // UPDATE QTY ITEM KERANJANG
+    // ===============================
+    public function updateQty(Request $request, $index)
     {
         $userId = session('id_pelanggan');
         $cartKey = 'keranjang_' . $userId;
 
+        // ✅ WAJIB ambil session dulu
         $keranjang = session($cartKey, []);
 
-        if (isset($keranjang[$index])) {
-            $keranjang[$index]['qty'] = $request->qty;
-            session()->put($cartKey, $keranjang);
-
-            return response()->json(['success' => true]);
+        if (!isset($keranjang[$index])) {
+            return response()->json(['success' => false], 404);
         }
 
+        $keranjang[$index]['qty'] = (int) $request->qty;
 
+        session()->put($cartKey, $keranjang);
 
         return response()->json([
-        'received_qty' => $request->qty,
-        'index' => $index
+            'success' => true,
+            'qty' => $keranjang[$index]['qty']
         ]);
 
         // return response()->json(['success' => false], 404);
@@ -186,5 +264,8 @@ class MenuController extends Controller
 
         return redirect()->route('show-tempat-duduk');
     }
+
+   
+
 
 }
