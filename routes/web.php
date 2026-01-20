@@ -266,6 +266,26 @@ Route::post('/admin/setting/update-foto-tentang', function (\Illuminate\Http\Req
     return back()->with('success', 'Foto Tentang Kami berhasil diupdate!');
 })->name('update-foto-tentang');
 
+// Route untuk update QRIS QR Code
+Route::post('/admin/setting/update-qris', function (\Illuminate\Http\Request $request) {
+    if ($request->hasFile('qris_image')) {
+        $file = $request->file('qris_image');
+        
+        // Validasi file
+        $request->validate([
+            'qris_image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+        ], [
+            'qris_image.required' => 'File QR Code QRIS harus diupload',
+            'qris_image.image' => 'File harus berupa gambar',
+            'qris_image.mimes' => 'Format gambar harus PNG, JPG, atau JPEG',
+            'qris_image.max' => 'Ukuran file maksimal 2MB'
+        ]);
+        
+        $file->move(public_path('images'), 'qrcode.png');
+        return back()->with('success', 'QR Code QRIS berhasil diupdate!');
+    }
+    return back()->with('error', 'Tidak ada file yang diupload!');
+})->name('update-qris');
 
 
 // HAPUS SESSION

@@ -18,6 +18,10 @@ class MenuController extends Controller
         // mengambil semua data menu dengan kategori munuman saja
         $menuMinuman = menuModel::where('kategori', 'minuman')->latest()->get();
 
+        // if ($menuMinuman->stok <= 0) {
+        //     abort(404);
+        // }
+
         return view('User.menu-minuman', compact('menuMinuman'));
     }
 
@@ -25,6 +29,11 @@ class MenuController extends Controller
     {   
         // mengambil semua data menu dengan kategori makanan saja
         $menuMakanan = menuModel::where('kategori', 'makanan')->get();
+
+        // if ($menuMakanan->stok <= 0) {
+        //     abort(404);
+        // }
+
 
         return view('User.menu-makanan', compact('menuMakanan'));
     }
@@ -88,29 +97,51 @@ class MenuController extends Controller
             return redirect()->route('login');
         }
 
+        // 🔥 Ambil menu dari DB
+        $menu = MenuModel::findOrFail($request->id);
+
+        $qtyRequest = $request->qty ?? 1;
+
+        // ❌ Validasi stok
+        if ($qtyRequest > $menu->stok) {
+            return back()->with(
+                'gagal',
+                'Stok "' . $menu->nama_menu . '" hanya tersisa ' . $menu->stok
+            );
+        }
+
         $cartKey = 'keranjang_' . $userId;
-
         $keranjang = session($cartKey, []);
-
         $found = false;
 
         foreach ($keranjang as $index => $item) {
-            if ($item['id'] == $request->id) {
-                // 🔥 ITEM SUDAH ADA → TAMBAH QTY
-                $keranjang[$index]['qty'] += ($request->qty ?? 1);
+            if ($item['id'] == $menu->id_menu) {
+
+                $qtyBaru = $item['qty'] + $qtyRequest;
+
+                if ($qtyBaru > $menu->stok) {
+                    return back()->with(
+                        'gagal',
+                        'Stok "' . $menu->nama_menu . '" hanya tersisa ' . $menu->stok
+                    );
+                }
+
+                $keranjang[$index]['qty']  = $qtyBaru;
+                $keranjang[$index]['stok'] = $menu->stok; // ✅ UPDATE STOK
                 $found = true;
                 break;
             }
         }
 
-        // 🔥 ITEM BELUM ADA → TAMBAH BARU
+        // ITEM BARU
         if (!$found) {
             $keranjang[] = [
-                'id'     => $request->id,
-                'nama'   => $request->nama,
-                'harga'  => $request->harga,
-                'gambar' => $request->gambar,
-                'qty'    => $request->qty ?? 1,
+                'id'     => $menu->id_menu,
+                'nama'   => $menu->nama_menu,
+                'harga'  => $menu->harga,
+                'gambar' => $menu->gambar,
+                'qty'    => $qtyRequest,
+                'stok'   => $menu->stok, // ✅ INI YANG HILANG
             ];
         }
 
@@ -214,20 +245,29 @@ class MenuController extends Controller
         $userId = session('id_pelanggan');
         $cartKey = 'keranjang_' . $userId;
 
-        // ✅ WAJIB ambil session dulu
         $keranjang = session($cartKey, []);
 
         if (!isset($keranjang[$index])) {
             return response()->json(['success' => false], 404);
         }
 
-        $keranjang[$index]['qty'] = (int) $request->qty;
+        $menu = MenuModel::findOrFail($keranjang[$index]['id']);
+
+        $qty = max(1, (int) $request->qty);
+
+        // ❌ Batasi stok
+        if ($qty > $menu->stok) {
+            $qty = $menu->stok;
+        }
+
+        $keranjang[$index]['qty']  = $qty;
+        $keranjang[$index]['stok'] = $menu->stok; // 🔄 sinkron ulang
 
         session()->put($cartKey, $keranjang);
 
         return response()->json([
             'success' => true,
-            'qty' => $keranjang[$index]['qty']
+            'qty' => $qty
         ]);
 
         // return response()->json(['success' => false], 404);

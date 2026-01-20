@@ -90,16 +90,16 @@
                     </div>
                 </div>
                 <div class="space-y-3 text-sm mb-6">
-                    <div class="flex justify-between text-gray-700 dark:text-gray-300">
+                    {{-- <div class="flex justify-between text-gray-700 dark:text-gray-300">
                         <span>Total Harga</span>
                         <span>Rp. {{ number_format($totalHarga, 0, ',', '.') }}</span>
-                    </div>
-                    <div class="flex justify-between text-gray-700 dark:text-gray-300">
+                    </div> --}}
+                    {{-- <div class="flex justify-between text-gray-700 dark:text-gray-300">
                         <span>Pajak</span>
                         <span>Rp. {{ number_format($pajak, 0, ',', '.') }}</span>
-                    </div>
+                    </div> --}}
                     <div
-                        class="flex justify-between text-base font-bold text-gray-800 dark:text-gray-100 mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        class="flex justify-between text-base font-bold text-gray-800 dark:text-gray-100 mt-3 pt-3  border-gray-200 dark:border-gray-700">
                         <span>Total</span>
                         <span>Rp. {{ number_format($totalBayar, 0, ',', '.') }}</span>
                     </div>

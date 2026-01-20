@@ -137,11 +137,11 @@
 
     <!-- TOTAL -->
     <div class="grid">
-        <div>Total Harga</div>
-        <div class="right">Rp. {{ number_format($totalHarga, 0, ',', '.') }}</div>
+        {{-- <div>Total Harga</div>
+        <div class="right">Rp. {{ number_format($totalHarga, 0, ',', '.') }}</div> --}}
 
-        <div>Pajak</div>
-        <div class="right">Rp. {{ number_format($pajak, 0, ',', '.') }}</div>
+        {{-- <div>Pajak</div>
+        <div class="right">Rp. {{ number_format($pajak, 0, ',', '.') }}</div> --}}
 
         <div class="total">Total</div>
         <div class="right total">Rp. {{ number_format($totalBayar, 0, ',', '.') }}</div>

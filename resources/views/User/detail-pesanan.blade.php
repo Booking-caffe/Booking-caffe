@@ -91,10 +91,10 @@
                         <span>Total Belanja</span>
                         <span>Rp. {{ number_format($totalHarga, 0, ',', '.') }}</span>
                     </div>
-                    <div class="flex justify-between items-center text-muted-light dark:text-muted-dark">
+                    {{-- <div class="flex justify-between items-center text-muted-light dark:text-muted-dark">
                         <span>Pajak</span>
                         <span>Rp. {{ number_format($pajak, 0, ',', '.') }}</span>
-                    </div>
+                    </div> --}}
                     <div
                         class="flex justify-between items-center font-bold text-lg pt-2 text-text-light dark:text-text-dark">
                         <span>Total</span>

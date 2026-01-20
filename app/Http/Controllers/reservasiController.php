@@ -265,8 +265,9 @@ class reservasiController extends Controller
 
         // dd("menu Keranjang: {{$keranjang}}");
 
-        $pajak = $totalHarga * 0.1;
-        $totalBayar = $totalHarga + $pajak;
+        // $pajak = $totalHarga * 0.1;
+        // $totalBayar = $totalHarga + $pajak;
+        $totalBayar = $totalHarga;
 
         // hanya wajib jika reservasi
         if ($menuReservasi && (!$data || !$meja)) {
@@ -279,7 +280,7 @@ class reservasiController extends Controller
             'meja',
             'pesanan',
             'totalHarga',
-            'pajak',
+            // 'pajak',
             'totalBayar',
             'keranjang'
         ));
@@ -396,6 +397,28 @@ class reservasiController extends Controller
             }
 
             // =========================
+            // KURANGI STOK MENU
+            // =========================
+            foreach ($pesananFinal as $item) {
+
+                $menu = MenuModel::where('id_menu', $item['id'])
+                    ->lockForUpdate() // 🔒 cegah race condition
+                    ->firstOrFail();
+
+                // VALIDASI STOK
+                if ($menu->stok < $item['qty']) {
+                    throw new \Exception(
+                        'Stok menu "' . $menu->nama_menu . '" tidak mencukupi'
+                    );
+                }
+
+                // KURANGI STOK
+                $menu->stok = $menu->stok - $item['qty'];
+                $menu->save();
+            }
+
+
+            // =========================
             // RELASI MEJA
             // =========================
             foreach ($mejaDipilih as $m) {
@@ -427,7 +450,7 @@ class reservasiController extends Controller
                 ->with('success', 'Bukti pembayaran berhasil diupload!');
 
         } catch (\Throwable $e) {
-            DB::rollBack();
+            // DB::rollBack();
             dd($e);
         }
     }
@@ -504,8 +527,9 @@ class reservasiController extends Controller
             $totalHarga += $item['harga'] * $item['qty'];
         }
 
-        $pajak = $totalHarga * 0.1;
-        $totalBayar = $totalHarga + $pajak;
+        // $pajak = $totalHarga * 0.1;
+        // $totalBayar = $totalHarga + $pajak;
+        $totalBayar = $totalHarga;
 
         if (!$data || !$meja) {
             return redirect()->route('reservasi')
@@ -517,7 +541,7 @@ class reservasiController extends Controller
             'meja',
             'pesanan',
             'totalHarga',
-            'pajak',
+            // 'pajak',
             'totalBayar',
             'reservasi'
         ));

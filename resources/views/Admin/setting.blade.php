@@ -13,6 +13,35 @@
         Pengaturan Caffe
     </h2>
 
+    {{-- Success/Error Messages --}}
+    @if (session('success'))
+        <div class="bg-green-500 text-white px-6 py-4 rounded-lg shadow mb-6 flex items-center gap-3">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="bg-red-500 text-white px-6 py-4 rounded-lg shadow mb-6 flex items-center gap-3">
+            <span class="material-symbols-outlined">error</span>
+            <span>{{ session('error') }}</span>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="bg-red-500 text-white px-6 py-4 rounded-lg shadow mb-6">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="material-symbols-outlined">error</span>
+                <span class="font-semibold">Terjadi kesalahan:</span>
+            </div>
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="max-w-7xl mx-auto space-y-10">
 
         {{-- ================= SLIDE FOTO ================= --}}
@@ -131,6 +160,47 @@
             </div>
         </div>
 
+
+        {{-- ================= QRIS PAYMENT ================= --}}
+        <div>
+            <div class="bg-white rounded-xl shadow px-4 py-3 mb-4">
+                <h3 class="text-lg font-bold text-black text-center">
+                    Pembayaran QRIS
+                </h3>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow">
+                <div class="bg-background-light rounded-xl shadow p-6 max-w-md mx-auto">
+                    <h4 class="font-semibold text-primary mb-4">
+                        QR Code QRIS
+                    </h4>
+
+                    <form action="{{ route('update-qris') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="flex justify-center mb-4">
+                            <img src="{{ asset('images/qrcode.png') }}" alt="QRIS QR Code"
+                                class="w-48 h-48 object-contain rounded-lg border bg-white p-2">
+                        </div>
+
+                        <input type="file" name="qris_image" accept="image/*"
+                            class="w-full text-sm text-muted
+                               file:mr-3 file:py-2 file:px-4
+                               file:rounded-lg file:border-0
+                               file:bg-primary file:text-white
+                               hover:file:bg-primary/90">
+
+                        <p class="text-xs text-muted mt-2 mb-4">
+                            Upload gambar QR Code QRIS untuk pembayaran. Format: PNG, JPG, JPEG (Max: 2MB)
+                        </p>
+
+                        <button type="submit" class="btn-primary w-full mt-4 text-white text-sm py-2 bg-accent rounded-lg">
+                            Simpan QR Code
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         {{-- ================= HUBUNGI & LOKASI ================= --}}
 
