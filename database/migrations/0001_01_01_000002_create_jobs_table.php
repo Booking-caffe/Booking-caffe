@@ -17,10 +17,10 @@ return new class extends Migration
         });
 
         Schema::create('pelanggan', function (Blueprint $table) {
-            $table->bigIncrements('id_pelanggan'); 
-            $table->string('nama_pelanggan', 50);   
-            $table->string('username', 25);   
-            $table->string('password');   
+            $table->bigIncrements('id_pelanggan');
+            $table->string('nama_pelanggan', 50);
+            $table->string('username', 25);
+            $table->string('password');
             $table->string('no_telepon', 15);
             $table->timestamps();
         });
@@ -44,12 +44,12 @@ return new class extends Migration
             // $table->foreign('id_meja')
             //     ->references('id_meja')
             //     ->on('meja');
-                // ->onDelete('cascade');
+            // ->onDelete('cascade');
 
             // $table->foreign('id_pengelola')
             //     ->references('id_pengelola')
             //     ->on('pengelola');
-                // ->nullOnDelete();
+            // ->nullOnDelete();
         });
 
         Schema::create('menu', function (Blueprint $table) {
@@ -62,13 +62,13 @@ return new class extends Migration
             $table->string('gambar');
             $table->integer('stok');
             $table->timestamps();
-                
+
             $table->foreign('id_pengelola')
                 ->references('id_pengelola')
                 ->on('pengelola');
         });
 
-       Schema::create('transaksi', function (Blueprint $table) {
+        Schema::create('transaksi', function (Blueprint $table) {
             $table->bigIncrements('id_transaksi');
             $table->unsignedBigInteger('id_pelanggan');
             $table->unsignedBigInteger('id_pengelola')->nullable();
@@ -113,7 +113,7 @@ return new class extends Migration
         });
 
 
-       Schema::create('meja', function (Blueprint $table) {
+        Schema::create('meja', function (Blueprint $table) {
             $table->bigIncrements('id_meja');
             $table->text('kode_meja'); // A1, A2
             $table->text('ruangan');
@@ -137,7 +137,6 @@ return new class extends Migration
                 ->on('meja')
                 ->cascadeOnDelete();
         });
-        
     }
 
     public function down(): void

@@ -12,21 +12,28 @@ use Illuminate\Support\Facades\DB;
 
 class dataReservasi extends Controller
 {
-     public function reservasiData(Request $request)
-     {
-       
+    public function reservasiData(Request $request)
+    {
+
         $perPage = $request->get('per_page', 5);
         $search  = $request->get('search');
 
         $reservasi = Reservasi::with(['pelanggan', 'meja'])
+            ->join('transaksi', 'transaksi.id_reservasi', '=', 'reservasi.id_reservasi')
+            ->select(
+                'reservasi.*',
+                'transaksi.status'
+            )
             ->when($search, function ($query, $search) {
                 $query->whereHas('pelanggan', function ($q) use ($search) {
                     $q->where('nama_pelanggan', 'like', "%{$search}%");
                 });
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('reservasi.created_at', 'desc')
             ->paginate($perPage)
             ->withQueryString();
+
+        // dd($reservasi);
 
         return view('admin.riwayat', compact('reservasi', 'search'));
     }
@@ -63,7 +70,6 @@ class dataReservasi extends Controller
             return redirect()
                 ->back()
                 ->with('success', 'Reservasi dan seluruh pesanan berhasil dihapus.');
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -76,11 +82,11 @@ class dataReservasi extends Controller
     public function detail($id)
     {
         try {
-        $transaksi = Transaksi::findOrFail($id);
+            $transaksi = Transaksi::findOrFail($id);
 
-        $reservasi = Reservasi::with('meja')
-            ->where('id_reservasi', $transaksi->id_reservasi)
-            ->first();
+            $reservasi = Reservasi::with('meja')
+                ->where('id_reservasi', $transaksi->id_reservasi)
+                ->first();
 
             if (!$reservasi) {
                 return response()->json([
@@ -94,7 +100,6 @@ class dataReservasi extends Controller
                 'transaksi' => $transaksi,
                 'reservasi' => $reservasi
             ]);
-
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
@@ -108,9 +113,9 @@ class dataReservasi extends Controller
     public function detailJson($id)
     {
         /**
-            * STEP 1
-            * Ambil data reservasi + pelanggan
-        */
+         * STEP 1
+         * Ambil data reservasi + pelanggan
+         */
         $reservasi = DB::table('reservasi')
             ->join('pelanggan', 'reservasi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
             ->where('reservasi.id_reservasi', $id)
@@ -132,15 +137,15 @@ class dataReservasi extends Controller
 
 
         /**
-            * STEP 2
-            * Ambil transaksi milik pelanggan tsb
-        */
-         $transaksi = DB::table('transaksi')
+         * STEP 2
+         * Ambil transaksi milik pelanggan tsb
+         */
+        $transaksi = DB::table('transaksi')
             ->where('id_reservasi', $id)
             ->select(
-                'id_transaksi', 
-                'status', 
-                'total', 
+                'id_transaksi',
+                'status',
+                'total',
                 'metode_pembayaran'
             ) // tambahkan kolom yang dibutuhkan
             ->get(); // Bisa banyak transaksi, jadi pakai get()
@@ -148,9 +153,9 @@ class dataReservasi extends Controller
 
 
         /**
-            * STEP 3
-            * Ambil detail pesanan + menu
-        */
+         * STEP 3
+         * Ambil detail pesanan + menu
+         */
         $pesanan = DB::table('detail_pesanan')
             ->join('transaksi', 'detail_pesanan.id_transaksi', '=', 'transaksi.id_transaksi')
             ->join('menu', 'detail_pesanan.id_menu', '=', 'menu.id_menu')
@@ -171,9 +176,9 @@ class dataReservasi extends Controller
 
 
         /**
-            * STEP 4
-            * Return JSON
-        */
+         * STEP 4
+         * Return JSON
+         */
         return response()->json([
             'nama_pelanggan' => $reservasi->nama_pelanggan,
             'waktu' => $reservasi->waktu,
@@ -227,7 +232,6 @@ class dataReservasi extends Controller
             return response()->json([
                 'message' => 'Transaksi berhasil divalidasi'
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -239,7 +243,20 @@ class dataReservasi extends Controller
             ], 500);
         }
     }
+
+    public function ubahStatusTransaksi(Request $request)
+    {
+        // dd($request->all());
+
+        $id_reservasi = $request->id_reservasi;
+
+        DB::table('transaksi')
+            ->where('id_reservasi', $id_reservasi) // Cari data yang mau diupdate
+            ->update([
+                'status' => 'selesai',
+                'updated_at' => now(), // Manual karena Query Builder tidak otomatis mengisi timestamps
+            ]);
+
+        return redirect()->back()->with('success', 'meja sudah dikosongkan!');
+    }
 }
-
-
-

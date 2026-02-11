@@ -27,25 +27,41 @@
     </style>
 @endpush
 
+
 @section('content')
+
+    @if (session('gagal'))
+        <div class="mb-4 flex items-center bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md animate-bounce"
+            role="alert">
+            <span class="material-icons mr-2">error_outline</span>
+            <p class="font-medium">{{ session('gagal') }}</p>
+        </div>
+    @endif
     <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="content-main" style="padding: 30px; background: rgb(255, 252, 252); padding-bottom: 50px;">
-            <h1 class="text-4xl font-bold text-center text-primary-dark dark:text-secondary mb-12" style="padding-top: 20px;">
+            <h1 class="text-4xl font-bold text-center text-primary-dark dark:text-secondary mb-12"
+                style="padding-top: 20px;">
                 Detail Tempat Duduk
             </h1>
             <div class="meja rounded-lg mb-5" style="border: 1px solid rgb(204, 204, 204);">
-                <div class="head-title" style="background-color: rgb(245 243 240 / var(--tw-bg-opacity)); text-align: center; padding: 10px 0;">
-                    <h1 class="font-semibold text-primary-dark dark:text-secondary">Silahkan pilih meja yang ingin direservasi</h1>
+                <div class="head-title"
+                    style="background-color: rgb(245 243 240 / var(--tw-bg-opacity)); text-align: center; padding: 10px 0;">
+                    <h1 class="font-semibold text-primary-dark dark:text-secondary">Silahkan pilih meja yang ingin
+                        direservasi</h1>
                 </div>
-               <div class="title-meja" style="display: flex; justify-content: space-between; padding: 10px 25px;">
-                   <p class="font-medium  text-gray-600 font-semibold dark:text-gray-300">Meja yang dipesan : {{ $jumlahMeja }}</p>
-                   <p class="font-medium  font-semibold text-gray-600 dark:text-gray-300">Meja terpilih : {{ count($mejaDipilih ?? []) }} / {{ $jumlahMeja }}</p>
-               </div>
+                <div class="title-meja" style="display: flex; justify-content: space-between; padding: 10px 25px;">
+                    <p class="font-medium  text-gray-600 font-semibold dark:text-gray-300">Meja yang dipesan :
+                        {{ $jumlahMeja }}</p>
+                    <p class="font-medium  font-semibold text-gray-600 dark:text-gray-300">Meja terpilih :
+                        {{ count($mejaDipilih ?? []) }} / {{ $jumlahMeja }}</p>
+                </div>
             </div>
 
             <form action="{{ route('pilihTempatDuduk') }}" method="POST">
                 @csrf
-                <section class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 mb-12 transform hover:-translate-y-1 transition-transform duration-300" style="border: 1px solid rgb(204, 204, 204);">
+                <section
+                    class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 mb-12 transform hover:-translate-y-1 transition-transform duration-300"
+                    style="border: 1px solid rgb(204, 204, 204);">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                         <div class="flex items-center space-x-4">
                             <button type="button"
@@ -76,13 +92,22 @@
                                 <div class="grid grid-cols-4 gap-4 mb-6">
                                     @foreach ($mejaIndoor as $meja)
                                         @if ($meja->status === 'KOSONG')
-                                            <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" data-ruangan="Indoor" data-meja="{{ $meja->kode_meja }}">{{ $meja->kode_meja }}</button>
-                                        
-                                        @else
+                                            <div>
+                                                <input type="checkbox" name="id_meja[]" value="{{ $meja->kode_meja }}"
+                                                    id="meja_{{ $meja->kode_meja }}" class="hidden peer">
 
-                                            <button type="button" disabled class="aspect-square flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 rounded-lg text-sm font-semibold text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 cursor-not-allowed" title="Meja sudah terbooking">{{ $meja->kode_meja }}</button>
-                                            
-                                            
+                                                <label for="meja_{{ $meja->kode_meja }}"
+                                                    class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary cursor-pointer transition-all duration-200 
+                                    peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
+                                    hover:border-accent hover:bg-accent/10">
+                                                    {{ $meja->kode_meja }}
+                                                </label>
+                                            </div>
+                                        @else
+                                            <div class="aspect-square flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 rounded-lg text-sm font-semibold text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 cursor-not-allowed"
+                                                title="Meja sudah terbooking">
+                                                {{ $meja->kode_meja }}
+                                            </div>
                                         @endif
                                     @endforeach
                                 </div>
@@ -97,25 +122,40 @@
                         </div>
                     </div>
                 </section>
-
-                <section class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 transform hover:-translate-y-1 transition-transform duration-300" style="border: 1px solid rgb(204, 204, 204);">
+                
+                <section
+                    class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 transform hover:-translate-y-1 transition-transform duration-300"
+                    style="border: 1px solid rgb(204, 204, 204);">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                         <div class="flex flex-col h-full lg:order-first">
                             <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Outdoor</h2>
-                            <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
+                            <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja (Bisa pilih
+                                banyak)</p>
+
                             <div>
-                                <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
                                 <div class="grid grid-cols-4 gap-4 mb-6">
                                     @foreach ($mejaOutdoor as $meja)
                                         @if ($meja->status === 'KOSONG')
-                                                <button type="button" class="meja-btn aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary hover:border-accent hover:bg-accent/10 dark:hover:border-accent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-surface-dark" data-ruangan="Outdoor" data-meja="{{ $meja->kode_meja }}">{{ $meja->kode_meja }}</button>
-                                            
-                                            @else
+                                            <div>
+                                                <input type="checkbox" name="id_meja[]" value="{{ $meja->kode_meja }}"
+                                                    id="meja_{{ $meja->kode_meja }}" class="hidden peer">
 
-                                                <button type="button" disabled class="aspect-square flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 rounded-lg text-sm font-semibold text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 cursor-not-allowed" title="Meja sudah terbooking">{{ $meja->kode_meja }}</button>
+                                                <label for="meja_{{ $meja->kode_meja }}"
+                                                    class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary cursor-pointer transition-all duration-200 
+                                    peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
+                                    hover:border-accent hover:bg-accent/10">
+                                                    {{ $meja->kode_meja }}
+                                                </label>
+                                            </div>
+                                        @else
+                                            <div class="aspect-square flex items-center justify-center border-2 border-gray-300 dark:border-gray-600 rounded-lg text-sm font-semibold text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 cursor-not-allowed"
+                                                title="Meja sudah terbooking">
+                                                {{ $meja->kode_meja }}
+                                            </div>
                                         @endif
                                     @endforeach
                                 </div>
+
                                 <div class="mt-auto flex justify-start">
                                     <button id="btn-submit" type="submit"
                                         class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
@@ -124,8 +164,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="flex items-center space-x-4 lg:order-last">
-                            <button
+                            <button type="button"
                                 class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
                                 <span class="material-icons text-3xl">chevron_left</span>
                             </button>
@@ -134,7 +175,7 @@
                                 <img alt="Sunny outdoor patio seating area of the cafe" class="w-full h-full object-cover"
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEBiEIwC2UdUX2yOdZsQ5Tk2_JU89F8k2tKi2prnGGkNOK73Y1diSTZI6tvJOCfKJXJ6Gs8PzaIYCCWVVGhIa5a1WlwBpjZuliC51VMTWHbpBEsdYA0sHB_wa5oXtUN2FPP6NLUrJYikv1xhwwiSi1oZ7oOm4d0JKuWzXWpFyICxiSaSUZVKyD7mfPnvPB-m35-F_dY1_7GmOQaGaNZb_oNDn1PWTSbObJae8Rx4ZnkXXGCFs-3PKr7pDDaAa4MTiiGlGr8V3ELAwA" />
                             </div>
-                            <button
+                            <button type="button"
                                 class="p-2 rounded-full bg-secondary/50 dark:bg-primary-dark hover:bg-primary hover:text-white transition-all duration-300">
                                 <span class="material-icons text-3xl">chevron_right</span>
                             </button>
@@ -151,33 +192,46 @@
 
 @push('extra-scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const mejaButtons = document.querySelectorAll(".meja-btn");
-            const inputRuangan = document.getElementById("ruangan");
-            const inputMeja = document.getElementById("kode_meja");
-            const btnSubmit = document.getElementById("btn-submit");
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     const mejaButtons = document.querySelectorAll(".meja-btn");
+        //     const inputRuangan = document.getElementById("ruangan");
+        //     const inputMeja = document.getElementById("kode_meja");
+        //     const btnSubmit = document.getElementById("btn-submit");
 
-            mejaButtons.forEach(btn => {
-                btn.addEventListener("click", function() {
+        //     mejaButtons.forEach(btn => {
+        //         btn.addEventListener("click", function() {
 
-                    /// hapus selected di semua
-                    mejaButtons.forEach(b => b.classList.remove("selected"));
+        //             /// hapus selected di semua
+        //             mejaButtons.forEach(b => b.classList.remove("selected"));
 
-                    // set selected ke tombol yang diklik
-                    btn.classList.add("selected");
+        //             // set selected ke tombol yang diklik
+        //             btn.classList.add("selected");
 
-                    console.log(inputMeja);
+        //             console.log(inputMeja);
 
-                    // Isi hidden input
-                    // inputMeja.value = btn.getAttribute("data-value");
+        //             // Isi hidden input
+        //             // inputMeja.value = btn.getAttribute("data-value");
 
-                    // ambil data terpisah
-                    inputRuangan.value = btn.dataset.ruangan;
-                    inputMeja.value = btn.dataset.meja;
+        //             // ambil data terpisah
+        //             inputRuangan.value = btn.dataset.ruangan;
+        //             inputMeja.value = btn.dataset.meja;
 
-                    // Aktifkan tombol submit
-                    btnSubmit.disabled = false;
-                });
+        //             // Aktifkan tombol submit
+        //             btnSubmit.disabled = false;
+        //         });
+        //     });
+        // });
+
+        const checkboxes = document.querySelectorAll('input[name="id_meja[]"]');
+        const limit = 4; // Contoh limit
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                const checkedCount = document.querySelectorAll('input[name="id_meja[]"]:checked').length;
+                if (checkedCount > limit) {
+                    cb.checked = false;
+                    alert("Maksimal pilih " + limit + " meja.");
+                }
             });
         });
     </script>

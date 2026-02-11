@@ -142,6 +142,7 @@ Route::get('/admin/data-reservasi/{id}/detail', [dataReservasi::class, 'detail']
 Route::get('/admin/data-reservasi/{id}/detail-json', [dataReservasi::class, 'detailJson']);
 Route::post('/admin/transaksi/{id}/validasi', [dataReservasi::class, 'validasiTransaksi'])->name('transaksi.validasi');
 Route::delete('/admin/transaksi/{id}/hapus', [dataReservasi::class, 'hapusTransaksi'])->name('transaksi.hapus');
+Route::post('/admin/transaksi-selesai', [dataReservasi::class, 'ubahStatusTransaksi'])->name('kosongkan.meja');
 
 
 //DATA MEJA
