@@ -20,6 +20,7 @@ class reservasi extends Model
         'jumlah_tamu',
         'ruangan',
         'ruangan' => 'array',
+        'bukti_pembayaran'
     ];
 
     // ========================

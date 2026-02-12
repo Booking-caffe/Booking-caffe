@@ -123,7 +123,8 @@ class dataReservasi extends Controller
                 'reservasi.id_pelanggan',
                 'pelanggan.nama_pelanggan',
                 'reservasi.waktu',
-                'reservasi.jumlah_tamu'
+                'reservasi.jumlah_tamu',
+                'reservasi.bukti_pembayaran'
             )
             ->first();
 
@@ -184,7 +185,8 @@ class dataReservasi extends Controller
             'waktu' => $reservasi->waktu,
             'jumlah_tamu' => $reservasi->jumlah_tamu,
             'transaksi' => $transaksi,   // <-- tambahkan ini
-            'pesanan' => $pesanan
+            'pesanan' => $pesanan,
+            'bukti_pembayaran' => $reservasi->bukti_pembayaran
         ]);
     }
 

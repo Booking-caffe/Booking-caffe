@@ -309,6 +309,18 @@
                             </div>
                         `;
 
+                            html += `
+                                <div class="mt-3">
+                                    <p class="text-sm font-semibold text-gray-600 mb-1">Bukti Pembayaran:</p>
+                                    <div class="flex justify-center border rounded-lg p-2 bg-gray-50">
+                                        <img src="${window.location.origin}/storage/${data.bukti_pembayaran}" 
+                                            alt="Bukti Transfer" 
+                                            class="w-25 h-100 rounded shadow-sm cursor-pointer hover:scale-105 transition-transform"
+                                            onclick="window.open(this.src)">
+                                    </div>
+                                </div>
+                            `;
+
                             html += `</div>`; // tutup div transaksi
                         });
                     } else {
@@ -320,7 +332,7 @@
                 .catch(err => {
                     console.error(err);
                     content.innerHTML =
-                        `<p class="text-red-500">Gagal mengambil data</p>`;
+                        `<p class="text-red-500">Gagal mengambil data ${err}</p>`;
                 });
         }
 

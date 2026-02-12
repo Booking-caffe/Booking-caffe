@@ -36,6 +36,8 @@ return new class extends Migration
             $table->text('ruangan');
             // $table->text('nomor_meja');
             $table->timestamps();
+            $table->text('bukti_pembayaran');
+
 
             $table->foreign('id_pelanggan')
                 ->references('id_pelanggan')
