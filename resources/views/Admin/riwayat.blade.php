@@ -268,6 +268,9 @@
                             } else if (trx.status === 'tervalidasi') {
                                 statusText = 'Tervalidasi';
                                 statusColor = 'text-green-600';
+                            } else if (trx.status === 'selesai') {
+                                statusText = 'selesai';
+                                statusColor = 'text-green-600';
                             }
 
                             html += `

@@ -43,7 +43,7 @@ class homeAdminController extends Controller
 
 
         // ===== TOTAL TRANSAKSI VALID =====
-        $totalRevenue = Transaksi::where('status', 'tervalidasi')
+        $totalRevenue = Transaksi::whereIn('status', ['tervalidasi', 'selesai'])
             ->sum('total');
 
 
