@@ -62,7 +62,7 @@
                         <th class="px-4 py-3 text-center">Tanggal Reservasi</th>
                         <th class="px-4 py-3 text-center">Jumlah Tamu</th>
                         <th class="px-4 py-3 text-center">Ruangan</th>
-                        <th class="px-4 py-3 text-center">Meja</th>
+                        {{-- <th class="px-4 py-3 text-center">Meja</th> --}}
                         <th class="px-4 py-3 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -94,12 +94,12 @@
                                 </td>
 
                                 <td class="px-4 py-3 text-center">
-                                    {{ implode(', ', json_decode($r->ruangan, true)) }}
+                                    {{ $r->ruangan }}
                                 </td>
 
-                                <td class="px-4 py-3 text-center">
+                                {{-- <td class="px-4 py-3 text-center">
                                     {{ $r->meja->pluck('kode_meja')->implode(', ') }}
-                                </td>
+                                </td> --}}
 
                                 <td class="px-4 py-3">
                                     <div class="flex items-center justify-center gap-2">

@@ -13,4 +13,9 @@ class HomeController extends Controller
         // return halaman home
         return view('home');
     }
+    public function homepelanggan()
+    {   
+        // return halaman home
+        return view('homeLogin');
+    }
 }

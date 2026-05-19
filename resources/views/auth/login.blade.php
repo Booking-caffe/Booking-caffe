@@ -39,6 +39,17 @@
 
 <body
     class="bg-background-light dark:bg-background-dark font-sans text-slate-800 dark:text-slate-300 antialiased transition-colors duration-300">
+    @if (session('warning'))
+        <div
+            class="mb-4 flex items-center gap-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-amber-700 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="h-6 w-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 9v3m0 4h.01M10.29 3.86l-7.5 13A1 1 0 003.66 18h16.68a1 1 0 00.87-1.5l-7.5-13a1 1 0 00-1.74 0z" />
+            </svg>
+            <span>{{ session('warning') }}</span>
+        </div>
+    @endif
     @if (session('success'))
         <div
             class="mb-4 flex items-center gap-3 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-red-700 shadow-sm">
@@ -56,6 +67,35 @@
             </span>
         </div>
     @endif
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
+        id="time-system-modal">
+        <div class="w-full max-w-lg rounded-2xl border border-white/20 bg-white px-6 py-7 shadow-2xl">
+            <div class="mb-5 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">
+                Informasi Sistem
+            </div>
+            <h2 class="font-display text-3xl font-bold text-primary">Sistem Reservasi Berbasis Waktu</h2>
+            <p class="mt-3 text-sm leading-7 text-slate-600">
+                Sistem ini berbasis waktu, jadi pemesanan dan reservasi mengikuti jadwal yang tersedia pada saat Anda
+                mengakses aplikasi. Klik <strong>Lanjut</strong> untuk memakai akun demo yang terisi otomatis.
+            </p>
+            <div class="mt-5 rounded-xl bg-slate-100 px-4 py-3 text-sm text-slate-700">
+                Username demo: <strong>budi</strong><br>
+                Password demo: <strong>budi</strong>
+            </div>
+            <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+                <button
+                    class="flex-1 rounded-xl bg-primary px-4 py-3 font-semibold text-white transition hover:bg-primary/90"
+                    id="continue-login" type="button">
+                    Lanjut
+                </button>
+                <a class="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-center font-semibold text-slate-700 transition hover:bg-slate-100"
+                    href="{{ route('home') }}">
+                    Batal
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="w-full max-w-md perspective-card">
             <div
@@ -77,7 +117,7 @@
                             for="username">Username</label>
                         <input
                             class="w-full px-4 py-2 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition duration-200"
-                            id="username" name="username" required="" type="text" />
+                            id="username" name="username" required="" type="text" value="{{ old('username') }}" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
@@ -98,6 +138,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const modal = document.getElementById('time-system-modal');
+        const continueButton = document.getElementById('continue-login');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        continueButton.addEventListener('click', () => {
+            usernameInput.value = 'budi';
+            passwordInput.value = 'budi';
+            modal.classList.add('hidden');
+            usernameInput.focus();
+        });
+    </script>
 </body>
 
 </html>

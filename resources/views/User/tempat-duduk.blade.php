@@ -41,9 +41,9 @@
         <div class="content-main" style="padding: 30px; background: rgb(255, 252, 252); padding-bottom: 50px;">
             <h1 class="text-4xl font-bold text-center text-primary-dark dark:text-secondary mb-12"
                 style="padding-top: 20px;">
-                Detail Tempat Duduk
+                Detail Ruangan
             </h1>
-            <div class="meja rounded-lg mb-5" style="border: 1px solid rgb(204, 204, 204);">
+            {{-- <div class="meja rounded-lg mb-5" style="border: 1px solid rgb(204, 204, 204);">
                 <div class="head-title"
                     style="background-color: rgb(245 243 240 / var(--tw-bg-opacity)); text-align: center; padding: 10px 0;">
                     <h1 class="font-semibold text-primary-dark dark:text-secondary">Silahkan pilih meja yang ingin
@@ -55,7 +55,7 @@
                     <p class="font-medium  font-semibold text-gray-600 dark:text-gray-300">Meja terpilih :
                         {{ count($mejaDipilih ?? []) }} / {{ $jumlahMeja }}</p>
                 </div>
-            </div>
+            </div> --}}
 
             <form action="{{ route('pilihTempatDuduk') }}" method="POST">
                 @csrf
@@ -81,15 +81,14 @@
 
 
                         <div class="flex flex-col h-full">
-                            <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Indoor</h2>
+                            <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Indor</h2>
                             <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja</p>
                             <div>
                                 <!-- HIDDEN INPUT untuk menyimpan meja yang dipilih -->
-                                {{-- <input type="hidden" name="meja" id="meja-terpilih"> --}}
-                                <input type="hidden" name="ruangan" id="ruangan">
-                                <input type="hidden" name="kode_meja" id="kode_meja">
+                                {{-- <input type="hidden" name="ruangan_Indor" value="Indor"> --}}
+                                {{-- <input type="hidden" name="kode_meja" id="kode_meja"> --}}
 
-                                <div class="grid grid-cols-4 gap-4 mb-6">
+                                {{-- <div class="grid grid-cols-4 gap-4 mb-6">
                                     @foreach ($mejaIndoor as $meja)
                                         @if ($meja->status === 'KOSONG')
                                             <div>
@@ -98,8 +97,8 @@
 
                                                 <label for="meja_{{ $meja->kode_meja }}"
                                                     class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary cursor-pointer transition-all duration-200 
-                                    peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
-                                    hover:border-accent hover:bg-accent/10">
+                                                    peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
+                                                    hover:border-accent hover:bg-accent/10">
                                                     {{ $meja->kode_meja }}
                                                 </label>
                                             </div>
@@ -110,11 +109,11 @@
                                             </div>
                                         @endif
                                     @endforeach
-                                </div>
+                                </div> --}}
 
-                                <div class="flex justify-end">
-                                    <button id="btn-submit" type="submit"
-                                        class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
+                                <div class="">
+                                    <button id="btn-submit" type="submit" name="ruangan" value="Indor"
+                                        class="w-full bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
                                         Selanjutnya
                                     </button>
                                 </div>
@@ -122,19 +121,21 @@
                         </div>
                     </div>
                 </section>
-                
+
                 <section
                     class="bg-surface-light dark:bg-surface-dark rounded-lg shadow-soft-lg p-6 md:p-8 transform hover:-translate-y-1 transition-transform duration-300"
                     style="border: 1px solid rgb(204, 204, 204);">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                         <div class="flex flex-col h-full lg:order-first">
-                            <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Outdoor</h2>
+                            <h2 class="text-2xl font-semibold mb-2 text-primary-dark dark:text-secondary">Outdor</h2>
                             <p class="font-medium mb-4 text-gray-600 dark:text-gray-300">Pilih Tempat Meja (Bisa pilih
                                 banyak)</p>
 
                             <div>
                                 <div class="grid grid-cols-4 gap-4 mb-6">
-                                    @foreach ($mejaOutdoor as $meja)
+                                {{-- <input type="hidden" name="ruangan_outdor" value="Outdor"> --}}
+
+                                    {{-- @foreach ($mejaOutdoor as $meja)
                                         @if ($meja->status === 'KOSONG')
                                             <div>
                                                 <input type="checkbox" name="id_meja[]" value="{{ $meja->kode_meja }}"
@@ -142,8 +143,8 @@
 
                                                 <label for="meja_{{ $meja->kode_meja }}"
                                                     class="aspect-square flex items-center justify-center border-2 border-secondary dark:border-primary-light rounded-lg text-sm font-semibold text-primary-dark dark:text-secondary cursor-pointer transition-all duration-200 
-                                    peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
-                                    hover:border-accent hover:bg-accent/10">
+                                                    peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary
+                                                    hover:border-accent hover:bg-accent/10">
                                                     {{ $meja->kode_meja }}
                                                 </label>
                                             </div>
@@ -153,12 +154,12 @@
                                                 {{ $meja->kode_meja }}
                                             </div>
                                         @endif
-                                    @endforeach
+                                    @endforeach --}}
                                 </div>
 
-                                <div class="mt-auto flex justify-start">
-                                    <button id="btn-submit" type="submit"
-                                        class="bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
+                                <div class="">
+                                    <button id="btn-submit" type="submit" name="ruangan" value="Outdor"
+                                        class="w-full bg-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-primary-dark transition-colors shadow-soft-md hover:shadow-soft-lg transform hover:-translate-y-0.5">
                                         Selanjutnya
                                     </button>
                                 </div>
@@ -222,17 +223,17 @@
         //     });
         // });
 
-        const checkboxes = document.querySelectorAll('input[name="id_meja[]"]');
-        const limit = 4; // Contoh limit
+        // const checkboxes = document.querySelectorAll('input[name="id_meja[]"]');
+        // const limit = 4; // Contoh limit
 
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', () => {
-                const checkedCount = document.querySelectorAll('input[name="id_meja[]"]:checked').length;
-                if (checkedCount > limit) {
-                    cb.checked = false;
-                    alert("Maksimal pilih " + limit + " meja.");
-                }
-            });
-        });
+        // checkboxes.forEach(cb => {
+        //     cb.addEventListener('change', () => {
+        //         const checkedCount = document.querySelectorAll('input[name="id_meja[]"]:checked').length;
+        //         if (checkedCount > limit) {
+        //             cb.checked = false;
+        //             alert("Maksimal pilih " + limit + " meja.");
+        //         }
+        //     });
+        // });
     </script>
 @endpush

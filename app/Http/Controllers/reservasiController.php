@@ -82,25 +82,45 @@ class reservasiController extends Controller
             'no_hp' => 'required',
             'waktu' => 'required',
             'jumlah_tamu' => 'required|numeric',
-            'jumlah_meja' => 'required|numeric',
+            // 'jumlah_meja' => 'required|numeric',
             'tanggal' => 'required',
 
         ]);
 
+        // Mengambil Data Session
+        $id_pelanggan = session('id_pelanggan');
+
+        // 🔑 WAJIB: definisikan cartKey
+        $cartKey = 'keranjang_' . $id_pelanggan;
+
+        // keranjang 
+        $keranjang = session($cartKey, []);
+
+        // dd($keranjang);
+
+        // total banyak pesanan
+        $totalQty = array_sum(array_column($keranjang, 'qty'));
+
+        // dd($totalQty);
+
         $jumlahTamu = $request->jumlah_tamu;
-        $jumlahMeja = $request->jumlah_meja;
+        // $jumlahMeja = $request->jumlah_meja;
 
-        // 1 meja max 4 orang
-        $minimalMeja = ceil($jumlahTamu / 4);
-
-        // ❌ VALIDASI LOGIKA
-        if ($jumlahMeja < $minimalMeja) {
-            return redirect()->back()
-                ->withErrors([
-                    'jumlah_meja' => "Jumlah tamu $jumlahTamu orang membutuhkan minimal $minimalMeja meja"
-                ])
-                ->withInput();
+        if ($totalQty < $jumlahTamu) {
+            return back()->with('gagal', 'pastikan setiap tamu memesan makanan atau minuman minimal 1 pesanan, total pesanan anda: '.$totalQty.' total tamu yang anda inputkan '.$jumlahTamu);
         }
+
+        // meja max 4 orang
+        // $minimalMeja = ceil($jumlahTamu / 4);
+
+        // VALIDASI LOGIKA
+        // if ($jumlahMeja < $minimalMeja) {
+        //     return redirect()->back()
+        //         ->withErrors([
+        //             'jumlah_meja' => "Jumlah tamu $jumlahTamu orang membutuhkan minimal $minimalMeja meja"
+        //         ])
+        //         ->withInput();
+        // }
 
         // Mengambil Data Session
         $data = [
@@ -143,30 +163,6 @@ class reservasiController extends Controller
 
         $jumlahMeja = $data['jumlahMeja'];
         $mejaDipilih = session('mejaDipilih', []);
-
-        // $mejaIndr = DB::table('reservasi')
-        //     ->join('')
-        //     ->get();
-
-        // $mejaIndoor = Meja::where('meja.ruangan', 'Indoor')
-        //     ->leftJoin('reservasi_meja', 'meja.id_meja', '=', 'reservasi_meja.id_meja')
-        //     ->leftJoin('reservasi', 'reservasi_meja.id_reservasi', '=', 'reservasi.id_reservasi')
-        //     ->leftJoin('transaksi', 'transaksi.id_reservasi', '=', 'reservasi.id_reservasi')
-        //     ->select(
-        //         'meja.*',
-        //         'reservasi.tanggal',
-        //         'reservasi.waktu',
-        //         'transaksi.status as status_transaksi',
-        //         DB::raw("
-        //             CASE 
-        //                 WHEN transaksi.status = 'selesai' THEN 'KOSONG'
-        //                 WHEN reservasi.tanggal != '$inputTglReservasi' THEN 'KOSONG'
-        //                 WHEN reservasi_meja.id_meja IS NULL THEN 'KOSONG' 
-        //                 ELSE 'TERBOOKING' 
-        //             END AS status
-        //         ")
-        //     )
-        //     ->get();
 
         $mejaIndoor = Meja::where('meja.ruangan', 'Indoor')
             ->leftJoin('reservasi_meja', 'meja.id_meja', '=', 'reservasi_meja.id_meja')
@@ -228,81 +224,46 @@ class reservasiController extends Controller
 
     public function pilihTempatDuduk(Request $request)
     {
-        // $request->validate([
-        // 'ruangan' => 'required',
-        // 'kode_meja' => 'required'
-        // ]);
+        // dd($request->all());
 
-        // dd($request->id_meja);
-
-        $inputMeja = $request->id_meja;
+        // $inputMeja = $request->id_meja;
 
 
-        $jumlahMeja = Session::get('dataReservasi')['jumlahMeja'];
-        $mejaDipilih = Session::get('mejaDipilih', []);
+        // $jumlahMeja = Session::get('dataReservasi')['jumlahMeja'];
+        // $mejaDipilih = Session::get('mejaDipilih', []);
 
-        // cek apakah meja yg d inputkan sesuai dengan data jumlh meja di reservasi
-        if (count($request->id_meja) > $jumlahMeja || count($request->id_meja) < $jumlahMeja) {
-            return back()->with('gagal', 'Pilih ' . $jumlahMeja . ' meja');
-        }
 
-        // dd($inputMeja[0]);
+        // // cek apakah meja yg d inputkan sesuai dengan data jumlh meja di reservasi
+        // if (count($request->id_meja) > $jumlahMeja || count($request->id_meja) < $jumlahMeja) {
+        //     return back()->with('gagal', 'Pilih ' . $jumlahMeja . ' meja');
+        // }
 
-        // array penyimpan data meja dan ruangan sementara
-        $mejaBaru = [];
+        // // array penyimpan data meja dan ruangan sementara
+        // $mejaBaru = [];
 
-        for ($i = 0; $i < $jumlahMeja; $i++) {
-            $data = DB::table('meja')
-                ->where('kode_meja', $inputMeja[$i])
-                ->select('ruangan')
-                ->first();
+        // for ($i = 0; $i < $jumlahMeja; $i++) {
+        //     $data = DB::table('meja')
+        //         ->where('kode_meja', $inputMeja[$i])
+        //         ->select('ruangan')
+        //         ->first();
 
-            // dd($data->ruangan);
+        //     // dd($data->ruangan);
 
-            if ($data->ruangan === 'Indoor') {
-                array_push($mejaBaru, [
-                    'ruangan' => $data->ruangan,
-                    'kode_meja'   => $inputMeja[$i],
-                ]);
-            } else {
-                array_push($mejaBaru, [
-                    'ruangan' => $data->ruangan,
-                    'kode_meja'   => $inputMeja[$i],
-                ]);
-            }
-        }
-
-        // dd($mejaBaru);
-
-        session(['mejaDipilih' => $mejaBaru]);
-
-        // dd(Session::get('mejaDipilih', []));
-
-        // Bentuk data meja TERSTRUKTUR
-        // $mejaBaru = [
-        //     'ruangan' => $request->ruangan,
-        //     'kode_meja'   => $request->kode_meja,
-        // ];
-
-        // // Cegah meja duplicate
-        // foreach ($mejaDipilih as $meja) {
-        //     if (
-        //         $meja['ruangan'] === $mejaBaru['ruangan'] &&
-        //         $meja['kode_meja'] === $mejaBaru['kode_meja']
-        //     ) {
-        //         return back()->with('gagal', 'Meja sudah dipilih!');
+        //     if ($data->ruangan === 'Indoor') {
+        //         array_push($mejaBaru, [
+        //             'ruangan' => $data->ruangan,
+        //             'kode_meja'   => $inputMeja[$i],
+        //         ]);
+        //     } else {
+        //         array_push($mejaBaru, [
+        //             'ruangan' => $data->ruangan,
+        //             'kode_meja'   => $inputMeja[$i],
+        //         ]);
         //     }
         // }
 
-        // // Simpan meja baru
-        // $mejaDipilih[] = $mejaBaru;
-        // Session::put('mejaDipilih', $mejaDipilih);
-
-
-        // // Jika belum cukup → tetap di halaman
-        // if (count($mejaDipilih) < $jumlahMeja) {
-        //     return back()->with('success', 'Meja berhasil dipilih!');
-        // }
+        // session(['mejaDipilih' => $mejaBaru]);
+        session(['RuanganDipilih' => $request->ruangan]);
 
         // // Jika sudah cukup → lanjut ke detail pesanan
         return redirect()->route('detail-pesanan');
@@ -313,14 +274,18 @@ class reservasiController extends Controller
     public function detailPesanan()
     {
         $userId = session('id_pelanggan');
+        $paymentDeadlineKey = 'payment_deadline_at_' . $userId;
 
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
 
+        // kepake
+        $ruangan = Session::get('RuanganDipilih');
+
         $menuReservasi = Session::get('menuReservasi');
         $keranjang = Session::get('keranjang_' . $userId, []);
 
-        // dd($keranjang);
+        // dd($data);
 
         // ================================
         // JALUR 1️⃣ : DARI RESERVASI
@@ -366,36 +331,56 @@ class reservasiController extends Controller
         $totalBayar = $totalHarga;
 
         // hanya wajib jika reservasi
-        if ($menuReservasi && (!$data || !$meja)) {
+        if ($menuReservasi && (!$data || !$ruangan)) {
             return redirect()->route('reservasi')
                 ->with('gagal', 'Data reservasi belum lengkap.');
         }
 
+        $paymentDeadlineAt = Session::get($paymentDeadlineKey);
+        if (!$paymentDeadlineAt) {
+            $paymentDeadlineAt = Carbon::now()->addMinutes(10)->toDateTimeString();
+            Session::put($paymentDeadlineKey, $paymentDeadlineAt);
+        }
+
+        $paymentDeadlineAt = Carbon::parse($paymentDeadlineAt);
+        $paymentExpired = Carbon::now()->greaterThan($paymentDeadlineAt);
+
         return view('User.detail-pesanan', compact(
             'data',
-            'meja',
+            'ruangan',
             'pesanan',
             'totalHarga',
-            // 'pajak',
             'totalBayar',
-            'keranjang'
+            'keranjang',
+            'paymentDeadlineAt',
+            'paymentExpired'
         ));
     }
 
 
     public function uploadBukti(Request $request)
     {
+        $id_pelanggan = session('id_pelanggan');
+        $paymentDeadlineKey = 'payment_deadline_at_' . $id_pelanggan;
+        $paymentDeadlineAt = Session::get($paymentDeadlineKey);
+
+        if ($paymentDeadlineAt && Carbon::now()->greaterThan(Carbon::parse($paymentDeadlineAt))) {
+            return redirect()
+                ->route('detail-pesanan')
+                ->with('gagal', 'Waktu upload bukti pembayaran sudah habis. Silakan ulangi pemesanan.');
+        }
+
         $request->validate([
             'bukti-pembayaran' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $id_pelanggan = session('id_pelanggan');
         $id_pengelola = session('id_pengelola');
 
         // =========================
         // AMBIL SESSION
         // =========================
         $dataReservasi = Session::get('dataReservasi');
+        $ruangan = Session::get('RuanganDipilih');
         $mejaDipilih   = Session::get('mejaDipilih', []);
         $menuReservasi = Session::get('menuReservasi');
         $cartKey       = 'keranjang_' . $id_pelanggan;
@@ -405,7 +390,7 @@ class reservasiController extends Controller
         // =========================
         // VALIDASI RESERVASI
         // =========================
-        if (!$dataReservasi || empty($mejaDipilih)) {
+        if (!$dataReservasi || empty($ruangan)) {
             return redirect()->route('reservasi')
                 ->with('gagal', 'Data reservasi tidak lengkap.');
         }
@@ -428,6 +413,7 @@ class reservasiController extends Controller
                 ->with('gagal', 'Pesanan tidak ditemukan.');
         }
 
+
         // =========================
         // SIMPAN FILE BUKTI
         // =========================
@@ -442,10 +428,10 @@ class reservasiController extends Controller
             // =========================
             // OLAH RUANGAN
             // =========================
-            $ruanganChosed = [];
-            foreach ($mejaDipilih as $m) {
-                $ruanganChosed[] = $m['ruangan'];
-            }
+            // $ruanganChosed = [];
+            // foreach ($mejaDipilih as $m) {
+            //     $ruanganChosed[] = $m['ruangan'];
+            // }
 
             // =========================
             // SIMPAN RESERVASI
@@ -455,7 +441,7 @@ class reservasiController extends Controller
                 'tanggal'          => $dataReservasi['tanggal'],
                 'waktu'            => $dataReservasi['waktu'],
                 'jumlah_tamu'      => $dataReservasi['jumlah_tamu'] ?? 1,
-                'ruangan'          => json_encode($ruanganChosed),
+                'ruangan'          => $ruangan,
                 'bukti_pembayaran' => $path,
             ]);
 
@@ -515,16 +501,16 @@ class reservasiController extends Controller
             // =========================
             // RELASI MEJA
             // =========================
-            foreach ($mejaDipilih as $m) {
-                $meja = Meja::where('ruangan', $m['ruangan'])
-                    ->where('kode_meja', $m['kode_meja'])
-                    ->firstOrFail();
+            // foreach ($mejaDipilih as $m) {
+            //     $meja = Meja::where('ruangan', $m['ruangan'])
+            //         ->where('kode_meja', $m['kode_meja'])
+            //         ->firstOrFail();
 
-                ReservasiMeja::create([
-                    'id_reservasi' => $reservasi->id_reservasi,
-                    'id_meja'      => $meja->id_meja,
-                ]);
-            }
+            //     ReservasiMeja::create([
+            //         'id_reservasi' => $reservasi->id_reservasi,
+            //         'id_meja'      => $meja->id_meja,
+            //     ]);
+            // }
 
             DB::commit();
 
@@ -592,6 +578,8 @@ class reservasiController extends Controller
         $reservasi = Reservasi::findOrFail($id);
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
+        $ruangan = Session::get('RuanganDipilih');
+
 
         $keranjang = Session::get($cartKey, []);
         $menuFromReservasi = Session::get('menuReservasi');
@@ -624,7 +612,7 @@ class reservasiController extends Controller
         // $totalBayar = $totalHarga + $pajak;
         $totalBayar = $totalHarga;
 
-        if (!$data || !$meja) {
+        if (!$data || !$ruangan) {
             return redirect()->route('reservasi')
                 ->with('gagal', 'Data reservasi belum lengkap.');
         }
@@ -632,6 +620,7 @@ class reservasiController extends Controller
         return view('User.detail-transaksi', compact(
             'data',
             'meja',
+            'ruangan',
             'pesanan',
             'totalHarga',
             // 'pajak',

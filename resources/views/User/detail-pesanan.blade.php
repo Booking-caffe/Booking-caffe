@@ -50,19 +50,34 @@
                 <div
                     class="flex justify-between items-start mb-6 border-b border-border-light dark:border-border-dark pb-4">
                     <div>
-                        <span class="font-semibold text-muted-light dark:text-muted-dark">Jumlah Meja :
-                            {{ count($meja) }}</span>
-                        <ol class="mt-4 list-decimal pl-5">
+                        {{-- <span class="font-semibold text-muted-light dark:text-muted-dark">Ruangan :
+                            
+                            {{ count($meja) }}
+                        </span> --}}
+                        {{-- <ol class="mt-4 list-decimal pl-5">
                             @foreach ($meja as $m)
                                 <li class="text-muted-light dark:text-muted-dark mt-1 pl-1"> <span
                                         class="font-light text-muted-light dark:text-muted-dark">{{ strtoupper($m['ruangan']) }}
                                         - {{ $m['kode_meja'] }}</span></li>
                             @endforeach
-                        </ol>
+                        </ol> --}}
 
                         {{-- <p class="text-muted-light dark:text-muted-dark mt-1">Jumlah Meja: {{ implode(', ', $meja) }}</p> --}}
                     </div>
                     <span class="text-lg font-semibold text-muted-light dark:text-muted-dark">#001</span>
+                </div>
+                <div
+                    class="flex justify-between items-start mb-6 border-b border-border-light dark:border-border-dark pb-4">
+                    <div>
+                        <span class="font-semibold text-muted-light dark:text-muted-dark">Ruangan :
+                            {{ $ruangan }}
+                        </span>
+                        <br>
+                        <span class="font-semibold text-muted-light dark:text-muted-dark">Jumlah Kursi :
+                            {{ $data['jumlahTamu'] }}
+                        </span>
+                    </div>
+                    {{-- <span class="text-lg font-semibold text-muted-light dark:text-muted-dark">{{ $data['jumlahTamu'] }}</span> --}}
                 </div>
 
                 @php
@@ -80,6 +95,13 @@
                             <span>
                                 {{ $isReservasi ? 1 : $p['qty'] }}x
                                 <span>{{ $p['nama'] }}</span>
+                                @if (!empty($p['options']))
+                                    <span class="mt-1 block text-xs text-gray-500">
+                                        {{ ucfirst(str_replace('_', ' ', $p['options']['temperature'] ?? '')) }},
+                                        {{ ucfirst(str_replace('_', ' ', $p['options']['sugar_level'] ?? '')) }},
+                                        {{ ucfirst(str_replace('_', ' ', $p['options']['ice_level'] ?? '')) }}
+                                    </span>
+                                @endif
                             </span>
                             <span>Rp. {{ number_format($p['harga'], 0, ',', '.') }}</span>
                         </div>
@@ -116,9 +138,28 @@
                     </div>
                 </div>
 
+                <div class="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800">
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="font-semibold">Batas Upload Bukti Pembayaran</span>
+                        <span id="payment-timer" class="font-bold"
+                            data-deadline="{{ $paymentDeadlineAt->toIso8601String() }}">
+                            {{ $paymentExpired ? 'Waktu habis' : '10:00' }}
+                        </span>
+                    </div>
+                    <p class="mt-2 text-sm">
+                        Upload bukti pembayaran maksimal 10 menit setelah halaman ini dibuka.
+                    </p>
+                </div>
+
                 @if (session('success'))
                     <div class="p-3 mb-4 bg-green-500 text-white rounded">
                         {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('gagal'))
+                    <div class="p-3 mb-4 bg-red-500 text-white rounded">
+                        {{ session('gagal') }}
                     </div>
                 @endif
 
@@ -131,14 +172,17 @@
                         </label>
 
                         <input type="file" name="bukti-pembayaran"accept="image/*"
-                            class="w-full border border-gray-300 p-2 rounded bg-white">
+                            class="w-full border border-gray-300 p-2 rounded bg-white"
+                            {{ $paymentExpired ? 'disabled' : '' }}>
 
                         @error('bukti-pembayaran')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <button type="submit"class="w-full bg-primary text-white font-bold py-3 rounded hover:bg-primary/80">
+                    <button type="submit"
+                        class="w-full bg-primary text-white font-bold py-3 rounded hover:bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
+                        {{ $paymentExpired ? 'disabled' : '' }}>
                         Selesaikan Pesanan
                     </button>
                 </form>
@@ -147,3 +191,42 @@
         </div>
     </main>
 @endsection
+
+@push('extra-scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const timerEl = document.getElementById('payment-timer');
+            const fileInput = document.querySelector('input[name="bukti-pembayaran"]');
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            if (!timerEl) return;
+
+            const deadline = new Date(timerEl.dataset.deadline).getTime();
+            let intervalId = null;
+
+            function setExpiredState() {
+                timerEl.textContent = 'Waktu habis';
+                if (fileInput) fileInput.disabled = true;
+                if (submitButton) submitButton.disabled = true;
+            }
+
+            function updateTimer() {
+                const now = Date.now();
+                const diff = deadline - now;
+
+                if (diff <= 0) {
+                    setExpiredState();
+                    if (intervalId) clearInterval(intervalId);
+                    return;
+                }
+
+                const minutes = Math.floor(diff / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+
+            updateTimer();
+            intervalId = setInterval(updateTimer, 1000);
+        });
+    </script>
+@endpush

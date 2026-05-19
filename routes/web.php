@@ -56,6 +56,7 @@ Route::post('', [LoginController::class, 'logutPelanggan'])->name('logout-pelang
 
 // Home
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/home-pelanggan', [HomeController::class, 'homepelanggan'])->name('home-login');
 
 // ========================================== RESERVASI PELANGGAN ==================================================================
 // reservasi

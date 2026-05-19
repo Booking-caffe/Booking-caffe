@@ -2,10 +2,27 @@
 
 @section('title', 'Keranjang')
 
+@php
+    $drinkOptionLabels = [
+        'temperature' => [
+            'ice' => 'Ice',
+            'hot' => 'Hot',
+        ],
+        'sugar_level' => [
+            'normal_sugar' => 'Normal Sugar',
+            'less_sugar' => 'Less Sugar',
+        ],
+        'ice_level' => [
+            'normal_ice' => 'Normal Ice',
+            'less_ice' => 'Less Ice',
+            'no_ice' => 'No Ice',
+        ],
+    ];
+@endphp
+
 @section('content')
     <div class="container mx-auto px-4 py-10">
-
-        <h1 class="text-center text-2xl md:text-3xl font-bold mb-10">
+        <h1 class="mb-10 text-center text-2xl font-bold md:text-3xl">
             Keranjang
         </h1>
 
@@ -14,129 +31,180 @@
                 Keranjang kosong.
             </div>
         @else
-            <!-- ITEM GRID -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 @foreach ($keranjang as $index => $item)
-                    <div class="bg-white rounded-xl shadow-md p-4 flex gap-4">
+                    @php
+                        $isDrink = ($item['kategori'] ?? null) === 'minuman';
+                        $drinkOptions = $item['options'] ?? [];
+                        $gambarPath = $item['gambar'] ?? '';
+                        if (\Illuminate\Support\Str::startsWith($gambarPath, ['http://', 'https://'])) {
+                            $gambarUrl = $gambarPath;
+                        } elseif (\Illuminate\Support\Str::startsWith($gambarPath, 'storage/')) {
+                            $gambarUrl = asset($gambarPath);
+                        } else {
+                            $gambarUrl = asset('storage/' . ltrim($gambarPath, '/'));
+                        }
+                    @endphp
 
-                        <img src="{{ asset('storage/' . $item['gambar']) }}" class="w-24 h-24 rounded-lg object-cover">
+                    <div class="rounded-2xl bg-white p-5 shadow-md">
+                        <div class="flex gap-4">
+                            <img src="{{ $gambarUrl }}" alt="{{ $item['nama'] }}"
+                                class="h-24 w-24 rounded-xl object-cover">
 
-                        <div class="flex-1 flex flex-col justify-between">
+                            <div class="flex flex-1 flex-col justify-between">
+                                <div>
+                                    <div class="flex items-start justify-between gap-3">
+                                        {{-- Sisi Kiri: Detail Informasi Menu --}}
+                                        <div>
+                                            <h3 class="text-lg font-semibold">{{ $item['nama'] }}</h3>
+                                            <p class="text-sm capitalize text-gray-500">{{ $item['kategori'] ?? 'menu' }}</p>
+                                            <p class="mt-1 text-sm text-gray-500">
+                                                Rp {{ number_format($item['harga']) }}
+                                            </p>
+                                        </div>
 
-                            <div>
-                                <h3 class="font-semibold text-lg">{{ $item['nama'] }}</h3>
-                                <p class="text-sm text-gray-500">
-                                    Rp {{ number_format($item['harga']) }}
-                                </p>
-                            </div>
+                                        {{-- Sisi Kanan: Seluruh Tombol Opsi Minuman Berjajar --}}
+                                        @if ($isDrink)
+                                            <div class="flex flex-col gap-2 text-right">
+                                                {{-- Tombol Temperature --}}
+                                                <div class="grid grid-cols-2 gap-2 min-w-[180px]">
+                                                    @foreach ($drinkOptionLabels['temperature'] as $value => $label)
+                                                        <button type="button"
+                                                            class="drink-option-btn flex flex-row items-center justify-center gap-2 rounded-xl border-2 px-3 py-2 text-center transition {{ ($drinkOptions['temperature'] ?? 'ice') === $value ? 'border-amber-500 bg-white text-slate-900 shadow-sm' : 'border-transparent bg-slate-50 text-slate-400' }}"
+                                                            data-index="{{ $index }}" data-option="temperature"
+                                                            data-value="{{ $value }}">
+                                                            <span class="text-base">{{ $value === 'ice' ? '🧊' : '☕' }}</span>
+                                                            <span class="text-xs font-bold">{{ $label }}</span>
+                                                        </button>
+                                                    @endforeach
+                                                </div>
 
-                            <div class="flex items-center justify-between mt-4">
+                                                {{-- Tombol Sugar Level --}}
+                                                <div class="grid grid-cols-2 gap-2 min-w-[180px]">
+                                                    @foreach ($drinkOptionLabels['sugar_level'] as $value => $label)
+                                                        <button type="button"
+                                                            class="drink-option-btn flex flex-row items-center justify-center gap-2 rounded-xl border-2 px-3 py-2 text-center transition {{ ($drinkOptions['sugar_level'] ?? 'normal_sugar') === $value ? 'border-amber-500 bg-white text-slate-900 shadow-sm' : 'border-transparent bg-slate-50 text-slate-400' }}"
+                                                            data-index="{{ $index }}" data-option="sugar_level"
+                                                            data-value="{{ $value }}">
+                                                            <span class="text-xs font-bold">{{ $label }}</span>
+                                                        </button>
+                                                    @endforeach
+                                                </div>
 
-                                <!-- QTY -->
-                                <input type="number" min="1" max="{{ $item['stok'] }}" value="{{ $item['qty'] }}"
-                                    data-index="{{ $index }}" data-stok="{{ $item['stok'] }}"
-                                    class="qty-input w-16 text-center rounded-md border">
+                                                {{-- Tombol Ice Level --}}
+                                                <div class="grid grid-cols-3 gap-2 min-w-[180px]">
+                                                    @foreach ($drinkOptionLabels['ice_level'] as $value => $label)
+                                                        <button type="button"
+                                                            class="drink-option-btn flex flex-row items-center justify-center gap-1 rounded-xl border-2 px-1 py-2 text-center transition {{ ($drinkOptions['ice_level'] ?? 'normal_ice') === $value ? 'border-amber-500 bg-white text-slate-900 shadow-sm' : 'border-transparent bg-slate-50 text-slate-400' }}"
+                                                            data-index="{{ $index }}" data-option="ice_level"
+                                                            data-value="{{ $value }}">
+                                                            <span class="text-[11px] font-bold leading-tight">{{ $label }}</span>
+                                                        </button>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
 
+                                <div class="mt-4 flex items-center justify-between gap-3">
+                                    <input type="number" min="1" max="{{ $item['stok'] }}" value="{{ $item['qty'] }}"
+                                        data-index="{{ $index }}" data-stok="{{ $item['stok'] }}"
+                                        class="qty-input w-16 rounded-md border text-center">
 
-                                <!-- DELETE -->
-                                <form action="{{ route('remove-item', $index) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-red-500 text-xl">🗑</button>
-                                </form>
-
-                                <!-- CHECKBOX -->
-                                <input type="checkbox" class="item-check w-4 h-4" data-index="{{ $index }}"
-                                    {{ isset($selected[$index]) ? 'checked' : '' }}>
+                                    <form action="{{ route('remove-item', $index) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="text-sm font-medium text-red-500" type="submit">Hapus</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
 
-            <!-- BOTTOM BAR -->
-            <div
-                class="mt-10 flex flex-col md:flex-row justify-between items-center gap-4
-                    bg-white rounded-xl shadow-md p-5">
-
-                <label class="flex items-center gap-2">
-                    <input type="checkbox" id="checkAll">
-                    Pilih Semua
-                </label>
-
-                <a href="{{ route('reservasi') }}" class="bg-primary text-white px-6 py-3 rounded-lg">
+            <div class="mt-10 flex flex-col items-center justify-between gap-4 rounded-xl bg-white p-5 shadow-md md:flex-row">
+                <a href="{{ route('reservasi') }}" class="rounded-lg bg-primary px-6 py-3 text-white">
                     Reservasi
                 </a>
             </div>
-
         @endif
     </div>
 @endsection
 
-
 @push('extra-scripts')
     <script>
-        /* ===============================
-           UPDATE QTY
-        ================================ */
+        const csrfToken = '{{ csrf_token() }}';
+
+        function updateCartItem(index, payload = {}) {
+            return fetch(`/keranjang/update/${index}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify(payload)
+            }).then(response => response.json());
+        }
+
+        function setDrinkButtonState(index, option, value) {
+            document.querySelectorAll(
+                `.drink-option-btn[data-index="${index}"][data-option="${option}"]`
+            ).forEach(button => {
+                const isActive = button.dataset.value === value;
+                button.classList.toggle('border-amber-500', isActive);
+                button.classList.toggle('bg-white', isActive);
+                button.classList.toggle('text-slate-900', isActive);
+                button.classList.toggle('shadow-sm', isActive);
+                button.classList.toggle('border-transparent', !isActive);
+                button.classList.toggle('bg-slate-50', !isActive);
+                button.classList.toggle('text-slate-400', !isActive);
+            });
+        }
+
         document.querySelectorAll('.qty-input').forEach(input => {
             input.addEventListener('change', function() {
-
                 let qty = parseInt(this.value);
                 let stok = parseInt(this.dataset.stok);
 
-                // ❌ jika kosong / < 1
                 if (!qty || qty < 1) {
                     this.value = 1;
                     qty = 1;
                 }
 
-                // ❌ jika melebihi stok
                 if (qty > stok) {
                     alert('Stok hanya tersisa ' + stok);
                     this.value = stok;
                     qty = stok;
                 }
 
-                fetch(`/keranjang/update/${this.dataset.index}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        qty: qty
-                    })
+                updateCartItem(this.dataset.index, {
+                    qty: qty
+                }).then(data => {
+                    if (data.qty) {
+                        this.value = data.qty;
+                    }
                 });
             });
         });
 
-        /* ===============================
-           CHECKBOX PER ITEM
-        ================================ */
-        document.querySelectorAll('.item-check').forEach(cb => {
-            cb.addEventListener('change', function() {
-                fetch('/keranjang/pilih', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        index: this.dataset.index,
-                        checked: this.checked
-                    })
-                });
-            });
-        });
+        document.querySelectorAll('.drink-option-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const index = this.dataset.index;
+                const option = this.dataset.option;
+                const value = this.dataset.value;
+                const qtyInput = document.querySelector(`.qty-input[data-index="${index}"]`);
+                const payload = {
+                    qty: qtyInput ? parseInt(qtyInput.value || '1', 10) : 1,
+                    [option]: value
+                };
 
-        /* ===============================
-           CHECK ALL
-        ================================ */
-        document.getElementById('checkAll').addEventListener('change', function() {
-            document.querySelectorAll('.item-check').forEach(cb => {
-                cb.checked = this.checked;
-                cb.dispatchEvent(new Event('change'));
+                updateCartItem(index, payload).then(data => {
+                    if (data.success) {
+                        setDrinkButtonState(index, option, value);
+                    }
+                });
             });
         });
     </script>

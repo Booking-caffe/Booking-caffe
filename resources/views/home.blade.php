@@ -6,7 +6,7 @@
 
 @section('content')
     <main class="flex-grow">
-        <section class="w-full h-[60vh] md:h-[80vh] relative overflow-hidden" id="hero-carousel">
+        <section class="w-full h-[30vh] md:h-[40vh] relative overflow-hidden" id="hero-carousel">
             <div class="carousel-track flex h-full transition-transform duration-700 ease-in-out">
                 @for ($i = 1; $i <= 5; $i++)
                     @php $slidePath = public_path('images/slide' . $i . '.jpg'); @endphp

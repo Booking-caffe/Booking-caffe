@@ -39,7 +39,7 @@
 
                 <div class="text-center border-b border-dashed border-gray-300 dark:border-gray-600 pb-4 mb-4">
                     <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Detail Transaksi</h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">#001</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">#{{ $reservasi->id_reservasi }}</p>
                 </div>
                 
                 <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300 ">
@@ -54,14 +54,14 @@
                     </div>
                
                     <div class="flex justify-between">
-                        <span>Jumlah</span>
+                        <span>Jumlah Tamu</span>
                         <span class="font-medium text-gray-800 dark:text-gray-200">{{ $data['jumlahTamu'] }}</span>
                     </div>
 
                     <div class="border-t border-b border-dashed border-gray-300 dark:border-gray-600 py-4 mb-4">
                         <div class="flex justify-between">
-                            <h2 class="font-semibold text-gray-600 dark:text-gray-300">Tipe Meja</h2>
-                            <h2 class="font-semibold text-gray-600 dark:text-gray-300">Jumlah Meja : {{ count($meja) }}</h2>
+                            <h2 class="font-semibold text-gray-600 dark:text-gray-300">Ruangan</h2>
+                            <h2 class="font-semibold text-gray-600 dark:text-gray-300">{{ $ruangan }}</h2>
                         </div>
                         
                         <div class="flex justify-between mt-1">
@@ -83,7 +83,16 @@
                     <div class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                         @foreach ($pesanan as $p)
                             <div class="flex justify-between">
-                                <span>{{ $p['qty'] }}x {{ $p['nama'] }}</span>
+                                <span>
+                                    {{ $p['qty'] }}x {{ $p['nama'] }}
+                                    @if (!empty($p['options']))
+                                        <span class="mt-1 block text-xs text-gray-500">
+                                            {{ ucfirst(str_replace('_', ' ', $p['options']['temperature'] ?? '')) }},
+                                            {{ ucfirst(str_replace('_', ' ', $p['options']['sugar_level'] ?? '')) }},
+                                            {{ ucfirst(str_replace('_', ' ', $p['options']['ice_level'] ?? '')) }}
+                                        </span>
+                                    @endif
+                                </span>
                                 <span>Rp. {{ number_format($p['harga'], 0, ',', '.') }}</span>
                             </div>
                         @endforeach

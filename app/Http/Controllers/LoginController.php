@@ -14,7 +14,6 @@ class LoginController extends Controller
     // show halaman login 
     public function showLogin()
     {
-
         return view('auth.login');
     }
 
@@ -35,7 +34,7 @@ class LoginController extends Controller
             ]);
             \Log::info('SESSION SET', session()->all());
 
-            return redirect()->route('home');
+            return redirect()->route('home-login');
         }
 
         // LOGIN PENGELOLA

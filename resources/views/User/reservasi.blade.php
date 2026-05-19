@@ -13,100 +13,173 @@
                 <h1 class="text-3xl md:text-4xl font-bold text-center mb-8 text-primary">Reservasi</h1>
 
                 {{-- {{ dd($keranjang) }} --}}
-                @foreach ($pelanggan as $id => $reservasi )
-                
+                @foreach ($pelanggan as $id => $reservasi)
+                    <form action="{{ route('form-reservasi') }}" method="POST">
+                        @csrf
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                                    for="nama">Nama</label>
 
-                <form action="{{ route('form-reservasi') }}" method="POST">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                                for="nama">Nama</label>
-                                
-                                    <input class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm" id="nama" name="nama" placeholder="Nama Lengkap Anda" type="text" value="{{ $reservasi -> nama_pelanggan  }}" />
-                                
-                        </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                                        for="no_hp">No. Hp</label>
-                                    <input
-                                        class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm" id="no_hp" name="no_hp" placeholder="+62 812-3456-7890" type="tel" value="{{ $reservasi -> no_telepon  }}"/>
-                                </div>
-                                
-                        <div>
-                            <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                                for="waktu">Waktu</label>
-                            <input
-                                class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
-                                id="waktu" name="waktu" type="time" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                                for="jumlah_tamu">Jumlah Tamu</label>
-                            <input
-                                class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
-                                id="jumlah_tamu" min="1" name="jumlah_tamu" placeholder="Jumlah Tamu Maksimal 80" type="number" />
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                                for="jumlah_meja">Jumlah Meja</label>
-                            <input
-                                class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
-                                id="jumlah_meja" min="1" name="jumlah_meja" placeholder="1 Meja Maks 4 Orang" type="number" />
-                        </div>
+                                <input
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
+                                    id="nama" name="nama" placeholder="Nama Lengkap Anda" type="text"
+                                    value="{{ $reservasi->nama_pelanggan }}" />
 
-                        <div 
-                            class="md:col-span-2"
-                            x-data="{
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                                    for="no_hp">No. Hp</label>
+                                <input
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
+                                    id="no_hp" name="no_hp" placeholder="+62 812-3456-7890" type="tel"
+                                    value="{{ $reservasi->no_telepon }}" />
+                            </div>
+
+                            {{-- <div>
+                                <label
+                                    class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                                    for="waktu">Waktu</label>
+                                <input
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
+                                    id="waktu" name="waktu" type="time" min="10:00" max="21:00" />
+                            </div> --}}
+                            <div x-data="{
+                                waktu: '',
+                                checkTime() {
+                                    if (!this.waktu) return;
+                            
+                                    // Ambil jam dan menit dari input
+                                    const [hours, minutes] = this.waktu.split(':').map(Number);
+                            
+                                    // Cek jika kurang dari jam 10
+                                    if (hours < 10) {
+                                        alert('Jam operasional dimulai pukul 10:00');
+                                        this.waktu = '10:00';
+                                    }
+                                    // Cek jika lebih dari jam 21 (atau tepat jam 21 tapi menit lebih dari 00)
+                                    else if (hours > 21 || (hours === 21 && minutes > 0)) {
+                                        alert('Jam operasional berakhir pukul 21:00');
+                                        this.waktu = '21:00';
+                                    }
+                                }
+                            }">
+                                <label
+                                    class="block text-sm font-medium mb-1 text-text-muted-light dark:text-text-muted-dark"
+                                    for="waktu">
+                                    Waktu Reservasi (10:00 - 21:00)
+                                </label>
+                                <input id="waktu" name="waktu" type="time" x-model="waktu" @input="checkTime"
+                                    @blur="checkTime" min="10:00" max="21:00"
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm" />
+                            </div>
+
+
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                                    for="jumlah_tamu">Jumlah Tamu</label>
+                                <input
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
+                                    id="jumlah_tamu" min="1" name="jumlah_tamu" placeholder="Jumlah Tamu Maksimal 80"
+                                    type="number" />
+                            </div>
+                            {{-- <div>
+                                <label
+                                    class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                                    for="jumlah_meja">Jumlah Meja</label>
+                                <input
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-background-light dark:bg-background-dark focus:ring-primary focus:border-primary transition duration-150 ease-in-out shadow-sm"
+                                    id="jumlah_meja" min="1" name="jumlah_meja" placeholder="1 Meja Maks 4 Orang"
+                                    type="number" />
+                            </div> --}}
+
+                            {{-- <div class="md:col-span-2" x-data="{
                                 tanggal: '',
                                 error: false,
                                 today: new Date().toISOString().split('T')[0],
                                 checkDate() {
                                     this.error = this.tanggal < this.today;
-                                }
-                            }"
-                        >
-                            <label 
-                                class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
-                                for="tanggal"
-                            >
-                                Tanggal
-                            </label>
+                                    }
+                                }">
+                                <label
+                                    class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                                    for="tanggal">
+                                    Tanggal
+                                </label>
 
-                            <div class="relative">
-                                <input
-                                    id="tanggal"
-                                    name="tanggal"
-                                    type="date"
-                                    x-model="tanggal"
-                                    @change="checkDate"
-                                    :min="today"
-                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 
+                                <div class="relative">
+                                    <input id="tanggal" name="tanggal" type="date" x-model="tanggal"
+                                        @change="checkDate" :min="today"
+                                        class="block w-full rounded-md border-gray-300 dark:border-gray-600 
                                         bg-background-light dark:bg-background-dark 
                                         focus:ring-primary focus:border-primary 
                                         transition duration-150 ease-in-out shadow-sm pr-10"
-                                    :class="error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''"
-                                />
-                            </div>
+                                        :class="error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''" />
+                                </div>
 
-                            <!-- Pesan Error -->
-                            <p 
-                                x-show="error"
-                                x-transition
-                                class="mt-1 text-sm text-red-600"
-                            >
-                                Tanggal tidak boleh sebelum hari ini
-                            </p>
+                                <!-- Pesan Error -->
+                                <p x-show="error" x-transition class="mt-1 text-sm text-red-600">
+                                    Tanggal tidak boleh sebelum hari ini
+                                </p>
+                            </div> --}}
+                            <div class="md:col-span-2" x-data="{
+                                tanggal: '',
+                                error: false,
+                                errorMessage: '',
+                                today: new Date().toISOString().split('T')[0],
+                            
+                                // Menghitung tanggal maksimal (hari ini + 7 hari)
+                                get maxDate() {
+                                    let date = new Date();
+                                    date.setDate(date.getDate() + 7);
+                                    return date.toISOString().split('T')[0];
+                                },
+                            
+                                checkDate() {
+                                    if (this.tanggal < this.today) {
+                                        this.error = true;
+                                        this.errorMessage = 'Tanggal tidak boleh sebelum hari ini';
+                                    } else if (this.tanggal > this.maxDate) {
+                                        this.error = true;
+                                        this.errorMessage = 'Pemesanan maksimal hanya boleh seminggu ke depan';
+                                    } else {
+                                        this.error = false;
+                                        this.errorMessage = '';
+                                    }
+                                }
+                            }">
+                                <label
+                                    class="block text-sm font-medium text-text-muted-light dark:text-text-muted-dark mb-1"
+                                    for="tanggal">
+                                    Tanggal
+                                </label>
+
+                                <div class="relative">
+                                    <input id="tanggal" name="tanggal" type="date" x-model="tanggal"
+                                        @change="checkDate" :min="today" :max="maxDate"
+                                        class="block w-full rounded-md border-gray-300 dark:border-gray-600 
+                                        bg-background-light dark:bg-background-dark 
+                                        focus:ring-primary focus:border-primary 
+                                        transition duration-150 ease-in-out shadow-sm pr-10"
+                                        :class="error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''" />
+                                </div>
+
+                                <!-- Pesan Error Dinamis -->
+                                <p x-show="error" x-transition x-cloak class="mt-1 text-sm text-red-600">
+                                    <span x-text="errorMessage"></span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mt-8">
-                        <button
-                            class="w-full bg-primary text-white font-bold py-3 px-4 rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                            type="submit">
-                            Selanjutnya
-                        </button>
-                    </div>
-                </form>
+                        <div class="mt-8">
+                            <button
+                                class="w-full bg-primary text-white font-bold py-3 px-4 rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-dark transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                type="submit">
+                                Selanjutnya
+                            </button>
+                        </div>
+                    </form>
                 @endforeach
             </div>
         </div>

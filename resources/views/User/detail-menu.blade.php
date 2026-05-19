@@ -64,11 +64,11 @@
                         </button>
                     </form>
 
-                    <form action="{{ route('reservasi.fromMenu', $menu->id_menu) }}" method="POST" class="w-full sm:w-auto">
+                    {{-- <form action="{{ route('reservasi.fromMenu', $menu->id_menu) }}" method="POST" class="w-full sm:w-auto">
                         @csrf
 
                         <button type="submit" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition duration-200">Reservasi</button>
-                    </form>
+                    </form> --}}
 
                     {{-- <div class="reservasi w-full sm:w-auto" style="display: flex; align-items: center;">
                         <button class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white  px-6 py-2 rounded-lg transition duration-200">
