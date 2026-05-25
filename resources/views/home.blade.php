@@ -3,10 +3,10 @@
 @section('title', 'Home')
 {{-- @section('Dashboard') --}}
 
-
 @section('content')
     <main class="flex-grow">
-        <section class="w-full h-[30vh] md:h-[40vh] relative overflow-hidden" id="hero-carousel">
+        {{-- PERUBAHAN UTAMA: Tinggi section dinaikkan dari 30vh/40vh ke 50vh/70vh agar banner terlihat besar --}}
+        <section class="w-full h-[50vh] md:h-[70vh] relative overflow-hidden group" id="hero-carousel">
             <div class="carousel-track flex h-full transition-transform duration-700 ease-in-out">
                 @for ($i = 1; $i <= 5; $i++)
                     @php $slidePath = public_path('images/slide' . $i . '.jpg'); @endphp
@@ -19,21 +19,24 @@
                         </div>
 
                         {{-- MAIN IMAGE --}}
-                        <div class="absolute inset-0 z-10">
+                        <div class="absolute inset-0 z-10 flex justify-center items-center">
                             <img src="{{ file_exists($slidePath) ? asset('images/slide' . $i . '.jpg') : 'https://via.placeholder.com/1200x800' }}"
                                 class="w-full h-full object-cover" alt="Slide {{ $i }}">
                         </div>
+                        
+                        {{-- OPTIONAL: Efek gradasi gelap di bawah gambar agar teks kontras (jika nanti ditambah teks) --}}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-20 pointer-events-none"></div>
                     </div>
                 @endfor
             </div>
 
-            {{-- BUTTON --}}
-            <button class="carousel-button left" onclick="moveSlide(-1)">
-                <span class="material-symbols-outlined">chevron_left</span>
+            {{-- TOMBOL NAVIGASI MANUAL (Diberi style modern & semi-transparan) --}}
+            <button class="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/30 hover:bg-black/60 text-white w-12 h-12 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 focus:outline-none" onclick="moveSlide(-1)">
+                <span class="material-symbols-outlined text-3xl">chevron_left</span>
             </button>
 
-            <button class="carousel-button right" onclick="moveSlide(1)">
-                <span class="material-symbols-outlined">chevron_right</span>
+            <button class="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/30 hover:bg-black/60 text-white w-12 h-12 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 focus:outline-none" onclick="moveSlide(1)">
+                <span class="material-symbols-outlined text-3xl">chevron_right</span>
             </button>
         </section>
 
@@ -90,5 +93,4 @@
             }, 5000);
         </script>
     @endpush
-    </body>
 @endsection

@@ -51,29 +51,34 @@
         <section class="py-16 md:py-24">
             <div class="container mx-auto px-6">
                 <h2 class="text-4xl md:text-5xl font-display font-bold text-primary text-center mb-12">Tentang Kami</h2>
+                
+                {{-- Diubah menjadi flex-col agar teks duluan baru foto, dan lg:flex-row untuk desktop --}}
                 <div class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16">
                     
+                    {{-- Bagian Teks Keterangan (Posisinya di atas / kiri) --}}
+                    <div class="w-full lg:w-1/2 text-center lg:text-left">
+                        <h3 class="text-3xl font-display text-primary mb-4">Tentang Cafe</h3>
+                        <p class="text-text-muted-light dark:text-text-muted-dark leading-relaxed">
+                            {!! file_exists(resource_path('tentang_kami.txt')) ? nl2br(e(file_get_contents(resource_path('tentang_kami.txt')))) : 'Belum ada deskripsi tentang cafe.' !!}
+                        </p>
+                    </div>
+
+                    {{-- Bagian Foto (Posisinya di bawah / kanan, ukuran maksimal diubah dari max-w-md ke max-w-xl) --}}
                     <div class="w-full lg:w-1/2 flex justify-center perspective-[800px]">
                         @php
                             $fotoTentang = public_path('images/foto_tentang.jpg');
                         @endphp
                         @if (file_exists($fotoTentang))
                             <img alt="Foto Tentang"
-                                class="rounded-xl shadow-2xl w-full max-w-md h-auto object-cover transform transition-transform duration-500 ease-in-out hover:rotate-y-[-10deg] hover:rotate-x-[5deg] hover:scale-105"
+                                class="rounded-xl shadow-2xl w-full max-w-xl h-auto object-cover transform transition-transform duration-500 ease-in-out hover:rotate-y-[-10deg] hover:rotate-x-[5deg] hover:scale-105"
                                 src="{{ asset('images/foto_tentang.jpg') . '?v=' . time() }}" />
                         @else
                             <img alt="Foto Tentang Default"
-                                class="rounded-xl shadow-2xl w-full max-w-md h-auto object-cover transform transition-transform duration-500 ease-in-out hover:rotate-y-[-10deg] hover:rotate-x-[5deg] hover:scale-105"
-                                src="https://via.placeholder.com/400x400?text=Foto+Tentang+Kami" />
+                                class="rounded-xl shadow-2xl w-full max-w-xl h-auto object-cover transform transition-transform duration-500 ease-in-out hover:rotate-y-[-10deg] hover:rotate-x-[5deg] hover:scale-105"
+                                src="https://via.placeholder.com/600x400?text=Foto+Tentang+Kami" />
                         @endif
                     </div>
 
-                    <div class="w-full lg:w-1/2 text-center lg:text-left">
-                        <h3 class="text-3xl font-display text-primary mb-4">Tentang Cafe</h3>
-                        <p class="text-text-muted-light dark:text-text-muted-dark leading-relaxed">
-                            {{ file_exists(resource_path('tentang_kami.txt')) ? nl2br(e(file_get_contents(resource_path('tentang_kami.txt')))) : 'Belum ada deskripsi tentang cafe.' }}
-                        </p>
-                    </div>
                 </div>
             </div>
         </section>
@@ -100,6 +105,4 @@
             }, 5000);
         </script>
     @endpush
-
-    </body>
 @endsection

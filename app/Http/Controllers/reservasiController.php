@@ -320,7 +320,7 @@ class reservasiController extends Controller
         // VALIDASI
         // ================================
         else {
-            return redirect()->route('menu')
+            return redirect()->route('home-login')
                 ->with('gagal', 'Pesanan tidak ditemukan.');
         }
 
@@ -338,7 +338,7 @@ class reservasiController extends Controller
 
         $paymentDeadlineAt = Session::get($paymentDeadlineKey);
         if (!$paymentDeadlineAt) {
-            $paymentDeadlineAt = Carbon::now()->addMinutes(10)->toDateTimeString();
+            $paymentDeadlineAt = Carbon::now()->addMinutes(1)->toDateTimeString();
             Session::put($paymentDeadlineKey, $paymentDeadlineAt);
         }
 
@@ -401,6 +401,7 @@ class reservasiController extends Controller
         if (!empty($keranjang)) {
             // 🔹 JALUR KERANJANG
             $pesananFinal = $keranjang;
+
         } elseif (!empty($menuReservasi)) {
             // 🔹 JALUR RESERVASI LANGSUNG
             $pesananFinal = [[
@@ -409,7 +410,7 @@ class reservasiController extends Controller
                 'qty'   => $menuReservasi['qty'] ?? 1,
             ]];
         } else {
-            return redirect()->route('menu')
+            return redirect()->route('home-login')
                 ->with('gagal', 'Pesanan tidak ditemukan.');
         }
 
@@ -628,4 +629,103 @@ class reservasiController extends Controller
             'reservasi'
         ));
     }
+
+
+    public function setTransaksiGagal(Request $request)
+    {
+        $id_pelanggan = session('id_pelanggan');
+        $paymentDeadlineKey = 'payment_deadline_at_' . $id_pelanggan;
+
+        // Ambil data session persis seperti di uploadBukti
+        $dataReservasi = Session::get('dataReservasi');
+        $ruangan = Session::get('RuanganDipilih');
+        $menuReservasi = Session::get('menuReservasi');
+        $cartKey = 'keranjang_' . $id_pelanggan;
+        $keranjang = Session::get($cartKey, []);
+        $id_pengelola = session('id_pengelola');
+
+        // Tentukan jalur pesanan final untuk menghitung total nominal
+        if (!empty($keranjang)) {
+            $pesananFinal = $keranjang;
+        } elseif (!empty($menuReservasi)) {
+            $pesananFinal = [[
+                'id'    => $menuReservasi['id_menu'],
+                'harga' => $menuReservasi['harga'],
+                'qty'   => $menuReservasi['qty'] ?? 1,
+            ]];
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Pesanan tidak ditemukan atau session sudah bersih.'
+            ], 404);
+        }
+
+        // Hitung total harga item pesanan
+        $totalHarga = 0;
+        foreach ($pesananFinal as $item) {
+            $totalHarga += $item['harga'] * $item['qty'];
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // 1. Simpan data ke tabel Reservasi terlebih dahulu dengan status/keterangan pembatalan waktu
+            // Karena bukti_pembayaran wajib/tidak boleh null, kita isi dengan teks penanda
+            $reservasi = Reservasi::create([
+                'id_pelanggan'     => $id_pelanggan,
+                'tanggal'          => $dataReservasi['tanggal'] ?? now()->toDateString(),
+                'waktu'            => $dataReservasi['waktu'] ?? now()->toTimeString(),
+                'jumlah_tamu'      => $dataReservasi['jumlah_tamu'] ?? 1,
+                'ruangan'          => $ruangan ?? '-',
+                'bukti_pembayaran' => 'EXPIRED_TIMEOUT', // Penanda bahwa baris ini gagal karena waktu habis
+            ]);
+
+            // 2. Simpan ke tabel Transaksi menggunakan nama kolom yang sesuai dengan model Anda ('total')
+            $transaksi = Transaksi::create([
+                'id_pelanggan'      => $id_pelanggan,
+                'id_reservasi'      => $reservasi->id_reservasi, // Menghubungkan foreign key
+                'id_pengelola'      => $id_pengelola,
+                'total'             => $totalHarga, // Sesuai kolom database Anda di uploadBukti
+                'status'            => 'gagal',     // Langsung diset gagal karena waktu habis
+                'metode_pembayaran' => 'QRIS',
+            ]);
+
+            // 3. Simpan baris item ke DetailPesanan agar riwayat menu yang ingin dibeli tetap tercatat
+            foreach ($pesananFinal as $item) {
+                DetailPesanan::create([
+                    'id_transaksi' => $transaksi->id_transaksi,
+                    'id_menu'      => $item['id'],
+                    'qty'          => $item['qty'],
+                ]);
+            }
+
+            DB::commit();
+
+            // 4. Bersihkan session pemesanan agar transaksi dianggap hangus dan tidak bisa di-back
+            Session::forget([
+                'dataReservasi', 
+                'RuanganDipilih', 
+                'mejaDipilih', 
+                'menuReservasi', 
+                $cartKey,
+                $paymentDeadlineKey
+            ]);
+
+            // Daftarkan pesan gagal untuk dibaca view setelah redirect browser
+            Session::flash('gagal', 'Waktu upload bukti pembayaran sudah habis. Transaksi otomatis dicatat gagal.');
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Transaksi gagal berhasil disimpan ke database.'
+            ]);
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menyimpan data ke database: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

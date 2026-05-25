@@ -124,68 +124,11 @@
                 </div>
             </div>
         </section>
-
-        <footer class="bg-card-light pt-12 pb-6" data-home-footer>
-            <div class="container mx-auto px-6">
-                <div class="mb-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-                    <div class="md:col-span-1">
-                        <h4 class="mb-4 font-display text-xl font-bold text-primary">Kopi Senja</h4>
-                        <p class="mb-4 text-sm text-text-muted-light">
-                            {{ $kopiSenjaText }}
-                        </p>
-                        <div class="flex space-x-4">
-                            <a aria-label="Facebook" class="text-text-light transition-colors duration-300 hover:text-primary"
-                                href="#">
-                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <a aria-label="Instagram" class="text-text-light transition-colors duration-300 hover:text-primary"
-                                href="#">
-                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.644-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98C15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z">
-                                    </path>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 class="mb-4 font-display text-xl font-bold text-primary">Hubungi Kami</h4>
-                        <ul class="space-y-3 text-sm">
-                            <li class="flex items-center">
-                                <span class="material-symbols-outlined mr-3 text-primary">call</span>
-                                <span class="text-text-muted-light">{{ $hubungi['telepon1'] }}</span>
-                            </li>
-                            <li class="flex items-center">
-                                <span class="material-symbols-outlined mr-3 text-primary">call</span>
-                                <span class="text-text-muted-light">{{ $hubungi['telepon2'] }}</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="material-symbols-outlined mr-3 mt-1 text-primary">location_on</span>
-                                <span class="text-text-muted-light">{{ $hubungi['alamat'] }}</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="mb-4 font-display text-xl font-bold text-primary">Lokasi</h4>
-                        <div class="aspect-video overflow-hidden rounded-lg shadow-lg">
-                            <iframe allowfullscreen="" height="100%" loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade" src="{{ $lokasi }}"
-                                style="border:0;" width="100%"></iframe>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-200 pt-6 text-center">
-                    <p class="text-sm text-text-muted-light">
-                        Hak Cipta © Copyright 2025. Kopi Senja.
-                    </p>
-                </div>
+     <footer class="border-t border-primary/10 bg-card-light py-6" data-home-footer>
+            <div class="container mx-auto px-6 text-center">
+                <p class="text-sm text-text-muted-light">
+                    Hak Cipta © Copyright 2025. Kopi Senja.
+                </p>
             </div>
         </footer>
     </main>

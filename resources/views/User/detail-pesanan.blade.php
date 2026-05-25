@@ -201,13 +201,38 @@
 
             if (!timerEl) return;
 
-            const deadline = new Date(timerEl.dataset.deadline).getTime();
+            // KUNCI 10 MENIT DI SINI
+            const sepuluhMenit = 10 * 60 * 1000; 
+            const deadline = Date.now() + sepuluhMenit;
+            
             let intervalId = null;
+            let isTriggered = false;
 
             function setExpiredState() {
                 timerEl.textContent = 'Waktu habis';
                 if (fileInput) fileInput.disabled = true;
                 if (submitButton) submitButton.disabled = true;
+
+                if (isTriggered) return;
+                isTriggered = true;
+
+                fetch("{{ route('transaksi.set-gagal') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        window.location.href = "{{ route('pesanan.riwayat') }}";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saat memperbarui status transaksi:', error);
+                });
             }
 
             function updateTimer() {
@@ -220,13 +245,15 @@
                     return;
                 }
 
+                // Rumus ini tetap sama, karena fungsinya hanya memformat sisa waktu
                 const minutes = Math.floor(diff / 60000);
                 const seconds = Math.floor((diff % 60000) / 1000);
                 timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }
 
+            // Jalankan timer
             updateTimer();
             intervalId = setInterval(updateTimer, 1000);
         });
     </script>
-@endpush
+@endpush    

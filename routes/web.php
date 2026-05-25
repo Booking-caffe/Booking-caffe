@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DetailPesananController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\adminController\dataReservasi;
 use App\Http\Controllers\reservasiController;
 use App\Http\Controllers\adminController\dataUser;
@@ -90,6 +91,11 @@ Route::post('/upload-bukti', [App\Http\Controllers\reservasiController::class, '
 Route::get('/detail-transaksi/{id}', [App\Http\Controllers\reservasiController::class, 'detailTransaksi'])->name('detail-transaksi');
 Route::get('/download-transaksi/{id}', [App\Http\Controllers\reservasiController::class, 'downloadTransaksi'])->name('transaksi.download');
 
+
+Route::get('/riwayat-transaksi', [App\Http\Controllers\PesananController::class, 'riwayat'])->name('pesanan.riwayat');
+Route::get('/riwayat-transaksi/download/{id_transaksi}', [PesananController::class, 'downloadNota'])->name('pesanan.download');
+
+Route::post('/transaksi/set-gagal', [App\Http\Controllers\reservasiController::class, 'setTransaksiGagal'])->name('transaksi.set-gagal');
 
 // ========================================== ADMIN ==================================================================
 // REGIS ADMIN

@@ -67,7 +67,8 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         // back landing page
-        return view('home');
+        // return view('home');
+        return Redirect()->route('home');
     }
 
     // logout pengelola
