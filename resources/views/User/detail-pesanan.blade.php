@@ -73,6 +73,10 @@
                             {{ $ruangan }}
                         </span>
                         <br>
+                        <span class="font-semibold text-muted-light dark:text-muted-dark">Nomor Meja :
+                            {{ $mejaData->kode_meja }}
+                        </span>
+                        <br>
                         <span class="font-semibold text-muted-light dark:text-muted-dark">Jumlah Kursi :
                             {{ $data['jumlahTamu'] }}
                         </span>

@@ -6,7 +6,7 @@
     @php
         $hubungi = [
             'telepon1' => '+62-812-1234-1234',
-            'telepon2' => '+62-812-1234-1234',
+            'Email' => 'doubler.patrol@gmail.com',
             'alamat' => 'Jl. Nasional 1 Patrol, Kec. Patrol, Kab. Indramayu, Jawa Barat 45257',
         ];
         $contactPhone = '6287815349226';
@@ -110,11 +110,21 @@
                     <div class="grid gap-6 md:grid-cols-3">
                         <div class="rounded-2xl bg-background-light p-6 shadow-sm">
                             <h3 class="text-lg font-semibold text-primary">Telepon 1</h3>
-                            <p class="mt-3 text-sm text-text-muted-light">{{ $hubungi['telepon1'] }}</p>
+                            <p class="mt-3 text-sm text-text-muted-light">
+                                {{-- {{ $hubungi['telepon1'] }} --}}
+                                <a href="http://wa.me/{{ str_replace(['+', '-'], '', $hubungi['telepon1']) }}?text=Halo%saya%20ingin%20bertanya%20tentang%20reservasi."
+                                    class="text-blue-400 underline">
+                                    {{ $hubungi['telepon1'] }}
+                                </a>
+                            </p>
                         </div>
                         <div class="rounded-2xl bg-background-light p-6 shadow-sm">
-                            <h3 class="text-lg font-semibold text-primary">Telepon 2</h3>
-                            <p class="mt-3 text-sm text-text-muted-light">{{ $hubungi['telepon2'] }}</p>
+                            <h3 class="text-lg font-semibold text-primary">Email</h3>
+                            <p class="mt-3 text-sm text-text-muted-light">
+                                <a href="https://google.com{{ $hubungi['Email'] }}" class="text-blue-400 underline" target="_blank">
+                                    {{ $hubungi['Email'] }}
+                                </a>
+                            </p>
                         </div>
                         <div class="rounded-2xl bg-background-light p-6 shadow-sm">
                             <h3 class="text-lg font-semibold text-primary">Alamat</h3>

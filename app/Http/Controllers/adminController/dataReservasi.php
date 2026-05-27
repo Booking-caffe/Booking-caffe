@@ -20,9 +20,13 @@ class dataReservasi extends Controller
 
         $reservasi = Reservasi::with(['pelanggan', 'meja'])
             ->join('transaksi', 'transaksi.id_reservasi', '=', 'reservasi.id_reservasi')
+            ->join('reservasi_meja', 'reservasi_meja.id_reservasi', '=', 'reservasi.id_reservasi')
+            ->join('meja', 'meja.id_meja', '=', 'reservasi_meja.id_meja')
             ->select(
                 'reservasi.*',
-                'transaksi.status'
+                'transaksi.status',
+                'reservasi_meja.id_meja',
+                'meja.kode_meja',
             )
             ->when($search, function ($query, $search) {
                 $query->whereHas('pelanggan', function ($q) use ($search) {
@@ -33,7 +37,7 @@ class dataReservasi extends Controller
             ->paginate($perPage)
             ->withQueryString();
 
-        // dd($reservasi);
+        // dd($reservasi->get());
 
         return view('admin.riwayat', compact('reservasi', 'search'));
     }

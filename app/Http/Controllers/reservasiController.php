@@ -107,7 +107,7 @@ class reservasiController extends Controller
         // $jumlahMeja = $request->jumlah_meja;
 
         if ($totalQty < $jumlahTamu) {
-            return back()->with('gagal', 'pastikan setiap tamu memesan makanan atau minuman minimal 1 pesanan, total pesanan anda: '.$totalQty.' total tamu yang anda inputkan '.$jumlahTamu);
+            return back()->with('gagal', 'pastikan setiap tamu memesan makanan atau minuman minimal 1 pesanan, total pesanan anda: ' . $totalQty . ' total tamu yang anda inputkan ' . $jumlahTamu);
         }
 
         // meja max 4 orang
@@ -164,7 +164,7 @@ class reservasiController extends Controller
         $jumlahMeja = $data['jumlahMeja'];
         $mejaDipilih = session('mejaDipilih', []);
 
-        $mejaIndoor = Meja::where('meja.ruangan', 'Indoor')
+        $mejaIndoor = Meja::where('meja.ruangan', 'Indor1')
             ->leftJoin('reservasi_meja', 'meja.id_meja', '=', 'reservasi_meja.id_meja')
             ->leftJoin('reservasi', function ($join) use ($inputTglReservasi) {
                 $join->on('reservasi_meja.id_reservasi', '=', 'reservasi.id_reservasi')
@@ -189,7 +189,7 @@ class reservasiController extends Controller
             ->orderBy('status', 'DESC') // Biar 'TERBOOKING' muncul duluan dibanding 'KOSONG' jika ada dua baris
             ->get();
 
-        $mejaOutdoor = Meja::where('meja.ruangan', 'Outdoor')
+        $mejaOutdoor = Meja::where('meja.ruangan', 'Outdor')
             ->leftJoin('reservasi_meja', 'meja.id_meja', '=', 'reservasi_meja.id_meja')
             ->leftJoin('reservasi', function ($join) use ($inputTglReservasi) {
                 $join->on('reservasi_meja.id_reservasi', '=', 'reservasi.id_reservasi')
@@ -262,9 +262,40 @@ class reservasiController extends Controller
         //     }
         // }
 
-        // session(['mejaDipilih' => $mejaBaru]);
+        $waktuSession = Session::get('dataReservasi')['waktu'];
+
+        // Jika session hanya 5 karakter (contoh: "10:00"), tambahkan ":00" agar menjadi "10:00:00"
+        if (strlen($waktuSession) == 5) {
+            $waktuSession .= ':00';
+        }
+
+        // menentukan meja yang dipilih
+        $mejaDipilih = DB::table('meja')
+            ->where('ruangan', $request->ruangan)
+            ->whereNotIn('id_meja', function ($query) use ($request, $waktuSession) {
+                $query->select('reservasi_meja.id_meja')
+                    ->from('reservasi_meja')
+                    ->join('reservasi', 'reservasi_meja.id_reservasi', '=', 'reservasi.id_reservasi')
+                    ->join('transaksi', 'reservasi_meja.id_reservasi', '=', 'transaksi.id_reservasi')
+                    ->where('reservasi.ruangan', $request->ruangan)
+                    ->where('reservasi.tanggal', Session::get('dataReservasi')['tanggal'])
+                    ->where('reservasi.waktu', $waktuSession)
+                    ->where(function ($q) {
+                        $q->whereIn('transaksi.status', ['tervalidasi', 'menunggu'])
+                            ->orWhereNull('transaksi.status'); // Tangkap jika transaksi belum di-input ke DB
+                    });
+            });
+
+        if ($mejaDipilih->get()->isEmpty()) {
+            return back()->with('gagal', 'Maaf, tidak ada meja yang tersedia di ruangan ' . $request->ruangan . ' untuk waktu yang dipilih.');
+        }
+
+
+
+        session::put('mejaDipilih', $mejaDipilih->first()->id_meja);
         session(['RuanganDipilih' => $request->ruangan]);
 
+        // dd($mejaDipilih->first()->id_meja);
         // // Jika sudah cukup → lanjut ke detail pesanan
         return redirect()->route('detail-pesanan');
         // // return redirect()->route('detail-pesanan')->with('success', 'Semua meja berhasil dipilih!');
@@ -278,6 +309,10 @@ class reservasiController extends Controller
 
         $data = Session::get('dataReservasi');
         $meja = Session::get('mejaDipilih');
+
+        // dd($meja);
+
+        $mejaData = DB::table('meja')->where('id_meja', $meja)->first();
 
         // kepake
         $ruangan = Session::get('RuanganDipilih');
@@ -348,6 +383,7 @@ class reservasiController extends Controller
         return view('User.detail-pesanan', compact(
             'data',
             'ruangan',
+            'mejaData',
             'pesanan',
             'totalHarga',
             'totalBayar',
@@ -381,7 +417,7 @@ class reservasiController extends Controller
         // =========================
         $dataReservasi = Session::get('dataReservasi');
         $ruangan = Session::get('RuanganDipilih');
-        $mejaDipilih   = Session::get('mejaDipilih', []);
+        $mejaDipilih   = Session::get('mejaDipilih');
         $menuReservasi = Session::get('menuReservasi');
         $cartKey       = 'keranjang_' . $id_pelanggan;
         $keranjang     = Session::get($cartKey, []);
@@ -401,7 +437,6 @@ class reservasiController extends Controller
         if (!empty($keranjang)) {
             // 🔹 JALUR KERANJANG
             $pesananFinal = $keranjang;
-
         } elseif (!empty($menuReservasi)) {
             // 🔹 JALUR RESERVASI LANGSUNG
             $pesananFinal = [[
@@ -444,6 +479,15 @@ class reservasiController extends Controller
                 'jumlah_tamu'      => $dataReservasi['jumlah_tamu'] ?? 1,
                 'ruangan'          => $ruangan,
                 'bukti_pembayaran' => $path,
+            ]);
+
+            // =========================
+            // SIMPAN RESERVASI Meja
+            // =========================
+
+            $reservasi_meja = ReservasiMeja::create([
+                'id_reservasi'     => $reservasi->id_reservasi,
+                'id_meja'          => $mejaDipilih,
             ]);
 
             // =========================
@@ -585,6 +629,8 @@ class reservasiController extends Controller
         $keranjang = Session::get($cartKey, []);
         $menuFromReservasi = Session::get('menuReservasi');
 
+        $dataMeja = DB::table('meja')->where('id_meja', $meja)->first();
+
         $pesanan = [];
 
         // 1️⃣ Menu dari tombol reservasi
@@ -620,7 +666,7 @@ class reservasiController extends Controller
 
         return view('User.detail-transaksi', compact(
             'data',
-            'meja',
+            'dataMeja',
             'ruangan',
             'pesanan',
             'totalHarga',
@@ -703,10 +749,10 @@ class reservasiController extends Controller
 
             // 4. Bersihkan session pemesanan agar transaksi dianggap hangus dan tidak bisa di-back
             Session::forget([
-                'dataReservasi', 
-                'RuanganDipilih', 
-                'mejaDipilih', 
-                'menuReservasi', 
+                'dataReservasi',
+                'RuanganDipilih',
+                'mejaDipilih',
+                'menuReservasi',
                 $cartKey,
                 $paymentDeadlineKey
             ]);
@@ -718,7 +764,6 @@ class reservasiController extends Controller
                 'status' => 'success',
                 'message' => 'Transaksi gagal berhasil disimpan ke database.'
             ]);
-
         } catch (\Throwable $e) {
             DB::rollBack();
             return response()->json([
@@ -727,5 +772,4 @@ class reservasiController extends Controller
             ], 500);
         }
     }
-
 }
