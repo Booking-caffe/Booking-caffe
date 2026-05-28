@@ -55,9 +55,9 @@ class dataMenuController extends Controller
         return view('Admin.minuman', compact('minuman', 'search'));
     }
 
-    public function formMenu()
+    public function formMenu($kategori)
     {
-        return view('Admin.tambahMenu');
+        return view('Admin.tambahMenu', compact('kategori'));
     }
 
     // public function formMinuman()
@@ -159,28 +159,32 @@ class dataMenuController extends Controller
         // Validasi input
         $request->validate([
             'nama_menu' => 'required|string|max:255',
-            'kategori'  => 'required|in:makanan,minuman',
+            'kategori'  => 'required',
             'harga'     => 'required|numeric',
             'deskripsi' => 'nullable|string',
             'gambar'    => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'stok' => 'required|integer|min:0',
+            'jenis' => 'required',
         ]);
+
+        // dd($request->all());
 
         // Simpan gambar
         $namaFile = Str::random(10) . '.' . $request->gambar->extension();
         $path = $request->gambar->storeAs('menu', $namaFile, 'public');
 
-
+        
         // Simpan data
         menuModel::create([
             // 'id_menu'   => $this->generateIdMenu(),
             'id_pengelola' => Session::get('id_pengelola'),
             'nama_menu' => $request->nama_menu,
-            'kategori'  => $request->kategori,
+            'kategori'  => $request->jenis,
             'harga'     => $request->harga,
             'deskripsi' => $request->deskripsi,
             'gambar'    => $path, 
             'stok'      => $request->stok, 
+            'jenis'     => $request->kategori,
         ]);
 
         return redirect()

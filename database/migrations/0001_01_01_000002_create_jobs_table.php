@@ -60,6 +60,7 @@ return new class extends Migration
             $table->string('nama_menu', 50);
             $table->string('kategori', 25);
             $table->integer('harga');
+            $table->text('jenis');
             $table->string('deskripsi');
             $table->string('gambar');
             $table->integer('stok');

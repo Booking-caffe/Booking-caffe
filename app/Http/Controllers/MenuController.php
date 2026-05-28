@@ -37,16 +37,22 @@ class MenuController extends Controller
 
     public function menuMinuman()
     {
-        $menuMinuman = menuModel::where('kategori', 'minuman')->latest()->get();
+        $Soda= menuModel::where('kategori', 'minuman')->where('jenis', 'Soda Based')->latest()->get();
+        $NonCoffe= menuModel::where('kategori', 'minuman')->where('jenis', 'Non Coffe')->latest()->get();
+        $Coffe= menuModel::where('kategori', 'minuman')->where('jenis', 'Coffee')->latest()->get();
 
-        return view('User.menu-minuman', compact('menuMinuman'));
+        return view('User.menu-minuman', compact('Soda', 'NonCoffe', 'Coffe'));
     }
 
     public function menuMakanan()
     {
-        $menuMakanan = menuModel::where('kategori', 'makanan')->get();
+        $menuMakananHeavy = menuModel::where('kategori', 'makanan')->where('jenis', 'Heavy Meal')->latest()->get();
+        $Dessert = menuModel::where('kategori', 'makanan')->where('jenis', 'Dessert')->latest()->get();
+        $Appetizer = menuModel::where('kategori', 'makanan')->where('jenis', 'Appetizer')->latest()->get();
 
-        return view('User.menu-makanan', compact('menuMakanan'));
+        // dd($menuMakananHeavy, $Dessert, $Appetizer);
+
+        return view('User.menu-makanan', compact('menuMakananHeavy', 'Dessert', 'Appetizer'));
     }
 
     public function detailMinuman($id)

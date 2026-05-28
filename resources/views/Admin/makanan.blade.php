@@ -15,7 +15,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between  bg-white gap-4 py-4 px-5 mb-3 rounded-lg shadow ">
             
             <!-- ADD BUTTON -->
-            <a href="{{ route('formMenu') }}"
+            <a href="{{ route('formMenu', ['kategori' => 'makanan']) }}"
                 class="inline-flex items-center justify-center
                   bg-primary hover:bg-primary/90
                   text-white font-semibold
@@ -48,6 +48,7 @@
                         <th class="px-4 py-3 text-center">Foto</th>
                         <th class="px-4 py-3 text-left">Nama</th>
                         <th class="px-4 py-3 text-left">Harga</th>
+                        <th class="px-4 py-3 text-left">Kategori</th>
                         <th class="px-4 py-3 text-left">Deskripsi</th>
                         <th class="px-4 py-3 text-center">Stok</th>
                         <th class="px-4 py-3 text-center">Aksi</th>
@@ -78,6 +79,10 @@
                                 Rp {{ number_format($menu->harga, 0, ',', '.') }}
                             </td>
     
+                            <td class="px-4 py-3 max-w-xs truncate">
+                                {{ $menu->jenis }}
+                            </td>
+
                             <td class="px-4 py-3 max-w-xs truncate">
                                 {{ $menu->deskripsi }}
                             </td>

@@ -22,5 +22,6 @@ class menuModel extends Model
         'deskripsi',
         'gambar',
         'stok',
+        'jenis',
     ];
 }

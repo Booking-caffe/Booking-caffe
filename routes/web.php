@@ -123,7 +123,7 @@ Route::get('/admin/minuman', [dataMenuController::class, 'showMinuman'])->name('
 
 // FORM MENU
 // Route::get('/tambah-minuman', [dataMenuController::class, 'formMinuman'])->name('formMinuman');
-Route::get('/tambah-menu', [dataMenuController::class, 'formMenu'])->name('formMenu');
+Route::get('/tambah-menu/{kategori}', [dataMenuController::class, 'formMenu'])->name('formMenu');
 Route::post('/tambah-menu', [dataMenuController::class, 'addMenu'])->name('addMenu');
 
 
