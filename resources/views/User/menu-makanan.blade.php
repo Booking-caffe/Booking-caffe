@@ -75,12 +75,12 @@
             @endforelse
         </div>
         
-        <div class="mt-10">
+         <div class="mt-10 w-full h-auto clear-both block relative">
             <p class="font-bold text-gray-600 mb-6">
             - Dessert
             </p>
             <!-- Grid Menu Dessert -->
-            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+           <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 h-auto">
     
                 @forelse ($Dessert as $menu)
                     @if ($menu->stok > 0)
@@ -141,12 +141,12 @@
                
         </div>
 
-        <div class="mt-10">
+        <div class="mt-10 w-full h-auto clear-both block relative">
             <p class="font-bold text-gray-600 mb-6">
             - Appetizer
             </p>
             <!-- Grid Menu Dessert -->
-            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 h-auto">
     
                 @forelse ($Appetizer as $menu)
                     @if ($menu->stok > 0)

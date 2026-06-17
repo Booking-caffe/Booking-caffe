@@ -58,7 +58,7 @@
                             <select name="kategori" id="kategori"
                                 class="w-full rounded-lg border border-gray-300 px-3 py-2
                                focus:ring-primary focus:border-primary transition text-gray-700">
-                                <option value="Soda Based">Soda Based (Mojito & Mocktail)</option>
+                                {{-- <option value="Soda Based">Soda Based (Mojito & Mocktail)</option> --}}
                                 <option value="Non Coffee">Non Coffee</option>
                                 <option value="Coffee">Coffee</option>
                             </select>

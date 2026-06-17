@@ -37,11 +37,13 @@ class MenuController extends Controller
 
     public function menuMinuman()
     {
-        $Soda= menuModel::where('kategori', 'minuman')->where('jenis', 'Soda Based')->latest()->get();
-        $NonCoffe= menuModel::where('kategori', 'minuman')->where('jenis', 'Non Coffe')->latest()->get();
+        // $Soda= menuModel::where('kategori', 'minuman')->where('jenis', 'Soda Based')->latest()->get();
+        $NonCoffe= menuModel::where('kategori', 'minuman')->where('jenis', 'Non Coffee')->get();
         $Coffe= menuModel::where('kategori', 'minuman')->where('jenis', 'Coffee')->latest()->get();
 
-        return view('User.menu-minuman', compact('Soda', 'NonCoffe', 'Coffe'));
+        // dd($NonCoffe);
+
+        return view('User.menu-minuman', compact('NonCoffe', 'Coffe'));
     }
 
     public function menuMakanan()
