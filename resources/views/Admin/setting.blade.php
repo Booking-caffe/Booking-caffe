@@ -82,6 +82,44 @@
             </div>
         </div>
 
+        {{-- ================= GAMBAR RUANGAN ================= --}}
+        <div>
+            <div class="bg-white rounded-xl shadow px-4 py-3 mb-4">
+                <h3 class="text-lg font-bold text-black text-center">
+                    Gamabar Ruangan
+                </h3>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-white p-6 rounded-xl shadow">
+                @for ($i = 1; $i <= 2; $i++)
+                    <div class="bg-background-light rounded-xl shadow p-5">
+                        <h4 class="font-semibold text-primary mb-4">
+                            Edit Gambar Ruangan {{ $i === 1 ? 'Indor' : 'Outdor' }}
+                        </h4>
+
+                        <form action="{{ route('update-foto-ruangan', ['ruangan' => $i]) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+
+                            <img src="{{ asset('images/ruangan' . $i . '.jpg') }}" alt="ruangan {{ $i === 1 ? 'Indor' : 'Outdor' }}"
+                                class="w-full aspect-video object-cover rounded-lg border mb-3 text-black">
+
+                            <input type="file" name="foto_ruangan"
+                                class="w-full text-sm text-muted
+                               file:mr-3 file:py-2 file:px-4
+                               file:rounded-lg file:border-0
+                               file:bg-primary file:text-white
+                               hover:file:bg-primary/90">
+
+                            <button type="submit" class="btn-primary w-full mt-4 text-white text-sm py-2 bg-accent rounded-lg">
+                                Simpan Foto
+                            </button>
+                        </form>
+                    </div>
+                @endfor
+            </div>
+        </div>
+
         {{-- ================= TENTANG KAMI ================= --}}
         <div>
             <div class="bg-white rounded-xl shadow px-4 py-3 mb-4">

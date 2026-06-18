@@ -264,6 +264,19 @@ Route::post('/admin/setting/update-foto-slide/{slide}', function ($slide, \Illum
     return back()->with('success', 'Foto Slide ' . $slide . ' berhasil diupdate!');
 })->name('update-foto-slide');
 
+// Route dinamis untuk update foto ruangan indor dan outdor
+Route::post('/admin/setting/update-foto-ruangan/{ruangan}', function ($slide, \Illuminate\Http\Request $request) {
+    // dd($request->all());
+    if ($request->hasFile('foto_ruangan')) {
+        $file = $request->file('foto_ruangan');
+        $slideNum = (int) $slide;
+        if ($slideNum >= 1 && $slideNum <= 2) {
+            $file->move(public_path('images'), 'ruangan' . $slideNum . '.jpg');
+        }
+    }
+    return back()->with('success', 'Foto ruangan ' . $slide === 1 ? 'Indor' : 'Outdor' . ' berhasil diupdate!');
+})->name('update-foto-ruangan');
+
 
 // Route untuk update foto Tentang Kami
 Route::post('/admin/setting/update-foto-tentang', function (\Illuminate\Http\Request $request) {
