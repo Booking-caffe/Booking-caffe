@@ -6,7 +6,7 @@
     @php
         $hubungi = [
             'telepon1' => '+62-812-1234-1234',
-            'Email' => 'doubler.patrol@gmail.com',
+            'Email' => 'hihoodeastside@gmail.com',
             'alamat' => 'Jl. Nasional 1 Patrol, Kec. Patrol, Kab. Indramayu, Jawa Barat 45257',
         ];
         $contactPhone = '6287815349226';
@@ -36,7 +36,7 @@
         <section class="relative h-[calc(100vh-64px)] w-full overflow-hidden" id="hero-carousel" data-home-section="hero">
             <div class="relative h-full w-full">
                 @php
-                    $imageUrl = asset('images/imgCoffe.jpeg');
+                    $imageUrl = asset('images/DashboardUsr.png');
                 @endphp
 
                 <div class="absolute inset-0">
@@ -47,11 +47,11 @@
 
                 <div class="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 text-center">
                     <h1 class="mb-4 text-4xl font-bold text-white drop-shadow-lg md:text-6xl">
-                        The Perfect Roast
+                        Creating Warmth and Memories
                     </h1>
                     <p class="mb-8 max-w-2xl text-lg text-gray-200 drop-shadow-md md:text-xl">
-                        Nikmati aroma kopi autentik dan suasana nyaman hanya di kedai kami.
-                        Tempat terbaik untuk cerita dan inspirasi.
+                        Kopi Satu Bang @HoodHGL menciptakan suasana yang nyaman dan hangat, tempat di mana setiap kunjungan menjadi pengalaman yang menyenangkan, setiap percakapan terasa lebih bermakna, dan setiap momen layak untuk dikenang. 
+                        Rencanakan momen spesial Anda bersama kami. Lakukan reservasi dan nikmati suasana hangat dengan lebih tenang.
                     </p>
 
                     <a href="{{ route('menu-makanan') }}"
@@ -137,7 +137,7 @@
      <footer class="border-t border-primary/10 bg-card-light py-6" data-home-footer>
             <div class="container mx-auto px-6 text-center">
                 <p class="text-sm text-text-muted-light">
-                    Hak Cipta © Copyright 2025. Kopi Senja.
+                    Hak Cipta© Copyright 2026. Kopi Satu Bang @HoodHGL.
                 </p>
             </div>
         </footer>
